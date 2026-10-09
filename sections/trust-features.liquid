@@ -1,0 +1,148 @@
+{%- liquid
+  assign whatsapp_digits = settings.whatsapp_number | remove: '+' | remove: ' ' | remove: '-' | remove: '(' | remove: ')'
+-%}
+<section class="section{% if section.settings.surface %} section--surface{% endif %}" aria-label="{{ section.settings.heading | default: 'Why shop with us' | escape }}">
+  <div class="page-width">
+    {%- if section.settings.heading != blank -%}
+      <div class="section-header">
+        <div class="section-header__text">
+          <h2>{{ section.settings.heading | escape }}</h2>
+        </div>
+      </div>
+    {%- endif -%}
+    <ul class="features" role="list" style="--feature-columns: {{ section.blocks.size | at_most: 4 | at_least: 1 }};">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign link_url = block.settings.link
+          case block.settings.auto_link
+            when 'shipping_policy'
+              assign link_url = shop.shipping_policy.url
+            when 'refund_policy'
+              assign link_url = shop.refund_policy.url
+            when 'contact_page'
+              assign link_url = pages.contact.url
+            when 'whatsapp'
+              if whatsapp_digits != blank
+                assign link_url = 'https://wa.me/' | append: whatsapp_digits
+              elsif pages.contact.id
+                assign link_url = pages.contact.url
+              endif
+          endcase
+        -%}
+        <li {{ block.shopify_attributes }}>
+          <div class="feature">
+            <span class="feature__icon" aria-hidden="true">{% render 'icon', name: block.settings.icon %}</span>
+            <div class="feature__body">
+              <h3 class="feature__title">{{ block.settings.title | escape }}</h3>
+              <p class="feature__text">
+                {{ block.settings.text | escape }}
+                {%- if link_url != blank and block.settings.link_label != blank %}
+                  <a href="{{ link_url }}"{% if link_url contains 'wa.me' %} target="_blank" rel="noopener"{% endif %}>
+                    {{- block.settings.link_label | escape -}}
+                  </a>
+                {%- endif -%}
+              </p>
+            </div>
+          </div>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Service highlights",
+  "tag": "div",
+  "class": "trust-section",
+  "max_blocks": 8,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Only make delivery, payment, authenticity and return claims you have confirmed."
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading"
+    },
+    {
+      "type": "checkbox",
+      "id": "surface",
+      "label": "Light background",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Highlight",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "badge", "label": "Quality badge" },
+            { "value": "lock", "label": "Lock" },
+            { "value": "shield", "label": "Shield" },
+            { "value": "truck", "label": "Delivery truck" },
+            { "value": "return", "label": "Returns" },
+            { "value": "support", "label": "Support" },
+            { "value": "whatsapp", "label": "WhatsApp" },
+            { "value": "tag", "label": "Tag" },
+            { "value": "sparkle", "label": "Sparkle" }
+          ],
+          "default": "badge"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Quality Products"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "A curated range of watches, bags, jewellery, dresses and shoes."
+        },
+        {
+          "type": "select",
+          "id": "auto_link",
+          "label": "Link to",
+          "options": [
+            { "value": "none", "label": "Custom link below" },
+            { "value": "shipping_policy", "label": "Shipping policy (if published)" },
+            { "value": "refund_policy", "label": "Refund policy (if published)" },
+            { "value": "contact_page", "label": "Contact page (if it exists)" },
+            { "value": "whatsapp", "label": "WhatsApp (or contact page)" }
+          ],
+          "default": "none"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Custom link"
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Link label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Service highlights",
+      "blocks": [
+        { "type": "feature" },
+        { "type": "feature", "settings": { "icon": "lock", "title": "Secure Checkout", "text": "Pay safely through Shopify's encrypted checkout." } },
+        { "type": "feature", "settings": { "icon": "truck", "title": "Delivery Information", "text": "Delivery areas, times and charges are shown at checkout.", "auto_link": "shipping_policy", "link_label": "Shipping policy" } },
+        { "type": "feature", "settings": { "icon": "support", "title": "Customer Support", "text": "Questions about a product or order? We're here to help.", "auto_link": "whatsapp", "link_label": "Contact us" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,18 @@
+{
+  "current": "Default",
+  "presets": {
+    "Default": {
+      "color_primary": "#124FA3",
+      "color_accent": "#E31837",
+      "color_success": "#139447",
+      "color_text": "#172033",
+      "color_background": "#FFFFFF",
+      "color_surface": "#F5F8FC",
+      "type_heading_font": "montserrat_n7",
+      "type_body_font": "assistant_n4",
+      "card_image_ratio": "portrait",
+      "card_image_fit": "cover",
+      "cart_type": "drawer"
+    }
+  }
+}

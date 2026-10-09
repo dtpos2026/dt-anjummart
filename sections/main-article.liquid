@@ -1,0 +1,43 @@
+<article class="main-page">
+  <div class="page-width page-width--narrow">
+    <nav class="breadcrumbs" aria-label="{{ 'general.breadcrumbs' | t }}">
+      <ol>
+        <li><a href="{{ routes.root_url }}">{{ 'general.home' | t }}</a></li>
+        <li><a href="{{ blog.url }}">{{ blog.title | escape }}</a></li>
+        <li><span aria-current="page">{{ article.title | escape }}</span></li>
+      </ol>
+    </nav>
+    <header class="article__header">
+      <h1>{{ article.title | escape }}</h1>
+      <p class="text-muted">
+        {{ article.published_at | time_tag: format: 'date' }}
+        {%- if article.author != blank %} · {{ 'blogs.article.by_author' | t: author: article.author }}{% endif %}
+      </p>
+    </header>
+    {%- if article.image -%}
+      <div class="article__image">
+        {{ article.image | image_url: width: 1600 | image_tag: loading: 'eager', widths: '600, 900, 1200, 1600', sizes: '(min-width: 900px) 820px, 100vw', alt: article.image.alt }}
+      </div>
+    {%- endif -%}
+    <div class="rte">{{ article.content }}</div>
+    {%- if article.tags.size > 0 -%}
+      <ul class="empty-state__links article__tags" role="list" aria-label="{{ 'blogs.article.tags' | t }}">
+        {%- for tag in article.tags -%}
+          <li><a class="chip" href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag | escape }}</a></li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+    <p class="article__back">
+      <a class="link-arrow" href="{{ blog.url }}">{% render 'icon', name: 'chevron-left' %} {{ 'blogs.article.back_to_blog' | t: title: blog.title }}</a>
+    </p>
+  </div>
+</article>
+
+{% schema %}
+{
+  "name": "Blog post",
+  "tag": "section",
+  "class": "main-article-section",
+  "settings": []
+}
+{% endschema %}

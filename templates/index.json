@@ -1,0 +1,176 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "eyebrow": "Watches · Bags · Jewellery · Fashion · Shoes",
+        "heading": "Everything You Love, <em>All in One Place</em>",
+        "text": "Discover Watches, Bags, Jewellery, Fashion & More.",
+        "button_label": "Shop Now",
+        "button_link": "shopify://collections/all",
+        "button_label_2": "Explore Categories",
+        "button_link_2": "",
+        "show_chips": true,
+        "background": "#F5F8FC",
+        "collage_collection": "new-arrivals",
+        "collage_label": "New arrivals"
+      }
+    },
+    "categories": {
+      "type": "category-cards",
+      "blocks": {
+        "watches": {
+          "type": "category",
+          "settings": { "collection": "watches", "title": "", "icon": "watch", "color": "blue" }
+        },
+        "ladies-bags": {
+          "type": "category",
+          "settings": { "collection": "ladies-bags", "title": "", "icon": "handbag", "color": "red" }
+        },
+        "artificial-jewellery": {
+          "type": "category",
+          "settings": { "collection": "artificial-jewellery", "title": "", "icon": "jewellery", "color": "green" }
+        },
+        "dresses": {
+          "type": "category",
+          "settings": { "collection": "dresses", "title": "", "icon": "dress", "color": "blue" }
+        },
+        "shoes": {
+          "type": "category",
+          "settings": { "collection": "shoes", "title": "", "icon": "shoe", "color": "red" }
+        }
+      },
+      "block_order": ["watches", "ladies-bags", "artificial-jewellery", "dresses", "shoes"],
+      "settings": {
+        "eyebrow": "Shop by category",
+        "heading": "Find exactly what you love",
+        "subheading": "",
+        "show_view_all": true,
+        "show_count": true,
+        "surface": false
+      }
+    },
+    "featured": {
+      "type": "product-rail",
+      "settings": {
+        "eyebrow": "Our picks",
+        "heading": "Featured Products",
+        "subheading": "",
+        "collection": "frontpage",
+        "products_to_show": 8,
+        "show_view_all": true,
+        "view_all_label": "View all",
+        "surface": false
+      }
+    },
+    "new-arrivals": {
+      "type": "product-rail",
+      "settings": {
+        "eyebrow": "Just in",
+        "heading": "New Arrivals",
+        "subheading": "",
+        "collection": "new-arrivals",
+        "products_to_show": 8,
+        "show_view_all": true,
+        "view_all_label": "Shop new arrivals",
+        "surface": true
+      }
+    },
+    "promo": {
+      "type": "promo-banner",
+      "settings": {
+        "eyebrow": "New season",
+        "heading": "Fresh styles for every occasion",
+        "text": "Explore new dresses, bags and accessories to complete your look.",
+        "button_label": "Shop New Arrivals",
+        "button_link": "shopify://collections/new-arrivals",
+        "button_label_2": "Browse all categories",
+        "button_link_2": "shopify://collections/all",
+        "background": "#124FA3",
+        "text_color": "#FFFFFF",
+        "tight": false
+      }
+    },
+    "best-sellers": {
+      "type": "product-rail",
+      "settings": {
+        "eyebrow": "Customer favourites",
+        "heading": "Best Sellers",
+        "subheading": "",
+        "collection": "best-sellers",
+        "products_to_show": 8,
+        "show_view_all": true,
+        "view_all_label": "Shop best sellers",
+        "surface": false
+      }
+    },
+    "special-offers": {
+      "type": "product-rail",
+      "settings": {
+        "eyebrow": "On sale",
+        "heading": "Special Offers",
+        "subheading": "",
+        "collection": "sale",
+        "products_to_show": 8,
+        "show_view_all": true,
+        "view_all_label": "Shop all offers",
+        "surface": true
+      }
+    },
+    "service": {
+      "type": "trust-features",
+      "blocks": {
+        "quality": {
+          "type": "feature",
+          "settings": {
+            "icon": "badge",
+            "title": "Quality Products",
+            "text": "A curated range of watches, bags, jewellery, dresses and shoes.",
+            "auto_link": "none",
+            "link": "",
+            "link_label": ""
+          }
+        },
+        "secure": {
+          "type": "feature",
+          "settings": {
+            "icon": "lock",
+            "title": "Secure Checkout",
+            "text": "Pay safely through Shopify's encrypted checkout.",
+            "auto_link": "none",
+            "link": "",
+            "link_label": ""
+          }
+        },
+        "delivery": {
+          "type": "feature",
+          "settings": {
+            "icon": "truck",
+            "title": "Delivery Information",
+            "text": "Delivery areas, times and charges are shown at checkout.",
+            "auto_link": "shipping_policy",
+            "link": "",
+            "link_label": "Shipping policy"
+          }
+        },
+        "support": {
+          "type": "feature",
+          "settings": {
+            "icon": "support",
+            "title": "Customer Support",
+            "text": "Questions about a product or order? We're here to help.",
+            "auto_link": "whatsapp",
+            "link": "",
+            "link_label": "Contact us"
+          }
+        }
+      },
+      "block_order": ["quality", "secure", "delivery", "support"],
+      "settings": {
+        "heading": "",
+        "surface": true
+      }
+    }
+  },
+  "order": ["hero", "categories", "featured", "new-arrivals", "promo", "best-sellers", "special-offers", "service"]
+}

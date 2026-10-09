@@ -1,0 +1,61 @@
+{%- liquid
+  assign heading_font = settings.type_heading_font
+  assign body_font = settings.type_body_font
+  assign heading_font_bold = heading_font | font_modify: 'weight', '800'
+  assign body_font_medium = body_font | font_modify: 'weight', '600'
+  assign body_font_bold = body_font | font_modify: 'weight', 'bold'
+  assign body_font_italic = body_font | font_modify: 'style', 'italic'
+
+  case settings.card_image_ratio
+    when 'square'
+      assign card_ratio = '1 / 1'
+    when 'tall'
+      assign card_ratio = '3 / 4'
+    else
+      assign card_ratio = '4 / 5'
+  endcase
+-%}
+
+<style>
+  {{ heading_font | font_face: font_display: 'swap' }}
+  {{ heading_font_bold | font_face: font_display: 'swap' }}
+  {{ body_font | font_face: font_display: 'swap' }}
+  {{ body_font_medium | font_face: font_display: 'swap' }}
+  {{ body_font_bold | font_face: font_display: 'swap' }}
+  {{ body_font_italic | font_face: font_display: 'swap' }}
+
+  :root {
+    --color-primary: {{ settings.color_primary }};
+    --color-primary-rgb: {{ settings.color_primary | color_extract: 'red' }}, {{ settings.color_primary | color_extract: 'green' }}, {{ settings.color_primary | color_extract: 'blue' }};
+    --color-primary-dark: {{ settings.color_primary | color_darken: 10 }};
+    --color-primary-soft: {{ settings.color_primary | color_mix: '#ffffff', 10 }};
+    --color-accent: {{ settings.color_accent }};
+    --color-accent-dark: {{ settings.color_accent | color_darken: 8 }};
+    --color-accent-soft: {{ settings.color_accent | color_mix: '#ffffff', 10 }};
+    --color-success: {{ settings.color_success }};
+    --color-success-soft: {{ settings.color_success | color_mix: '#ffffff', 12 }};
+    --color-text: {{ settings.color_text }};
+    --color-text-rgb: {{ settings.color_text | color_extract: 'red' }}, {{ settings.color_text | color_extract: 'green' }}, {{ settings.color_text | color_extract: 'blue' }};
+    --color-muted: {{ settings.color_text | color_mix: '#ffffff', 68 }};
+    --color-bg: {{ settings.color_background }};
+    --color-surface: {{ settings.color_surface }};
+    --color-border: {{ settings.color_surface | color_mix: settings.color_text, 90 }};
+
+    --font-heading-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    --font-heading-style: {{ heading_font.style }};
+    --font-heading-weight: {{ heading_font.weight }};
+    --font-heading-weight-bold: {{ heading_font_bold.weight | default: heading_font.weight }};
+    --font-body-family: {{ body_font.family }}, {{ body_font.fallback_families }};
+    --font-body-style: {{ body_font.style }};
+    --font-body-weight: {{ body_font.weight }};
+    --font-body-weight-medium: {{ body_font_medium.weight | default: body_font.weight }};
+    --font-body-weight-bold: {{ body_font_bold.weight | default: 700 }};
+    --font-body-scale: {{ settings.body_scale | divided_by: 100.0 }};
+
+    --logo-height: {{ settings.logo_height }}px;
+    --logo-height-mobile: {{ settings.logo_height_mobile }}px;
+
+    --card-image-ratio: {{ card_ratio }};
+    --card-image-fit: {{ settings.card_image_fit }};
+  }
+</style>

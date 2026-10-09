@@ -1,0 +1,108 @@
+{%- if section.blocks.size > 0 -%}
+  <div
+    class="announcement-bar"
+    role="region"
+    aria-label="{{ section.settings.label | escape }}"
+    data-announcement
+    data-speed="{{ section.settings.speed }}"
+    style="--announcement-bg: {{ section.settings.background }}; --announcement-color: {{ section.settings.text_color }};"
+  >
+    <div class="page-width announcement-bar__inner">
+      {%- for block in section.blocks -%}
+        <p class="announcement-bar__message" {{ block.shopify_attributes }}>
+          {%- if block.settings.icon != 'none' -%}
+            {% render 'icon', name: block.settings.icon %}
+          {%- endif -%}
+          {%- if block.settings.link != blank -%}
+            <a href="{{ block.settings.link }}">{{ block.settings.text | escape }}</a>
+          {%- else -%}
+            <span>{{ block.settings.text | escape }}</span>
+          {%- endif -%}
+        </p>
+      {%- endfor -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Announcement bar",
+  "tag": "div",
+  "class": "announcement-section",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Accessible label",
+      "default": "Store announcements"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#124FA3"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "label": "Change messages every",
+      "min": 3,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "default": 5
+    },
+    {
+      "type": "paragraph",
+      "content": "Only announce delivery, payment or discount details that you have set up in Shopify."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "announcement",
+      "name": "Announcement",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Welcome to Anjum Mart — watches, bags, jewellery, dresses & shoes in one place"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "none", "label": "None" },
+            { "value": "sparkle", "label": "Sparkle" },
+            { "value": "truck", "label": "Delivery" },
+            { "value": "tag", "label": "Offer tag" },
+            { "value": "shield", "label": "Secure" },
+            { "value": "support", "label": "Support" },
+            { "value": "whatsapp", "label": "WhatsApp" }
+          ],
+          "default": "sparkle"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Announcement bar",
+      "blocks": [{ "type": "announcement" }]
+    }
+  ]
+}
+{% endschema %}

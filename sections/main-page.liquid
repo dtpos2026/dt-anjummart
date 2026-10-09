@@ -1,0 +1,21 @@
+<div class="main-page">
+  <div class="page-width page-width--narrow">
+    <nav class="breadcrumbs" aria-label="{{ 'general.breadcrumbs' | t }}">
+      <ol>
+        <li><a href="{{ routes.root_url }}">{{ 'general.home' | t }}</a></li>
+        <li><span aria-current="page">{{ page.title | escape }}</span></li>
+      </ol>
+    </nav>
+    <h1 class="main-page__title">{{ page.title | escape }}</h1>
+    <div class="rte">{{ page.content }}</div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Page content",
+  "tag": "section",
+  "class": "main-page-section",
+  "settings": []
+}
+{% endschema %}

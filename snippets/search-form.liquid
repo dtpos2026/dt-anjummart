@@ -1,0 +1,48 @@
+{%- comment -%}
+  Product search form with predictive suggestions.
+  Accepts:
+  - id: {String} unique id for the input (required)
+  - autofocus: {Boolean}
+{%- endcomment -%}
+<form
+  action="{{ routes.search_url }}"
+  method="get"
+  role="search"
+  class="search-form"
+  {% if settings.predictive_search_enabled %}
+    data-predictive-search
+  {% endif %}
+>
+  <div class="search-form__field">
+    <label class="visually-hidden" for="{{ id }}">{{ 'search.placeholder' | t }}</label>
+    <input
+      class="search-form__input"
+      type="search"
+      id="{{ id }}"
+      name="q"
+      value="{{ search.terms | escape }}"
+      placeholder="{{ 'header.search_placeholder' | t }}"
+      autocomplete="off"
+      autocorrect="off"
+      autocapitalize="off"
+      spellcheck="false"
+      {% if settings.predictive_search_enabled %}
+        role="combobox"
+        aria-autocomplete="list"
+        aria-expanded="false"
+        aria-controls="{{ id }}-results"
+        aria-haspopup="listbox"
+      {% endif %}
+      {% if autofocus %}
+        autofocus
+      {% endif %}
+    >
+    <input type="hidden" name="options[prefix]" value="last">
+    <button type="submit" class="search-form__submit" aria-label="{{ 'search.submit' | t }}">
+      {% render 'icon', name: 'search' %}
+    </button>
+  </div>
+  {%- if settings.predictive_search_enabled -%}
+    <div class="predictive-search" id="{{ id }}-results" role="listbox" aria-label="{{ 'search.suggestions' | t }}" data-predictive-results hidden></div>
+  {%- endif -%}
+</form>

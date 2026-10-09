@@ -1,0 +1,346 @@
+{
+  "general": {
+    "skip_to_content": "Skip to content",
+    "menu": "Menu",
+    "open_menu": "Open menu",
+    "close": "Close",
+    "home": "Home",
+    "search": "Search",
+    "account": "Account",
+    "log_in": "Log in",
+    "cart": "Cart",
+    "view_all": "View all",
+    "shop_now": "Shop now",
+    "loading": "Loading…",
+    "continue_shopping": "Continue shopping",
+    "error": "Something went wrong. Please try again.",
+    "breadcrumbs": "Breadcrumb",
+    "all_products": "All products",
+    "follow_on": "Follow Anjum Mart on {{ platform }}",
+    "whatsapp": "Chat with us on WhatsApp",
+    "payment_methods": "Payment methods",
+    "new_window": "Opens in a new window",
+    "back_to_top": "Back to top",
+    "pagination": {
+      "label": "Pagination",
+      "previous": "Previous page",
+      "next": "Next page",
+      "page": "Page {{ number }}"
+    },
+    "slider": {
+      "previous": "Previous",
+      "next": "Next"
+    }
+  },
+  "header": {
+    "search_placeholder": "Search watches, bags, jewellery…",
+    "cart_count": {
+      "one": "{{ count }} item",
+      "other": "{{ count }} items"
+    }
+  },
+  "footer": {
+    "shop": "Shop",
+    "help": "Help & policies",
+    "contact": "Contact us",
+    "contact_page": "Contact page",
+    "search": "Search",
+    "email": "Email",
+    "phone": "Phone",
+    "address": "Address",
+    "hours": "Hours",
+    "copyright": "© {{ year }} {{ shop }}. All rights reserved.",
+    "powered_by": "Powered by Shopify"
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Add to cart",
+      "adding": "Adding…",
+      "added": "Added to cart",
+      "choose_options": "Choose options",
+      "view_product": "View product",
+      "sold_out": "Sold out",
+      "unavailable": "Unavailable",
+      "in_stock": "In stock",
+      "low_stock": "Only {{ count }} left in stock",
+      "on_sale": "Sale",
+      "percent_off": "{{ percent }}% off",
+      "you_save": "You save {{ amount }}",
+      "regular_price": "Regular price",
+      "sale_price": "Sale price",
+      "price_from": "From {{ price }}",
+      "unit_price": "Unit price",
+      "per": "per",
+      "quantity": "Quantity",
+      "increase_quantity": "Increase quantity",
+      "decrease_quantity": "Decrease quantity",
+      "sku": "SKU",
+      "vendor": "Brand",
+      "description": "Description",
+      "shipping_returns": "Shipping & returns",
+      "shipping_returns_default": "Delivery charges, delivery times and return conditions are shown at checkout and in our store policies.",
+      "taxes_included": "Taxes included.",
+      "shipping_at_checkout": "Shipping calculated at checkout.",
+      "options_more": "+{{ count }} more",
+      "options_count": {
+        "one": "{{ count }} option",
+        "other": "{{ count }} options"
+      },
+      "media_open": "Show image {{ index }} of {{ total }}",
+      "gallery": "Product images",
+      "related": "You may also like",
+      "share": "Share",
+      "select_option": "Select {{ option }}",
+      "no_image": "Image coming soon"
+    },
+    "facets": {
+      "filter": "Filter",
+      "filters": "Filters",
+      "filter_and_sort": "Filter & sort",
+      "sort_by": "Sort by",
+      "clear_all": "Clear all",
+      "clear": "Clear",
+      "apply": "Apply",
+      "show_results": "Show results",
+      "from": "From",
+      "to": "To",
+      "max_price": "The highest price is {{ price }}",
+      "remove_filter": "Remove filter: {{ value }}",
+      "selected": "{{ count }} selected",
+      "product_count": {
+        "one": "{{ count }} product",
+        "other": "{{ count }} products"
+      },
+      "yes": "Yes",
+      "no": "No"
+    }
+  },
+  "collections": {
+    "empty_title": "Products coming soon",
+    "empty_text": "We're adding new products to this collection. Please check back soon.",
+    "empty_filtered_title": "No products match these filters",
+    "empty_filtered_text": "Try removing a filter or browse the full collection.",
+    "browse_all": "Browse all products",
+    "all_collections": "All collections",
+    "products_count": {
+      "one": "{{ count }} product",
+      "other": "{{ count }} products"
+    }
+  },
+  "cart": {
+    "title": "Your cart",
+    "empty": "Your cart is empty",
+    "empty_text": "Discover watches, bags, jewellery, dresses and shoes picked for you.",
+    "subtotal": "Subtotal",
+    "total": "Total",
+    "checkout": "Checkout",
+    "view_cart": "View cart",
+    "remove": "Remove",
+    "remove_item": "Remove {{ title }}",
+    "taxes_and_shipping": "Taxes, discounts and shipping are calculated at checkout.",
+    "taxes_included_shipping": "Taxes included. Discounts and shipping are calculated at checkout.",
+    "note": "Order note",
+    "note_placeholder": "Add special instructions for your order",
+    "error": "We couldn't update your cart. Please try again.",
+    "product": "Product",
+    "quantity": "Quantity",
+    "price": "Price",
+    "line_total": "Total",
+    "updating": "Updating cart…",
+    "discount": "Discount",
+    "secure_checkout": "Secure checkout powered by Shopify",
+    "update": "Update cart"
+  },
+  "search": {
+    "title": "Search",
+    "placeholder": "Search products",
+    "submit": "Search",
+    "clear": "Clear search",
+    "results_for": "Results for “{{ terms }}”",
+    "results_count": {
+      "one": "{{ count }} result",
+      "other": "{{ count }} results"
+    },
+    "no_results": "No results for “{{ terms }}”",
+    "no_results_text": "Check the spelling, try a more general word, or browse our categories.",
+    "start_text": "Search for watches, ladies bags, jewellery, dresses, shoes and more.",
+    "products": "Products",
+    "collections": "Collections",
+    "pages": "Pages",
+    "suggestions": "Suggestions",
+    "view_all": "View all results for “{{ terms }}”",
+    "popular": "Shop by category",
+    "page_result": "Page",
+    "article_result": "Article"
+  },
+  "customer": {
+    "account": {
+      "title": "My account",
+      "details": "Account details",
+      "view_addresses": "View addresses",
+      "return": "Back to account",
+      "log_out": "Log out",
+      "welcome": "Welcome back, {{ name }}"
+    },
+    "orders": {
+      "title": "Order history",
+      "none": "You haven't placed any orders yet.",
+      "order_number": "Order",
+      "date": "Date",
+      "payment_status": "Payment status",
+      "fulfillment_status": "Fulfillment status",
+      "total": "Total",
+      "view": "View order {{ name }}"
+    },
+    "order": {
+      "title": "Order {{ name }}",
+      "placed_on": "Placed on {{ date }}",
+      "cancelled": "Order cancelled on {{ date }}",
+      "cancelled_reason": "Reason: {{ reason }}",
+      "product": "Product",
+      "sku": "SKU",
+      "price": "Price",
+      "quantity": "Quantity",
+      "total": "Total",
+      "subtotal": "Subtotal",
+      "shipping": "Shipping",
+      "tax": "Tax",
+      "discount": "Discount",
+      "billing_address": "Billing address",
+      "shipping_address": "Shipping address",
+      "payment_status": "Payment status",
+      "fulfillment_status": "Fulfillment status",
+      "fulfilled_at": "Fulfilled {{ date }}",
+      "track_shipment": "Track shipment",
+      "tracking_company": "Carrier",
+      "tracking_number": "Tracking number"
+    },
+    "addresses": {
+      "title": "Addresses",
+      "default": "Default",
+      "add_new": "Add a new address",
+      "edit_address": "Edit address",
+      "edit": "Edit",
+      "delete": "Delete",
+      "delete_confirm": "Are you sure you want to delete this address?",
+      "first_name": "First name",
+      "last_name": "Last name",
+      "company": "Company",
+      "address1": "Address",
+      "address2": "Apartment, suite, etc.",
+      "city": "City",
+      "country": "Country/region",
+      "province": "Province",
+      "zip": "Postal code",
+      "phone": "Phone",
+      "set_default": "Set as default address",
+      "add": "Add address",
+      "update": "Update address",
+      "cancel": "Cancel"
+    },
+    "login": {
+      "title": "Log in",
+      "email": "Email",
+      "password": "Password",
+      "forgot_password": "Forgot your password?",
+      "sign_in": "Sign in",
+      "create_account": "Create account",
+      "guest_title": "Continue as a guest",
+      "guest_continue": "Continue"
+    },
+    "recover_password": {
+      "title": "Reset your password",
+      "subtext": "We will send you an email to reset your password.",
+      "submit": "Submit",
+      "cancel": "Cancel",
+      "success": "We've sent you an email with a link to update your password."
+    },
+    "register": {
+      "title": "Create account",
+      "first_name": "First name",
+      "last_name": "Last name",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Create account",
+      "have_account": "Already have an account? Log in"
+    },
+    "reset_password": {
+      "title": "Reset account password",
+      "subtext": "Enter a new password",
+      "password": "Password",
+      "password_confirm": "Confirm password",
+      "submit": "Reset password"
+    },
+    "activate_account": {
+      "title": "Activate account",
+      "subtext": "Create your password to activate your account.",
+      "password": "Password",
+      "password_confirm": "Confirm password",
+      "submit": "Activate account",
+      "cancel": "Decline invitation"
+    }
+  },
+  "contact": {
+    "form": {
+      "title": "Send us a message",
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone number",
+      "comment": "Message",
+      "send": "Send message",
+      "post_success": "Thanks for contacting us. We'll get back to you as soon as possible.",
+      "error_heading": "Please adjust the following:"
+    }
+  },
+  "blogs": {
+    "article": {
+      "read_more": "Read more",
+      "back_to_blog": "Back to {{ title }}",
+      "by_author": "by {{ author }}",
+      "tags": "Tags",
+      "comments": {
+        "one": "{{ count }} comment",
+        "other": "{{ count }} comments"
+      }
+    },
+    "empty": "There are no articles yet."
+  },
+  "templates": {
+    "404": {
+      "title": "Page not found",
+      "subtext": "The page you were looking for doesn't exist or may have moved."
+    },
+    "password": {
+      "title": "Opening soon",
+      "enter_password": "Enter store using password",
+      "password": "Password",
+      "enter": "Enter",
+      "admin_link": "Are you the store owner? Log in here",
+      "signup_title": "Be the first to know",
+      "signup_text": "Leave your email to hear when we open.",
+      "signup_email": "Email",
+      "signup_submit": "Notify me",
+      "signup_success": "Thanks! We'll let you know when we open."
+    }
+  },
+  "gift_cards": {
+    "issued": {
+      "title": "Here's your {{ value }} gift card for {{ shop }}!",
+      "subtext": "Your gift card",
+      "code": "Gift card code",
+      "copy": "Copy code",
+      "copied": "Copied!",
+      "expired": "Expired on {{ expiry }}",
+      "expires": "Expires on {{ expiry }}",
+      "disabled": "Disabled",
+      "balance": "Balance: {{ balance }}",
+      "shop_link": "Visit online store",
+      "print": "Print this gift card",
+      "add_to_apple_wallet": "Add to Apple Wallet"
+    }
+  },
+  "accessibility": {
+    "unit_price_separator": "per",
+    "star_rating": "{{ rating }} out of 5"
+  }
+}

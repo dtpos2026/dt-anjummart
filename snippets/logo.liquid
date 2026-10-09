@@ -1,0 +1,34 @@
+{%- comment -%}
+  Renders the official Anjum Mart logo (or the logo override from theme settings).
+  Accepts:
+  - height: {Number} rendered height in px (used for width/height attributes)
+  - lazy: {Boolean} lazy-load (default false)
+  - class: {String} optional class
+{%- endcomment -%}
+{%- liquid
+  assign logo_h = height | default: 72
+  assign loading = 'eager'
+  if lazy
+    assign loading = 'lazy'
+  endif
+-%}
+{%- if settings.logo != blank -%}
+  {%- assign logo_w = logo_h | times: settings.logo.aspect_ratio | round -%}
+  {%- assign logo_w2 = logo_w | times: 2 -%}
+  {{
+    settings.logo
+    | image_url: width: logo_w2
+    | image_tag: alt: shop.name, width: logo_w, height: logo_h, loading: loading, class: class
+  }}
+{%- else -%}
+  <img
+    src="{{ 'anjum-mart-logo.webp' | asset_url }}"
+    alt="{{ shop.name | escape }}"
+    width="{{ logo_h }}"
+    height="{{ logo_h }}"
+    loading="{{ loading }}"
+    {% if class %}
+      class="{{ class }}"
+    {% endif %}
+  >
+{%- endif -%}

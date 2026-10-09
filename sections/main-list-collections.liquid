@@ -1,0 +1,85 @@
+{{ 'collection.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign colors = 'blue,red,green' | split: ','
+  assign icon_map = 'watches:watch,ladies-bags:handbag,artificial-jewellery:jewellery,dresses:dress,shoes:shoe' | split: ','
+-%}
+
+<div class="collection-hero">
+  <div class="collection-hero__shapes" aria-hidden="true"><span></span><span></span></div>
+  <div class="page-width collection-hero__inner">
+    <nav class="breadcrumbs" aria-label="{{ 'general.breadcrumbs' | t }}">
+      <ol>
+        <li><a href="{{ routes.root_url }}">{{ 'general.home' | t }}</a></li>
+        <li><span aria-current="page">{{ section.settings.title | escape }}</span></li>
+      </ol>
+    </nav>
+    <h1 class="collection-hero__title">{{ section.settings.title | escape }}</h1>
+  </div>
+</div>
+
+<div class="page-width section">
+  <ul class="collection-list-grid" role="list">
+    {%- for c in collections -%}
+      {%- if c.handle == 'frontpage' and c.products_count == 0 -%}
+        {%- continue -%}
+      {%- endif -%}
+      {%- liquid
+        assign icon = 'sparkle'
+        for pair in icon_map
+          assign parts = pair | split: ':'
+          if parts[0] == c.handle
+            assign icon = parts[1]
+          endif
+        endfor
+        assign color_index = forloop.index0 | modulo: 3
+      -%}
+      <li>
+        <div class="category-card">
+          <div class="category-card__media">
+            {%- if c.featured_image -%}
+              {{
+                c.featured_image
+                | image_url: width: 700
+                | image_tag:
+                  loading: 'lazy',
+                  widths: '300, 400, 500, 600, 700',
+                  sizes: '(min-width: 1100px) 300px, (min-width: 750px) 30vw, 46vw',
+                  alt: ''
+              }}
+            {%- else -%}
+              <div class="category-card__fallback category-card__fallback--{{ colors[color_index] }}">
+                {% render 'icon', name: icon %}
+              </div>
+            {%- endif -%}
+          </div>
+          <div class="category-card__body">
+            <div>
+              <h2 class="category-card__title"><a href="{{ c.url }}">{{ c.title | escape }}</a></h2>
+              {%- if c.products_count > 0 -%}
+                <span class="category-card__count">{{ 'collections.products_count' | t: count: c.products_count }}</span>
+              {%- endif -%}
+            </div>
+            <span class="category-card__arrow" aria-hidden="true">{% render 'icon', name: 'arrow-right' %}</span>
+          </div>
+        </div>
+      </li>
+    {%- endfor -%}
+  </ul>
+</div>
+
+{% schema %}
+{
+  "name": "Collections list",
+  "tag": "section",
+  "class": "main-list-collections-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Shop by category"
+    }
+  ]
+}
+{% endschema %}

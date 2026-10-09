@@ -1,0 +1,49 @@
+{
+  "type": "header",
+  "name": "Header group",
+  "sections": {
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "blocks": {
+        "welcome": {
+          "type": "announcement",
+          "settings": {
+            "text": "Welcome to Anjum Mart — watches, bags, jewellery, dresses & shoes in one place",
+            "link": "",
+            "icon": "sparkle"
+          }
+        },
+        "new-arrivals": {
+          "type": "announcement",
+          "settings": {
+            "text": "Discover our latest arrivals",
+            "link": "shopify://collections/new-arrivals",
+            "icon": "tag"
+          }
+        },
+        "secure-checkout": {
+          "type": "announcement",
+          "settings": {
+            "text": "Secure checkout powered by Shopify",
+            "link": "",
+            "icon": "shield"
+          }
+        }
+      },
+      "block_order": ["welcome", "new-arrivals", "secure-checkout"],
+      "settings": {
+        "label": "Store announcements",
+        "background": "#124FA3",
+        "text_color": "#FFFFFF",
+        "speed": 5
+      }
+    },
+    "header": {
+      "type": "header",
+      "settings": {
+        "menu": "anjum-main-menu"
+      }
+    }
+  },
+  "order": ["announcement-bar", "header"]
+}

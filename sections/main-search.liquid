@@ -1,0 +1,212 @@
+{{ 'collection.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign sort_by = search.sort_by | default: search.default_sort_by
+  assign terms = search.terms | escape
+  assign category_handles = 'watches,ladies-bags,artificial-jewellery,dresses,shoes' | split: ','
+  assign has_filters = false
+  if search.performed and search.filters.size > 0
+    assign has_filters = true
+  endif
+  assign form_id = 'FacetsForm-' | append: section.id
+  capture clear_url
+    echo routes.search_url
+    echo '?q='
+    echo search.terms | url_encode
+    echo '&options%5Bprefix%5D=last&sort_by='
+    echo sort_by
+  endcapture
+
+  assign active_filter_count = 0
+  for filter in search.filters
+    if filter.type == 'price_range'
+      if filter.min_value.value != nil or filter.max_value.value != nil
+        assign active_filter_count = active_filter_count | plus: 1
+      endif
+    else
+      assign active_filter_count = active_filter_count | plus: filter.active_values.size
+    endif
+  endfor
+-%}
+
+<div class="collection-hero">
+  <div class="collection-hero__shapes" aria-hidden="true"><span></span><span></span></div>
+  <div class="page-width collection-hero__inner">
+    <nav class="breadcrumbs" aria-label="{{ 'general.breadcrumbs' | t }}">
+      <ol>
+        <li><a href="{{ routes.root_url }}">{{ 'general.home' | t }}</a></li>
+        <li><span aria-current="page">{{ 'search.title' | t }}</span></li>
+      </ol>
+    </nav>
+    <h1 class="collection-hero__title">
+      {%- if search.performed -%}
+        {{- 'search.results_for' | t: terms: search.terms -}}
+      {%- else -%}
+        {{- 'search.title' | t -}}
+      {%- endif -%}
+    </h1>
+    <div class="search-page__form">
+      {% render 'search-form', id: 'SearchPageInput' %}
+    </div>
+  </div>
+</div>
+
+<div class="page-width collection" id="SearchResults">
+  {%- if search.performed -%}
+    {%- paginate search.results by section.settings.per_page -%}
+      <div class="collection__toolbar">
+        <p class="collection__count" role="status">{{ 'search.results_count' | t: count: search.results_count }}</p>
+        <div class="collection__toolbar-actions">
+          {%- if has_filters -%}
+            <button type="button" class="button button--secondary button--small collection__filter-toggle" data-drawer-open="FacetsDrawer" aria-controls="FacetsDrawer" aria-expanded="false">
+              {% render 'icon', name: 'filter' %}
+              {{ 'products.facets.filter' | t }}
+              {%- if active_filter_count > 0 %} ({{ active_filter_count }}){% endif -%}
+            </button>
+          {%- endif -%}
+          {%- if search.results_count > 0 -%}
+            <div class="collection__sort">
+              <label class="collection__sort-label" for="SortBy-{{ section.id }}">{{ 'products.facets.sort_by' | t }}</label>
+              <div class="select-wrapper">
+                <select id="SortBy-{{ section.id }}" class="select" name="sort_by" form="{{ form_id }}" data-sort-external>
+                  {%- for option in search.sort_options -%}
+                    <option value="{{ option.value | escape }}"{% if option.value == sort_by %} selected{% endif %}>
+                      {{- option.name | escape -}}
+                    </option>
+                  {%- endfor -%}
+                </select>
+                {% render 'icon', name: 'chevron-down' %}
+              </div>
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+
+      {%- if active_filter_count > 0 -%}
+        <ul class="active-filters" role="list">
+          {%- for filter in search.filters -%}
+            {%- if filter.type == 'price_range' -%}
+              {%- if filter.min_value.value != nil or filter.max_value.value != nil -%}
+                <li>
+                  <a class="chip" href="{{ filter.url_to_remove }}" aria-label="{{ 'products.facets.remove_filter' | t: value: filter.label }}">
+                    {{- filter.min_value.value | default: 0 | money }} – {{ filter.max_value.value | default: filter.range_max | money -}}
+                    {% render 'icon', name: 'close' %}
+                  </a>
+                </li>
+              {%- endif -%}
+            {%- else -%}
+              {%- for value in filter.active_values -%}
+                <li>
+                  <a class="chip" href="{{ value.url_to_remove }}" aria-label="{{ 'products.facets.remove_filter' | t: value: value.label }}">
+                    {{- filter.label | escape }}: {{ value.label | escape -}}
+                    {% render 'icon', name: 'close' %}
+                  </a>
+                </li>
+              {%- endfor -%}
+            {%- endif -%}
+          {%- endfor -%}
+          <li><a class="link active-filters__clear" href="{{ clear_url }}">{{ 'products.facets.clear_all' | t }}</a></li>
+        </ul>
+      {%- endif -%}
+
+      <div class="collection__layout{% if has_filters %} collection__layout--sidebar{% endif %}">
+        {%- if has_filters -%}
+          {% render 'facets', results: search, clear_url: clear_url, form_id: form_id, terms: search.terms %}
+        {%- else -%}
+          <form id="{{ form_id }}" action="{{ routes.search_url }}" method="get" data-facets-form hidden>
+            <input type="hidden" name="q" value="{{ terms }}">
+            <input type="hidden" name="options[prefix]" value="last">
+          </form>
+        {%- endif -%}
+
+        <div class="collection__results loading-overlay" data-facets-results>
+          {%- assign product_results = search.results | where: 'object_type', 'product' -%}
+          {%- assign other_results = search.results | where: 'object_type', 'page' -%}
+          {%- assign article_results = search.results | where: 'object_type', 'article' -%}
+
+          {%- if search.results_count == 0 -%}
+            <div class="empty-state">
+              <span class="empty-state__icon">{% render 'icon', name: 'search' %}</span>
+              <h2>{{ 'search.no_results' | t: terms: search.terms }}</h2>
+              <p>{{ 'search.no_results_text' | t }}</p>
+              <ul class="empty-state__links" role="list">
+                {%- for handle in category_handles -%}
+                  {%- assign c = collections[handle] -%}
+                  {%- if c.id -%}
+                    <li><a class="chip" href="{{ c.url }}">{{ c.title | escape }}</a></li>
+                  {%- endif -%}
+                {%- endfor -%}
+                <li><a class="chip" href="{{ routes.all_products_collection_url }}">{{ 'general.all_products' | t }}</a></li>
+              </ul>
+            </div>
+          {%- else -%}
+            {%- if product_results.size > 0 -%}
+              <ul class="product-grid{% unless has_filters %} product-grid--4{% endunless %}" role="list">
+                {%- for item in product_results -%}
+                  <li>{% render 'product-card', product: item, section_id: section.id %}</li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+
+            {%- if other_results.size > 0 or article_results.size > 0 -%}
+              <ul class="search-results-other" role="list">
+                {%- for item in other_results -%}
+                  <li>
+                    <a href="{{ item.url }}">
+                      <span class="badge badge--soft">{{ 'search.page_result' | t }}</span>
+                      {{ item.title | escape }}
+                    </a>
+                  </li>
+                {%- endfor -%}
+                {%- for item in article_results -%}
+                  <li>
+                    <a href="{{ item.url }}">
+                      <span class="badge badge--soft">{{ 'search.article_result' | t }}</span>
+                      {{ item.title | escape }}
+                    </a>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+
+            {% render 'pagination', paginate: paginate, anchor: '#SearchResults' %}
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endpaginate -%}
+  {%- else -%}
+    <div class="empty-state">
+      <span class="empty-state__icon">{% render 'icon', name: 'search' %}</span>
+      <h2>{{ 'search.popular' | t }}</h2>
+      <p>{{ 'search.start_text' | t }}</p>
+      <ul class="empty-state__links" role="list">
+        {%- for handle in category_handles -%}
+          {%- assign c = collections[handle] -%}
+          {%- if c.id -%}
+            <li><a class="chip" href="{{ c.url }}">{{ c.title | escape }}</a></li>
+          {%- endif -%}
+        {%- endfor -%}
+        <li><a class="chip" href="{{ routes.all_products_collection_url }}">{{ 'general.all_products' | t }}</a></li>
+      </ul>
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Search results",
+  "tag": "section",
+  "class": "main-search-section",
+  "settings": [
+    {
+      "type": "range",
+      "id": "per_page",
+      "label": "Results per page",
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "default": 24
+    }
+  ]
+}
+{% endschema %}

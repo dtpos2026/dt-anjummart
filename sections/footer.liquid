@@ -1,0 +1,194 @@
+{%- liquid
+  assign fallback_handles = 'watches,ladies-bags,artificial-jewellery,dresses,shoes,new-arrivals,best-sellers,sale' | split: ','
+  assign shop_menu = section.settings.shop_menu
+  assign help_menu = section.settings.help_menu
+
+  assign contact_email = settings.contact_email | strip
+  if contact_email == blank and settings.show_store_email
+    assign contact_email = shop.email
+  endif
+  assign current_year = 'now' | date: '%Y'
+  assign whatsapp_digits = settings.whatsapp_number | remove: '+' | remove: ' ' | remove: '-' | remove: '(' | remove: ')'
+-%}
+
+<footer class="site-footer">
+  <div class="brand-stripe" aria-hidden="true"></div>
+  <div class="page-width site-footer__top">
+    <div class="site-footer__brand">
+      <a href="{{ routes.root_url }}">{% render 'logo', height: 96, lazy: true %}</a>
+      {%- if section.settings.about != blank -%}
+        <div class="site-footer__about rte">{{ section.settings.about }}</div>
+      {%- endif -%}
+      {% render 'social-links' %}
+    </div>
+
+    <div>
+      <h2 class="site-footer__heading">{{ section.settings.shop_heading | escape }}</h2>
+      <ul class="site-footer__links" role="list">
+        {%- if shop_menu != blank and shop_menu.links.size > 0 -%}
+          {%- for link in shop_menu.links -%}
+            <li><a href="{{ link.url }}">{{ link.title | escape }}</a></li>
+          {%- endfor -%}
+        {%- else -%}
+          {%- for handle in fallback_handles -%}
+            {%- assign c = collections[handle] -%}
+            {%- if c.id -%}
+              <li><a href="{{ c.url }}">{{ c.title | escape }}</a></li>
+            {%- endif -%}
+          {%- endfor -%}
+          <li><a href="{{ routes.all_products_collection_url }}">{{ 'general.all_products' | t }}</a></li>
+        {%- endif -%}
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="site-footer__heading">{{ section.settings.help_heading | escape }}</h2>
+      <ul class="site-footer__links" role="list">
+        {%- if help_menu != blank and help_menu.links.size > 0 -%}
+          {%- for link in help_menu.links -%}
+            <li><a href="{{ link.url }}">{{ link.title | escape }}</a></li>
+          {%- endfor -%}
+        {%- endif -%}
+        {%- if section.settings.show_policies -%}
+          {%- if shop.shipping_policy != blank -%}
+            <li><a href="{{ shop.shipping_policy.url }}">{{ shop.shipping_policy.title | escape }}</a></li>
+          {%- endif -%}
+          {%- if shop.refund_policy != blank -%}
+            <li><a href="{{ shop.refund_policy.url }}">{{ shop.refund_policy.title | escape }}</a></li>
+          {%- endif -%}
+          {%- if shop.privacy_policy != blank -%}
+            <li><a href="{{ shop.privacy_policy.url }}">{{ shop.privacy_policy.title | escape }}</a></li>
+          {%- endif -%}
+          {%- if shop.terms_of_service != blank -%}
+            <li><a href="{{ shop.terms_of_service.url }}">{{ shop.terms_of_service.title | escape }}</a></li>
+          {%- endif -%}
+          {%- if shop.contact_information != blank -%}
+            <li><a href="{{ shop.contact_information.url }}">{{ shop.contact_information.title | escape }}</a></li>
+          {%- endif -%}
+        {%- endif -%}
+        {%- if pages.contact.id -%}
+          <li><a href="{{ pages.contact.url }}">{{ pages.contact.title | escape }}</a></li>
+        {%- endif -%}
+        <li><a href="{{ routes.search_url }}">{{ 'footer.search' | t }}</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="site-footer__heading">{{ 'footer.contact' | t }}</h2>
+      <ul class="site-footer__contact" role="list">
+        {%- if contact_email != blank -%}
+          <li>
+            {% render 'icon', name: 'mail' %}
+            <a href="mailto:{{ contact_email | escape }}"><span class="visually-hidden">{{ 'footer.email' | t }}: </span>{{ contact_email | escape }}</a>
+          </li>
+        {%- endif -%}
+        {%- if settings.contact_phone != blank -%}
+          <li>
+            {% render 'icon', name: 'phone' %}
+            <a href="tel:{{ settings.contact_phone | remove: ' ' | remove: '-' | escape }}"><span class="visually-hidden">{{ 'footer.phone' | t }}: </span>{{ settings.contact_phone | escape }}</a>
+          </li>
+        {%- endif -%}
+        {%- if whatsapp_digits != blank -%}
+          <li>
+            {% render 'icon', name: 'whatsapp' %}
+            <a href="https://wa.me/{{ whatsapp_digits }}{% if settings.whatsapp_message != blank %}?text={{ settings.whatsapp_message | url_encode }}{% endif %}" target="_blank" rel="noopener">
+              {{- 'general.whatsapp' | t -}}
+            </a>
+          </li>
+        {%- endif -%}
+        {%- if settings.contact_address != blank -%}
+          <li>
+            {% render 'icon', name: 'map-pin' %}
+            <span><span class="visually-hidden">{{ 'footer.address' | t }}: </span>{{ settings.contact_address | escape | newline_to_br }}</span>
+          </li>
+        {%- endif -%}
+        {%- if settings.contact_hours != blank -%}
+          <li>
+            {% render 'icon', name: 'clock' %}
+            <span><span class="visually-hidden">{{ 'footer.hours' | t }}: </span>{{ settings.contact_hours | escape }}</span>
+          </li>
+        {%- endif -%}
+        {%- if contact_email == blank and settings.contact_phone == blank and whatsapp_digits == blank and pages.contact.id -%}
+          <li>
+            {% render 'icon', name: 'support' %}
+            <a href="{{ pages.contact.url }}">{{ 'footer.contact_page' | t }}</a>
+          </li>
+        {%- endif -%}
+      </ul>
+    </div>
+  </div>
+
+  <div class="site-footer__bottom">
+    <div class="page-width site-footer__bottom-inner">
+      <p class="site-footer__copyright">{{ 'footer.copyright' | t: year: current_year, shop: shop.name }}</p>
+      {%- if section.settings.show_payment_icons and shop.enabled_payment_types.size > 0 -%}
+        <div>
+          <span class="visually-hidden">{{ 'general.payment_methods' | t }}</span>
+          <ul class="payment-icons" role="list">
+            {%- for type in shop.enabled_payment_types -%}
+              <li>{{ type | payment_type_svg_tag }}</li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "tag": "div",
+  "class": "footer-section",
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "about",
+      "label": "Brand description",
+      "default": "<p>Anjum Mart brings watches, ladies bags, artificial jewellery, dresses and shoes together in one convenient online store.</p>"
+    },
+    {
+      "type": "text",
+      "id": "shop_heading",
+      "label": "Shop column heading",
+      "default": "Shop"
+    },
+    {
+      "type": "link_list",
+      "id": "shop_menu",
+      "label": "Shop column menu",
+      "info": "Leave empty to list the Anjum Mart category collections automatically."
+    },
+    {
+      "type": "text",
+      "id": "help_heading",
+      "label": "Help column heading",
+      "default": "Help & policies"
+    },
+    {
+      "type": "link_list",
+      "id": "help_menu",
+      "label": "Help column menu",
+      "info": "Optional extra links shown above the policy links."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_policies",
+      "label": "Show store policy links",
+      "info": "Links appear automatically for policies written in Settings > Policies.",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "Show payment icons",
+      "info": "Shows only the payment methods enabled in your Shopify payment settings.",
+      "default": true
+    },
+    {
+      "type": "paragraph",
+      "content": "Contact details and social links are edited in Theme settings > Store contact and Social media."
+    }
+  ]
+}
+{% endschema %}

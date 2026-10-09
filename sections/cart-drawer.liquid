@@ -1,0 +1,87 @@
+{%- liquid
+  assign category_handles = 'watches,ladies-bags,artificial-jewellery,dresses,shoes' | split: ','
+-%}
+<div id="CartDrawer" class="drawer drawer--right cart-drawer" aria-hidden="true" hidden>
+  <div class="drawer__overlay" data-drawer-close></div>
+  <div class="drawer__panel" role="dialog" aria-modal="true" aria-labelledby="CartDrawerTitle">
+    <div class="cart-drawer__content" data-cart-drawer-content>
+      <div class="drawer__header" data-cart-count="{{ cart.item_count }}">
+        <h2 id="CartDrawerTitle">
+          {{ 'cart.title' | t }}
+          {%- if cart.item_count > 0 %}
+            <span class="cart-drawer__count">({{ 'header.cart_count' | t: count: cart.item_count }})</span>
+          {%- endif -%}
+        </h2>
+        <button type="button" class="icon-button" data-drawer-close aria-label="{{ 'general.close' | t }}">
+          {% render 'icon', name: 'close' %}
+        </button>
+      </div>
+
+      {%- if cart.item_count > 0 -%}
+        <div class="drawer__body">
+          <ul class="cart-items" role="list">
+            {%- for item in cart.items -%}
+              {% render 'cart-line', item: item, line: forloop.index, id_prefix: 'Drawer' %}
+            {%- endfor -%}
+          </ul>
+        </div>
+
+        <div class="drawer__footer">
+          {%- if cart.cart_level_discount_applications.size > 0 -%}
+            <ul class="cart-discounts" role="list">
+              {%- for discount in cart.cart_level_discount_applications -%}
+                <li>{{ discount.title | escape }} (−{{ discount.total_allocated_amount | money }})</li>
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+          <div class="cart-summary__row">
+            <span>{{ 'cart.subtotal' | t }}</span>
+            <span class="cart-summary__total">{{ cart.total_price | money_with_currency }}</span>
+          </div>
+          <p class="cart-summary__note">
+            {%- if cart.taxes_included -%}
+              {{ 'cart.taxes_included_shipping' | t }}
+            {%- else -%}
+              {{ 'cart.taxes_and_shipping' | t }}
+            {%- endif -%}
+          </p>
+          <form action="{{ routes.cart_url }}" method="post" id="CartDrawerCheckout">
+            <button type="submit" name="checkout" class="button button--full">
+              {% render 'icon', name: 'lock' %}
+              {{ 'cart.checkout' | t }}
+            </button>
+          </form>
+          <div class="cart-summary__links">
+            <a class="link" href="{{ routes.cart_url }}">{{ 'cart.view_cart' | t }}</a>
+          </div>
+        </div>
+      {%- else -%}
+        <div class="drawer__body">
+          <div class="empty-state cart-drawer__empty">
+            <span class="empty-state__icon">{% render 'icon', name: 'cart' %}</span>
+            <h3 class="h3">{{ 'cart.empty' | t }}</h3>
+            <p>{{ 'cart.empty_text' | t }}</p>
+            <a class="button" href="{{ routes.all_products_collection_url }}">{{ 'general.continue_shopping' | t }}</a>
+            <ul class="empty-state__links" role="list">
+              {%- for handle in category_handles -%}
+                {%- assign c = collections[handle] -%}
+                {%- if c.id -%}
+                  <li><a class="chip" href="{{ c.url }}">{{ c.title | escape }}</a></li>
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Cart drawer",
+  "tag": "div",
+  "class": "cart-drawer-section",
+  "settings": []
+}
+{% endschema %}

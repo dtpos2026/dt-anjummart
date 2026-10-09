@@ -1,0 +1,19 @@
+{
+  "type": "footer",
+  "name": "Footer group",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "settings": {
+        "about": "<p>Anjum Mart brings watches, ladies bags, artificial jewellery, dresses and shoes together in one convenient online store.</p>",
+        "shop_heading": "Shop",
+        "shop_menu": "",
+        "help_heading": "Help & policies",
+        "help_menu": "",
+        "show_policies": true,
+        "show_payment_icons": true
+      }
+    }
+  },
+  "order": ["footer"]
+}

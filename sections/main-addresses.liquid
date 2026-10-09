@@ -1,0 +1,45 @@
+<div class="account-page">
+  <div class="page-width">
+    <p><a class="link-arrow" href="{{ routes.account_url }}">{% render 'icon', name: 'chevron-left' %} {{ 'customer.account.return' | t }}</a></p>
+    <h1 class="h2">{{ 'customer.addresses.title' | t }}</h1>
+
+    <details class="card account-address-form" {% if customer.addresses.size == 0 %}open{% endif %}>
+      <summary class="button button--secondary button--small">{{ 'customer.addresses.add_new' | t }}</summary>
+      {%- form 'customer_address', customer.new_address -%}
+        {% render 'address-fields', form: form, prefix: 'AddressNew' %}
+        <button type="submit" class="button">{{ 'customer.addresses.add' | t }}</button>
+      {%- endform -%}
+    </details>
+
+    {%- paginate customer.addresses by 10 -%}
+      <ul class="account-page__grid account-addresses" role="list">
+        {%- for address in customer.addresses -%}
+          <li class="card">
+            {%- if address == customer.default_address -%}
+              <p class="badge badge--soft">{{ 'customer.addresses.default' | t }}</p>
+            {%- endif -%}
+            {{ address | format_address }}
+            <details class="account-address-form">
+              <summary class="link">{{ 'customer.addresses.edit' | t }}</summary>
+              {%- form 'customer_address', address -%}
+                {% render 'address-fields', form: form, prefix: address.id %}
+                <button type="submit" class="button">{{ 'customer.addresses.update' | t }}</button>
+              {%- endform -%}
+            </details>
+            <form method="post" action="{{ address.url }}" class="account-address-delete">
+              <input type="hidden" name="_method" value="delete">
+              <button type="submit" class="link" onclick="return confirm({{ 'customer.addresses.delete_confirm' | t | json | escape }});">
+                {{- 'customer.addresses.delete' | t -}}
+              </button>
+            </form>
+          </li>
+        {%- endfor -%}
+      </ul>
+      {% render 'pagination', paginate: paginate %}
+    {%- endpaginate -%}
+  </div>
+</div>
+
+{% schema %}
+{ "name": "Customer addresses", "tag": "section", "class": "main-addresses-section", "settings": [] }
+{% endschema %}

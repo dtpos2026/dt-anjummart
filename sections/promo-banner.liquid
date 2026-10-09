@@ -1,0 +1,127 @@
+<section class="section{% if section.settings.tight %} section--tight-top{% endif %}" aria-labelledby="PromoHeading-{{ section.id }}">
+  <div class="page-width">
+    <div
+      class="promo{% if section.settings.image != blank %} promo--has-media{% endif %}"
+      style="--promo-bg: {{ section.settings.background }}; --promo-color: {{ section.settings.text_color }};"
+    >
+      <div class="promo__decor" aria-hidden="true"><span></span><span></span><span></span></div>
+      <div class="promo__content">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+        <h2 class="promo__heading" id="PromoHeading-{{ section.id }}">{{ section.settings.heading | escape }}</h2>
+        {%- if section.settings.text != blank -%}
+          <p class="promo__text">{{ section.settings.text | escape }}</p>
+        {%- endif -%}
+        <div class="promo__buttons">
+          {%- if section.settings.button_label != blank -%}
+            <a class="button button--accent" href="{{ section.settings.button_link | default: routes.all_products_collection_url }}">
+              {{- section.settings.button_label | escape -}}
+              {% render 'icon', name: 'arrow-right' %}
+            </a>
+          {%- endif -%}
+          {%- if section.settings.button_label_2 != blank and section.settings.button_link_2 != blank -%}
+            <a class="button button--outline-light" href="{{ section.settings.button_link_2 }}">
+              {{- section.settings.button_label_2 | escape -}}
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+      {%- if section.settings.image != blank -%}
+        <div class="promo__media">
+          {{
+            section.settings.image
+            | image_url: width: 1400
+            | image_tag:
+              loading: 'lazy',
+              widths: '500, 700, 900, 1100, 1400',
+              sizes: '(min-width: 990px) 50vw, 100vw',
+              alt: section.settings.image.alt
+          }}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Promotional banner",
+  "tag": "div",
+  "class": "promo-section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Only promote discounts or offers that are set up in Shopify."
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "New season"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Fresh styles for every occasion"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text",
+      "default": "Explore new dresses, bags and accessories to complete your look."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Shop New Arrivals"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "text",
+      "id": "button_label_2",
+      "label": "Second button label"
+    },
+    {
+      "type": "url",
+      "id": "button_link_2",
+      "label": "Second button link"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "Optional campaign photo. Recommended: 1400 x 1000 px."
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#124FA3"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "checkbox",
+      "id": "tight",
+      "label": "Reduce top spacing",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "Promotional banner"
+    }
+  ]
+}
+{% endschema %}

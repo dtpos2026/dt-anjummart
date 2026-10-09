@@ -1,0 +1,25 @@
+{%- liquid
+  assign platforms = 'facebook,instagram,tiktok,youtube,pinterest,x' | split: ','
+  assign labels = 'Facebook,Instagram,TikTok,YouTube,Pinterest,X' | split: ','
+  assign has_links = false
+  for platform in platforms
+    assign key = 'social_' | append: platform | append: '_link'
+    if settings[key] != blank
+      assign has_links = true
+    endif
+  endfor
+-%}
+{%- if has_links -%}
+  <ul class="social-links" role="list">
+    {%- for platform in platforms -%}
+      {%- assign key = 'social_' | append: platform | append: '_link' -%}
+      {%- if settings[key] != blank -%}
+        <li>
+          <a href="{{ settings[key] | escape }}" target="_blank" rel="noopener" aria-label="{{ 'general.follow_on' | t: platform: labels[forloop.index0] }}">
+            {% render 'icon', name: platform %}
+          </a>
+        </li>
+      {%- endif -%}
+    {%- endfor -%}
+  </ul>
+{%- endif -%}

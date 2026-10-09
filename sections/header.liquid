@@ -1,0 +1,241 @@
+{%- liquid
+  assign menu = section.settings.menu
+  assign use_fallback_menu = true
+  if menu != blank and menu.links.size > 0
+    assign use_fallback_menu = false
+  endif
+
+  assign fallback_handles = 'watches,ladies-bags,artificial-jewellery,dresses,shoes,new-arrivals,best-sellers' | split: ','
+
+  if customer
+    assign account_url = routes.account_url
+  else
+    assign account_url = routes.account_login_url
+  endif
+-%}
+
+<div class="site-header-wrapper" data-site-header>
+  <header class="site-header">
+    <div class="page-width site-header__main">
+      <div class="site-header__left">
+        <button
+          type="button"
+          class="icon-button menu-toggle"
+          data-drawer-open="MenuDrawer"
+          aria-controls="MenuDrawer"
+          aria-expanded="false"
+          aria-label="{{ 'general.open_menu' | t }}"
+        >
+          {% render 'icon', name: 'menu' %}
+        </button>
+      </div>
+
+      <div class="site-header__logo">
+        <a href="{{ routes.root_url }}">{% render 'logo', height: settings.logo_height %}</a>
+      </div>
+
+      <div class="site-header__search">
+        {% render 'search-form', id: 'HeaderSearch' %}
+      </div>
+
+      <div class="site-header__icons">
+        {%- if shop.customer_accounts_enabled -%}
+          <a class="icon-button" href="{{ account_url }}" aria-label="{% if customer %}{{ 'general.account' | t }}{% else %}{{ 'general.log_in' | t }}{% endif %}">
+            {% render 'icon', name: 'account' %}
+          </a>
+        {%- endif -%}
+        <a class="icon-button" href="{{ routes.cart_url }}" data-cart-toggle aria-controls="CartDrawer">
+          {% render 'icon', name: 'cart' %}
+          <span class="visually-hidden">
+            {{ 'general.cart' | t }},
+            <span
+              data-cart-count-label
+              data-label-one="{{ 'header.cart_count.one' | t: count: '[count]' }}"
+              data-label-other="{{ 'header.cart_count.other' | t: count: '[count]' }}"
+            >
+              {{- 'header.cart_count' | t: count: cart.item_count -}}
+            </span>
+          </span>
+          <span class="cart-count" data-cart-count-bubble data-count="{{ cart.item_count }}" aria-hidden="true">
+            {{- cart.item_count -}}
+          </span>
+        </a>
+      </div>
+    </div>
+
+    <div class="page-width site-header__mobile-search">
+      {% render 'search-form', id: 'MobileSearch' %}
+    </div>
+
+    <nav class="site-nav" aria-label="{{ 'general.menu' | t }}">
+      <div class="page-width">
+        <ul class="site-nav__list" role="list">
+          {%- if use_fallback_menu -%}
+            <li class="site-nav__item">
+              <a class="site-nav__link" href="{{ routes.root_url }}" {% if request.page_type == 'index' %}aria-current="page"{% endif %}>
+                {{- 'general.home' | t -}}
+              </a>
+            </li>
+            {%- for handle in fallback_handles -%}
+              {%- assign c = collections[handle] -%}
+              {%- if c.id -%}
+                <li class="site-nav__item">
+                  <a class="site-nav__link" href="{{ c.url }}" {% if collection.handle == handle %}aria-current="page"{% endif %}>
+                    {{- c.title | escape -}}
+                  </a>
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          {%- else -%}
+            {%- for link in menu.links -%}
+              <li class="site-nav__item">
+                {%- if link.links.size > 0 -%}
+                  <details data-nav-dropdown>
+                    <summary class="site-nav__link" {% if link.child_active %}aria-current="page"{% endif %}>
+                      {{- link.title | escape -}}
+                      {% render 'icon', name: 'chevron-down' %}
+                    </summary>
+                    <ul class="site-nav__dropdown" role="list">
+                      <li>
+                        <a href="{{ link.url }}">{{ 'general.view_all' | t }} — {{ link.title | escape }}</a>
+                      </li>
+                      {%- for child in link.links -%}
+                        <li>
+                          <a href="{{ child.url }}" {% if child.current %}aria-current="page"{% endif %}>
+                            {{- child.title | escape -}}
+                          </a>
+                          {%- if child.links.size > 0 -%}
+                            <ul role="list">
+                              {%- for grandchild in child.links -%}
+                                <li>
+                                  <a href="{{ grandchild.url }}" {% if grandchild.current %}aria-current="page"{% endif %}>
+                                    {{- grandchild.title | escape -}}
+                                  </a>
+                                </li>
+                              {%- endfor -%}
+                            </ul>
+                          {%- endif -%}
+                        </li>
+                      {%- endfor -%}
+                    </ul>
+                  </details>
+                {%- else -%}
+                  <a class="site-nav__link" href="{{ link.url }}" {% if link.current %}aria-current="page"{% endif %}>
+                    {{- link.title | escape -}}
+                  </a>
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+          {%- endif -%}
+        </ul>
+      </div>
+    </nav>
+  </header>
+</div>
+
+<div id="MenuDrawer" class="drawer drawer--left" aria-hidden="true" hidden>
+  <div class="drawer__overlay" data-drawer-close></div>
+  <div class="drawer__panel" role="dialog" aria-modal="true" aria-label="{{ 'general.menu' | t }}">
+    <div class="drawer__header">
+      <a href="{{ routes.root_url }}">{% render 'logo', height: 44, lazy: true %}</a>
+      <button type="button" class="icon-button" data-drawer-close data-drawer-focus aria-label="{{ 'general.close' | t }}">
+        {% render 'icon', name: 'close' %}
+      </button>
+    </div>
+    <div class="drawer__body">
+      <ul class="mobile-nav" role="list">
+        {%- if use_fallback_menu -%}
+          <li>
+            <a class="mobile-nav__link" href="{{ routes.root_url }}" {% if request.page_type == 'index' %}aria-current="page"{% endif %}>
+              {{- 'general.home' | t -}}
+            </a>
+          </li>
+          {%- for handle in fallback_handles -%}
+            {%- assign c = collections[handle] -%}
+            {%- if c.id -%}
+              <li>
+                <a class="mobile-nav__link" href="{{ c.url }}" {% if collection.handle == handle %}aria-current="page"{% endif %}>
+                  {{- c.title | escape -}}
+                  {% render 'icon', name: 'chevron-right' %}
+                </a>
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- else -%}
+          {%- for link in menu.links -%}
+            <li>
+              {%- if link.links.size > 0 -%}
+                <details {% if link.child_active %}open{% endif %}>
+                  <summary class="mobile-nav__link">
+                    {{- link.title | escape -}}
+                    {% render 'icon', name: 'chevron-down' %}
+                  </summary>
+                  <ul class="mobile-nav__sub" role="list">
+                    <li><a href="{{ link.url }}">{{ 'general.view_all' | t }}</a></li>
+                    {%- for child in link.links -%}
+                      <li>
+                        <a href="{{ child.url }}" {% if child.current %}aria-current="page"{% endif %}>
+                          {{- child.title | escape -}}
+                        </a>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                </details>
+              {%- else -%}
+                <a class="mobile-nav__link" href="{{ link.url }}" {% if link.current %}aria-current="page"{% endif %}>
+                  {{- link.title | escape -}}
+                  {% render 'icon', name: 'chevron-right' %}
+                </a>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        {%- endif -%}
+      </ul>
+
+      <div class="mobile-nav__extra">
+        {%- if shop.customer_accounts_enabled -%}
+          <a href="{{ account_url }}">
+            {% render 'icon', name: 'account' %}
+            {%- if customer -%}{{ 'general.account' | t }}{%- else -%}{{ 'general.log_in' | t }}{%- endif -%}
+          </a>
+        {%- endif -%}
+        <a href="{{ routes.search_url }}">
+          {% render 'icon', name: 'search' %}
+          {{- 'general.search' | t -}}
+        </a>
+        {%- liquid
+          assign whatsapp_digits = settings.whatsapp_number | remove: '+' | remove: ' ' | remove: '-' | remove: '(' | remove: ')'
+        -%}
+        {%- if whatsapp_digits != blank -%}
+          <a href="https://wa.me/{{ whatsapp_digits }}" target="_blank" rel="noopener">
+            {% render 'icon', name: 'whatsapp' %}
+            {{- 'general.whatsapp' | t -}}
+          </a>
+        {%- endif -%}
+        {%- if settings.contact_phone != blank -%}
+          <a href="tel:{{ settings.contact_phone | remove: ' ' | remove: '-' }}">
+            {% render 'icon', name: 'phone' %}
+            {{- settings.contact_phone | escape -}}
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Header",
+  "tag": "div",
+  "class": "header-section",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Main menu",
+      "default": "main-menu",
+      "info": "If the menu is empty, the header shows links to the Anjum Mart category collections automatically."
+    }
+  ]
+}
+{% endschema %}

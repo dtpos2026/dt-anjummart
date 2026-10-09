@@ -1,0 +1,109 @@
+{%- liquid
+  assign category_handles = 'watches,ladies-bags,artificial-jewellery,dresses,shoes' | split: ','
+-%}
+<div class="page-width cart-page" data-cart-page data-section-id="{{ section.id }}">
+  <div class="page-header">
+    <nav class="breadcrumbs" aria-label="{{ 'general.breadcrumbs' | t }}">
+      <ol>
+        <li><a href="{{ routes.root_url }}">{{ 'general.home' | t }}</a></li>
+        <li><span aria-current="page">{{ 'cart.title' | t }}</span></li>
+      </ol>
+    </nav>
+    <h1 class="cart-page__title">
+      {{ 'cart.title' | t }}
+      {%- if cart.item_count > 0 %}
+        <span class="cart-drawer__count">({{ 'header.cart_count' | t: count: cart.item_count }})</span>
+      {%- endif -%}
+    </h1>
+  </div>
+
+  {%- if cart.item_count > 0 -%}
+    <div class="cart-page__layout">
+      <form action="{{ routes.cart_url }}" method="post" id="CartPageForm" class="cart-page__items card" novalidate>
+        <ul class="cart-items" role="list">
+          {%- for item in cart.items -%}
+            {% render 'cart-line', item: item, line: forloop.index, id_prefix: 'CartPage' %}
+          {%- endfor -%}
+        </ul>
+        <noscript>
+          <div class="cart-page__update">
+            <button type="submit" name="update" class="button button--secondary">{{ 'cart.update' | t }}</button>
+          </div>
+        </noscript>
+      </form>
+
+      <aside class="cart-page__summary card" aria-label="{{ 'cart.subtotal' | t }}">
+        {%- if settings.cart_show_note -%}
+          <div class="field">
+            <label for="CartNote">{{ 'cart.note' | t }}</label>
+            <textarea class="textarea" id="CartNote" name="note" form="CartPageCheckout" placeholder="{{ 'cart.note_placeholder' | t }}" data-cart-note>{{ cart.note }}</textarea>
+          </div>
+        {%- endif -%}
+
+        {%- if cart.cart_level_discount_applications.size > 0 -%}
+          <ul class="cart-discounts" role="list">
+            {%- for discount in cart.cart_level_discount_applications -%}
+              <li>{{ discount.title | escape }} (−{{ discount.total_allocated_amount | money }})</li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+
+        <div class="cart-summary__row">
+          <span>{{ 'cart.subtotal' | t }}</span>
+          <span class="cart-summary__total">{{ cart.total_price | money_with_currency }}</span>
+        </div>
+        <p class="cart-summary__note">
+          {%- if cart.taxes_included -%}
+            {{ 'cart.taxes_included_shipping' | t }}
+          {%- else -%}
+            {{ 'cart.taxes_and_shipping' | t }}
+          {%- endif -%}
+        </p>
+
+        {%- if settings.cart_info != blank -%}
+          <div class="cart-summary__info rte">{{ settings.cart_info }}</div>
+        {%- endif -%}
+
+        <form action="{{ routes.cart_url }}" method="post" id="CartPageCheckout">
+          <button type="submit" name="checkout" class="button button--full">
+            {% render 'icon', name: 'lock' %}
+            {{ 'cart.checkout' | t }}
+          </button>
+        </form>
+
+        {%- if additional_checkout_buttons -%}
+          <div class="cart-page__dynamic">{{ content_for_additional_checkout_buttons }}</div>
+        {%- endif -%}
+
+        <p class="cart-summary__secure">{% render 'icon', name: 'shield' %} {{ 'cart.secure_checkout' | t }}</p>
+        <div class="cart-summary__links">
+          <a class="link" href="{{ routes.all_products_collection_url }}">{{ 'general.continue_shopping' | t }}</a>
+        </div>
+      </aside>
+    </div>
+  {%- else -%}
+    <div class="empty-state">
+      <span class="empty-state__icon">{% render 'icon', name: 'cart' %}</span>
+      <h2>{{ 'cart.empty' | t }}</h2>
+      <p>{{ 'cart.empty_text' | t }}</p>
+      <a class="button" href="{{ routes.all_products_collection_url }}">{{ 'general.continue_shopping' | t }}</a>
+      <ul class="empty-state__links" role="list">
+        {%- for handle in category_handles -%}
+          {%- assign c = collections[handle] -%}
+          {%- if c.id -%}
+            <li><a class="chip" href="{{ c.url }}">{{ c.title | escape }}</a></li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Cart",
+  "tag": "section",
+  "class": "main-cart-section",
+  "settings": []
+}
+{% endschema %}

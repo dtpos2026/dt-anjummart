@@ -1,0 +1,32 @@
+{%- assign category_handles = 'watches,ladies-bags,artificial-jewellery,dresses,shoes' | split: ',' -%}
+<div class="section">
+  <div class="page-width">
+    <div class="empty-state">
+      <span class="empty-state__icon">{% render 'icon', name: 'search' %}</span>
+      <p class="eyebrow">404</p>
+      <h1>{{ 'templates.404.title' | t }}</h1>
+      <p>{{ 'templates.404.subtext' | t }}</p>
+      <div class="search-page__form not-found__search">
+        {% render 'search-form', id: 'NotFoundSearch' %}
+      </div>
+      <ul class="empty-state__links" role="list">
+        {%- for handle in category_handles -%}
+          {%- assign c = collections[handle] -%}
+          {%- if c.id -%}
+            <li><a class="chip" href="{{ c.url }}">{{ c.title | escape }}</a></li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+      <a class="button" href="{{ routes.root_url }}">{{ 'general.continue_shopping' | t }}</a>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "404 page",
+  "tag": "section",
+  "class": "main-404-section",
+  "settings": []
+}
+{% endschema %}

@@ -1,0 +1,245 @@
+{%- liquid
+  assign category_handles = 'watches,ladies-bags,artificial-jewellery,dresses,shoes' | split: ','
+  assign category_icons = 'watch,handbag,jewellery,dress,shoe' | split: ','
+  assign category_labels = 'Watches,Ladies Bags,Jewellery,Dresses,Shoes' | split: ','
+  assign tile_colors = 'blue,red,green,white' | split: ','
+
+  assign collage_products = section.settings.collage_collection.products | where: 'featured_media'
+  assign hero_image = section.settings.image
+  assign hero_image_mobile = section.settings.image_mobile
+-%}
+
+<section
+  class="hero"
+  aria-labelledby="HeroHeading-{{ section.id }}"
+  style="--hero-bg: {{ section.settings.background }};"
+>
+  <div class="hero__shapes" aria-hidden="true">
+    <span class="hero__shape hero__shape--blue"></span>
+    <span class="hero__shape hero__shape--red"></span>
+    <span class="hero__shape hero__shape--green"></span>
+  </div>
+
+  <div class="page-width hero__inner">
+    <div class="hero__content">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {%- endif -%}
+      <h1 class="hero__heading" id="HeroHeading-{{ section.id }}">{{ section.settings.heading }}</h1>
+      {%- if section.settings.text != blank -%}
+        <p class="hero__text">{{ section.settings.text | escape }}</p>
+      {%- endif -%}
+
+      <div class="hero__buttons">
+        {%- if section.settings.button_label != blank -%}
+          <a class="button" href="{{ section.settings.button_link | default: routes.all_products_collection_url }}">
+            {{- section.settings.button_label | escape -}}
+            {% render 'icon', name: 'arrow-right' %}
+          </a>
+        {%- endif -%}
+        {%- if section.settings.button_label_2 != blank -%}
+          <a class="button button--secondary" href="{{ section.settings.button_link_2 | default: routes.collections_url }}">
+            {{- section.settings.button_label_2 | escape -}}
+          </a>
+        {%- endif -%}
+      </div>
+
+      {%- if section.settings.show_chips -%}
+        <ul class="hero__chips" role="list">
+          {%- for handle in category_handles -%}
+            {%- assign c = collections[handle] -%}
+            {%- if c.id -%}
+              <li>
+                <a href="{{ c.url }}">
+                  {% render 'icon', name: category_icons[forloop.index0] %}
+                  {{- c.title | escape -}}
+                </a>
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
+
+    <div class="hero__visual">
+      {%- if hero_image != blank -%}
+        <div class="hero__image{% if hero_image_mobile != blank %} hero__image--has-mobile{% endif %}">
+          {{
+            hero_image
+            | image_url: width: 1600
+            | image_tag:
+              loading: 'eager',
+              fetchpriority: 'high',
+              widths: '600, 800, 1000, 1200, 1400, 1600',
+              sizes: '(min-width: 990px) 50vw, 100vw',
+              alt: hero_image.alt
+          }}
+        </div>
+        {%- if hero_image_mobile != blank -%}
+          <div class="hero__image hero__image--mobile">
+            {{
+              hero_image_mobile
+              | image_url: width: 1000
+              | image_tag:
+                loading: 'eager',
+                widths: '400, 600, 800, 1000',
+                sizes: '100vw',
+                alt: hero_image_mobile.alt
+            }}
+          </div>
+        {%- endif -%}
+      {%- else -%}
+        <div class="hero__collage">
+          {%- for i in (0..3) -%}
+            {%- assign p = collage_products[i] -%}
+            {%- if p -%}
+              <a class="hero__tile" href="{{ p.url }}" aria-label="{{ p.title | escape }}">
+                {%- if forloop.first -%}
+                  {{
+                    p.featured_media
+                    | image_url: width: 900
+                    | image_tag:
+                      loading: 'eager',
+                      fetchpriority: 'high',
+                      widths: '300, 450, 600, 750, 900',
+                      sizes: '(min-width: 990px) 25vw, 50vw',
+                      alt: p.featured_media.alt
+                  }}
+                  {%- if section.settings.collage_label != blank -%}
+                    <span class="hero__tile-label">{{ section.settings.collage_label | escape }}</span>
+                  {%- endif -%}
+                {%- else -%}
+                  {{
+                    p.featured_media
+                    | image_url: width: 700
+                    | image_tag:
+                      loading: 'eager',
+                      widths: '300, 450, 600, 700',
+                      sizes: '(min-width: 990px) 25vw, 50vw',
+                      alt: p.featured_media.alt
+                  }}
+                {%- endif -%}
+              </a>
+            {%- else -%}
+              {%- assign handle = category_handles[i] -%}
+              {%- assign c = collections[handle] -%}
+              {%- assign tile_url = routes.collections_url -%}
+              {%- if c.id -%}
+                {%- assign tile_url = c.url -%}
+              {%- endif -%}
+              <a class="hero__tile hero__tile--brand hero__tile--{{ tile_colors[i] }}" href="{{ tile_url }}">
+                {% render 'icon', name: category_icons[i] %}
+                <span>{{ c.title | default: category_labels[i] | escape }}</span>
+              </a>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero banner",
+  "tag": "div",
+  "class": "hero-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "Watches · Bags · Jewellery · Fashion · Shoes"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "info": "Italic text is highlighted in brand blue.",
+      "default": "Everything You Love, <em>All in One Place</em>"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Supporting text",
+      "default": "Discover Watches, Bags, Jewellery, Fashion & More."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Primary button label",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Primary button link",
+      "info": "Defaults to All products."
+    },
+    {
+      "type": "text",
+      "id": "button_label_2",
+      "label": "Secondary button label",
+      "default": "Explore Categories"
+    },
+    {
+      "type": "url",
+      "id": "button_link_2",
+      "label": "Secondary button link",
+      "info": "Defaults to the collections list."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_chips",
+      "label": "Show category shortcuts",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#F5F8FC"
+    },
+    {
+      "type": "header",
+      "content": "Banner image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Desktop image",
+      "info": "Recommended: 1600 x 1360 px product or campaign photography."
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Mobile image",
+      "info": "Optional. Recommended: 1000 x 1050 px."
+    },
+    {
+      "type": "header",
+      "content": "Product collage"
+    },
+    {
+      "type": "paragraph",
+      "content": "When no banner image is set, the hero shows a collage of real product photos from this collection. Empty spots show branded category tiles."
+    },
+    {
+      "type": "collection",
+      "id": "collage_collection",
+      "label": "Collage collection"
+    },
+    {
+      "type": "text",
+      "id": "collage_label",
+      "label": "Collage label",
+      "default": "New arrivals"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero banner"
+    }
+  ]
+}
+{% endschema %}
