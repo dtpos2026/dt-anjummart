@@ -32,10 +32,13 @@
 {%- else -%}
   {%- liquid
     assign variant = product.selected_or_first_available_variant
+    assign cheapest = product.variants | sort: 'price' | first
+    assign sale_compare_at = cheapest.compare_at_price | default: 0
     assign on_sale = false
-    if product.compare_at_price > product.price
+    if sale_compare_at > product.price
       assign on_sale = true
     endif
+    assign card_alt = product.featured_media.alt | default: product.title
     assign second_media = nil
     if settings.card_show_second_image and product.media.size > 1
       assign second_media = product.media[1]
@@ -54,7 +57,7 @@
             loading: loading,
             sizes: img_sizes,
             widths: '240, 320, 400, 500, 600, 700, 800, 900',
-            alt: product.featured_media.alt,
+            alt: card_alt,
             class: 'product-card__image product-card__image--primary'
         }}
         {%- if second_media -%}
@@ -69,6 +72,7 @@
               class: 'product-card__image product-card__image--secondary'
           }}
         {%- endif -%}
+        {% render 'image-watermark', context: 'card' %}
       {%- else -%}
         <div class="product-card__noimage">
           {% render 'icon', name: 'sparkle' %}
@@ -81,7 +85,7 @@
           <span class="badge badge--soldout">{{ 'products.product.sold_out' | t }}</span>
         {%- elsif on_sale -%}
           {%- if settings.card_show_discount_percent and product.price_varies == false -%}
-            {%- assign percent = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round -%}
+            {%- assign percent = sale_compare_at | minus: product.price | times: 100.0 | divided_by: sale_compare_at | round -%}
             <span class="badge badge--sale">{{ 'products.product.percent_off' | t: percent: percent }}</span>
           {%- else -%}
             <span class="badge badge--sale">{{ 'products.product.on_sale' | t }}</span>
@@ -117,7 +121,7 @@
 
       <div class="product-card__meta">
         {% render 'price', product: product %}
-        {%- if product.available -%}
+        {%- if variant.available and variant.inventory_management == 'shopify' and variant.inventory_quantity > 0 -%}
           <span class="stock stock--in">{{ 'products.product.in_stock' | t }}</span>
         {%- endif -%}
       </div>

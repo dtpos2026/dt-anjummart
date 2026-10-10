@@ -1,9 +1,17 @@
 /* Collection & search results */
 .collection-hero {
   position: relative;
-  overflow: hidden;
+  z-index: 2;
   background: var(--color-surface);
   isolation: isolate;
+}
+
+.collection-hero__shapes {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
 }
 
 .collection-hero__shapes span {

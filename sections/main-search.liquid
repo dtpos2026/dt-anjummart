@@ -143,7 +143,13 @@
             {%- if product_results.size > 0 -%}
               <ul class="product-grid{% unless has_filters %} product-grid--4{% endunless %}" role="list">
                 {%- for item in product_results -%}
-                  <li>{% render 'product-card', product: item, section_id: section.id %}</li>
+                  {%- liquid
+                    assign card_lazy = true
+                    if forloop.index <= 4
+                      assign card_lazy = false
+                    endif
+                  -%}
+                  <li>{% render 'product-card', product: item, section_id: section.id, lazy: card_lazy %}</li>
                 {%- endfor -%}
               </ul>
             {%- endif -%}

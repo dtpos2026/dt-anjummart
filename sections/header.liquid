@@ -177,6 +177,17 @@
                         <a href="{{ child.url }}" {% if child.current %}aria-current="page"{% endif %}>
                           {{- child.title | escape -}}
                         </a>
+                        {%- if child.links.size > 0 -%}
+                          <ul class="mobile-nav__sub" role="list">
+                            {%- for grandchild in child.links -%}
+                              <li>
+                                <a href="{{ grandchild.url }}" {% if grandchild.current %}aria-current="page"{% endif %}>
+                                  {{- grandchild.title | escape -}}
+                                </a>
+                              </li>
+                            {%- endfor -%}
+                          </ul>
+                        {%- endif -%}
                       </li>
                     {%- endfor -%}
                   </ul>

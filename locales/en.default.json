@@ -30,7 +30,8 @@
     "slider": {
       "previous": "Previous",
       "next": "Next"
-    }
+    },
+    "pause_announcements": "Pause announcements"
   },
   "header": {
     "search_placeholder": "Search watches, bags, jewellery…",
@@ -78,7 +79,6 @@
       "vendor": "Brand",
       "description": "Description",
       "shipping_returns": "Shipping & returns",
-      "shipping_returns_default": "Delivery charges, delivery times and return conditions are shown at checkout and in our store policies.",
       "taxes_included": "Taxes included.",
       "shipping_at_checkout": "Shipping calculated at checkout.",
       "options_more": "+{{ count }} more",
@@ -91,7 +91,8 @@
       "related": "You may also like",
       "share": "Share",
       "select_option": "Select {{ option }}",
-      "no_image": "Image coming soon"
+      "no_image": "Image coming soon",
+      "variant": "Option"
     },
     "facets": {
       "filter": "Filter",
@@ -141,7 +142,7 @@
     "taxes_included_shipping": "Taxes included. Discounts and shipping are calculated at checkout.",
     "note": "Order note",
     "note_placeholder": "Add special instructions for your order",
-    "error": "We couldn't update your cart. Please try again.",
+    "error": "We could not update your cart. Please try again.",
     "product": "Product",
     "quantity": "Quantity",
     "price": "Price",
@@ -149,7 +150,9 @@
     "updating": "Updating cart…",
     "discount": "Discount",
     "secure_checkout": "Secure checkout powered by Shopify",
-    "update": "Update cart"
+    "update": "Update cart",
+    "removed": "Removed [title]",
+    "updated": "Cart updated"
   },
   "search": {
     "title": "Search",
@@ -171,7 +174,8 @@
     "view_all": "View all results for “{{ terms }}”",
     "popular": "Shop by category",
     "page_result": "Page",
-    "article_result": "Article"
+    "article_result": "Article",
+    "suggestions_count": "[count] suggestions"
   },
   "customer": {
     "account": {

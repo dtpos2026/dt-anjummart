@@ -28,10 +28,10 @@
           {%- if gift_card.enabled == false -%}
             <p class="badge badge--soldout">{{ 'gift_cards.issued.disabled' | t }}</p>
           {%- elsif gift_card.expired -%}
-            {%- assign expiry = gift_card.expires_on | date: format: 'month_day_year' -%}
+            {%- assign expiry = gift_card.expires_on | date: '%B %e, %Y' -%}
             <p class="badge badge--soldout">{{ 'gift_cards.issued.expired' | t: expiry: expiry }}</p>
           {%- elsif gift_card.expires_on -%}
-            {%- assign expiry = gift_card.expires_on | date: format: 'month_day_year' -%}
+            {%- assign expiry = gift_card.expires_on | date: '%B %e, %Y' -%}
             <p class="text-muted">{{ 'gift_cards.issued.expires' | t: expiry: expiry }}</p>
           {%- endif -%}
           <p class="gift-card__code-label">{{ 'gift_cards.issued.code' | t }}</p>

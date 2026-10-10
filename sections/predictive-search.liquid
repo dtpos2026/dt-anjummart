@@ -6,7 +6,7 @@
 -%}
 {%- if predictive_search.performed -%}
   {%- if products.size == 0 and collections_found.size == 0 and queries.size == 0 -%}
-    <p class="predictive-search__empty">{{ 'search.no_results' | t: terms: terms }}</p>
+    <p class="predictive-search__empty" aria-hidden="true">{{ 'search.no_results' | t: terms: terms }}</p>
   {%- else -%}
     {%- if queries.size > 0 -%}
       <div class="predictive-search__group" role="group" aria-labelledby="PredictiveQueries">
@@ -34,13 +34,23 @@
               <span class="predictive-search__item-title">{{ product.title | escape }}</span>
               {%- if settings.predictive_search_show_price -%}
                 <span class="predictive-search__item-meta">
+                  {%- liquid
+                    assign ps_cheapest = product.variants | sort: 'price' | first
+                    assign ps_compare_at = ps_cheapest.compare_at_price | default: 0
+                    assign ps_price = product.price | money
+                    if product.price_varies
+                      assign ps_price = 'products.product.price_from' | t: price: ps_price
+                    endif
+                  -%}
                   {%- if product.available == false -%}
                     {{ 'products.product.sold_out' | t }}
-                  {%- elsif product.compare_at_price > product.price -%}
-                    <span class="price-item--sale">{{ product.price | money }}</span>
-                    <s>{{ product.compare_at_price | money }}</s>
+                  {%- elsif ps_compare_at > product.price -%}
+                    <span class="visually-hidden">{{ 'products.product.sale_price' | t }}</span>
+                    <span class="price-item--sale">{{ ps_price }}</span>
+                    <span class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>
+                    <s>{{ ps_compare_at | money }}</s>
                   {%- else -%}
-                    {{ product.price | money }}
+                    {{ ps_price }}
                   {%- endif -%}
                 </span>
               {%- endif -%}

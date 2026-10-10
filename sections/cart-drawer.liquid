@@ -45,6 +45,9 @@
               {{ 'cart.taxes_and_shipping' | t }}
             {%- endif -%}
           </p>
+          {%- if settings.cart_info != blank -%}
+            <div class="cart-summary__info rte">{{ settings.cart_info }}</div>
+          {%- endif -%}
           <form action="{{ routes.cart_url }}" method="post" id="CartDrawerCheckout">
             <button type="submit" name="checkout" class="button button--full">
               {% render 'icon', name: 'lock' %}

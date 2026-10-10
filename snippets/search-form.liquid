@@ -43,6 +43,7 @@
     </button>
   </div>
   {%- if settings.predictive_search_enabled -%}
-    <div class="predictive-search" id="{{ id }}-results" role="listbox" aria-label="{{ 'search.suggestions' | t }}" data-predictive-results hidden></div>
+    <div class="predictive-search" id="{{ id }}-results" role="listbox" aria-label="{{ 'search.suggestions' | t }}" tabindex="-1" data-predictive-results hidden></div>
+    <p class="visually-hidden" role="status" aria-live="polite" data-predictive-status></p>
   {%- endif -%}
 </form>

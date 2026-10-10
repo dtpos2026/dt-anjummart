@@ -12,9 +12,9 @@
   data-static-desktop
 >
   <div class="drawer__overlay" data-drawer-close></div>
-  <div class="drawer__panel facets" aria-label="{{ 'products.facets.filters' | t }}">
+  <div class="drawer__panel facets">
     <div class="drawer__header facets__drawer-header">
-      <h2>{{ 'products.facets.filters' | t }}</h2>
+      <h2 id="FacetsDrawerTitle">{{ 'products.facets.filters' | t }}</h2>
       <button type="button" class="icon-button" data-drawer-close data-drawer-focus aria-label="{{ 'general.close' | t }}">
         {% render 'icon', name: 'close' %}
       </button>

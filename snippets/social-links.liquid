@@ -13,9 +13,13 @@
   <ul class="social-links" role="list">
     {%- for platform in platforms -%}
       {%- assign key = 'social_' | append: platform | append: '_link' -%}
-      {%- if settings[key] != blank -%}
+      {%- assign link = settings[key] | strip -%}
+      {%- if link != blank -%}
+        {%- unless link contains '://' -%}
+          {%- assign link = link | prepend: 'https://' -%}
+        {%- endunless -%}
         <li>
-          <a href="{{ settings[key] | escape }}" target="_blank" rel="noopener" aria-label="{{ 'general.follow_on' | t: platform: labels[forloop.index0] }}">
+          <a href="{{ link | escape }}" target="_blank" rel="noopener" aria-label="{{ 'general.follow_on' | t: platform: labels[forloop.index0] }}">
             {% render 'icon', name: platform %}
           </a>
         </li>

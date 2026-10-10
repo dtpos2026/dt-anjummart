@@ -21,6 +21,14 @@
     position: sticky;
     top: var(--header-sticky-offset, 150px);
   }
+
+  .product__media .gallery__slide {
+    max-height: calc(100vh - var(--header-sticky-offset, 150px) - 112px);
+  }
+}
+
+.gallery__slide {
+  position: relative;
 }
 
 /* Gallery */
@@ -57,7 +65,7 @@
   background: var(--color-surface);
 }
 
-.gallery__slide img,
+.gallery__slide > img,
 .gallery__slide video,
 .gallery__slide iframe,
 .gallery__slide model-viewer {
@@ -95,8 +103,9 @@
 
 .gallery__counter {
   position: absolute;
-  right: 14px;
+  left: 50%;
   bottom: 14px;
+  transform: translateX(-50%);
   padding: 4px 12px;
   border-radius: var(--radius-pill);
   background: rgba(23, 32, 51, 0.72);

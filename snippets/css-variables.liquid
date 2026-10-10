@@ -34,12 +34,14 @@
     --color-accent-soft: {{ settings.color_accent | color_mix: '#ffffff', 10 }};
     --color-success: {{ settings.color_success }};
     --color-success-soft: {{ settings.color_success | color_mix: '#ffffff', 12 }};
+    --color-success-text: {{ settings.color_success | color_darken: 8 }};
     --color-text: {{ settings.color_text }};
     --color-text-rgb: {{ settings.color_text | color_extract: 'red' }}, {{ settings.color_text | color_extract: 'green' }}, {{ settings.color_text | color_extract: 'blue' }};
     --color-muted: {{ settings.color_text | color_mix: '#ffffff', 68 }};
     --color-bg: {{ settings.color_background }};
     --color-surface: {{ settings.color_surface }};
     --color-border: {{ settings.color_surface | color_mix: settings.color_text, 90 }};
+    --color-input-border: {{ settings.color_text | color_mix: '#ffffff', 55 }};
 
     --font-heading-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
     --font-heading-style: {{ heading_font.style }};
@@ -57,5 +59,8 @@
 
     --card-image-ratio: {{ card_ratio }};
     --card-image-fit: {{ settings.card_image_fit }};
+
+    --watermark-size: {{ settings.watermark_size | default: 18 }}%;
+    --watermark-opacity: {{ settings.watermark_opacity | default: 95 | divided_by: 100.0 }};
   }
 </style>

@@ -64,30 +64,28 @@
     <div class="hero__visual">
       {%- if hero_image != blank -%}
         <div class="hero__image{% if hero_image_mobile != blank %} hero__image--has-mobile{% endif %}">
-          {{
-            hero_image
-            | image_url: width: 1600
-            | image_tag:
-              loading: 'eager',
-              fetchpriority: 'high',
-              widths: '600, 800, 1000, 1200, 1400, 1600',
-              sizes: '(min-width: 990px) 50vw, 100vw',
-              alt: hero_image.alt
-          }}
-        </div>
-        {%- if hero_image_mobile != blank -%}
-          <div class="hero__image hero__image--mobile">
+          <picture>
+            {%- if hero_image_mobile != blank -%}
+              <source
+                media="(max-width: 749px)"
+                srcset="{{ hero_image_mobile | image_url: width: 400 }} 400w, {{ hero_image_mobile | image_url: width: 600 }} 600w, {{ hero_image_mobile | image_url: width: 800 }} 800w, {{ hero_image_mobile | image_url: width: 1000 }} 1000w"
+                sizes="calc(100vw - 32px)"
+                width="{{ hero_image_mobile.width }}"
+                height="{{ hero_image_mobile.height }}"
+              >
+            {%- endif -%}
             {{
-              hero_image_mobile
-              | image_url: width: 1000
+              hero_image
+              | image_url: width: 1600
               | image_tag:
                 loading: 'eager',
-                widths: '400, 600, 800, 1000',
-                sizes: '100vw',
-                alt: hero_image_mobile.alt
+                fetchpriority: 'high',
+                widths: '600, 800, 1000, 1200, 1400, 1600',
+                sizes: '(min-width: 1384px) 620px, (min-width: 990px) 50vw, 100vw',
+                alt: hero_image.alt
             }}
-          </div>
-        {%- endif -%}
+          </picture>
+        </div>
       {%- else -%}
         <div class="hero__collage">
           {%- for i in (0..3) -%}
@@ -102,7 +100,7 @@
                       loading: 'eager',
                       fetchpriority: 'high',
                       widths: '300, 450, 600, 750, 900',
-                      sizes: '(min-width: 990px) 25vw, 50vw',
+                      sizes: '(min-width: 1384px) 305px, (min-width: 990px) 25vw, 50vw',
                       alt: p.featured_media.alt
                   }}
                   {%- if section.settings.collage_label != blank -%}
@@ -115,9 +113,12 @@
                     | image_tag:
                       loading: 'eager',
                       widths: '300, 450, 600, 700',
-                      sizes: '(min-width: 990px) 25vw, 50vw',
+                      sizes: '(min-width: 1384px) 305px, (min-width: 990px) 25vw, 50vw',
                       alt: p.featured_media.alt
                   }}
+                {%- endif -%}
+                {%- if p.featured_media -%}
+                  {% render 'image-watermark', context: 'card' %}
                 {%- endif -%}
               </a>
             {%- else -%}

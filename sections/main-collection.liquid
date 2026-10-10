@@ -153,7 +153,9 @@
             <span class="empty-state__icon">{% render 'icon', name: 'sparkle' %}</span>
             <h2>{{ 'collections.empty_title' | t }}</h2>
             <p>{{ 'collections.empty_text' | t }}</p>
-            <a class="button" href="{{ routes.all_products_collection_url }}">{{ 'collections.browse_all' | t }}</a>
+            {%- unless collection.handle == 'all' -%}
+              <a class="button" href="{{ routes.all_products_collection_url }}">{{ 'collections.browse_all' | t }}</a>
+            {%- endunless -%}
             <ul class="empty-state__links" role="list">
               {%- for handle in category_handles -%}
                 {%- assign c = collections[handle] -%}
@@ -168,6 +170,21 @@
     </div>
   {%- endpaginate -%}
 </div>
+
+{%- liquid
+  assign home_url = request.origin | append: routes.root_url
+  assign collection_url = request.origin | append: collection.url
+-%}
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": {{ 'general.home' | t | json }}, "item": {{ home_url | json }} },
+      { "@type": "ListItem", "position": 2, "name": {{ collection.title | json }}, "item": {{ collection_url | json }} }
+    ]
+  }
+</script>
 
 {% schema %}
 {

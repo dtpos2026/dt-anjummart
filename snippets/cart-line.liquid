@@ -97,6 +97,7 @@
             max="{{ max_qty }}"
           {% endif %}
           data-line="{{ line }}"
+          data-line-key="{{ item.key }}"
         >
         <button type="button" class="quantity__button" data-qty-step="1" aria-label="{{ 'products.product.increase_quantity' | t }}: {{ item.product.title | escape }}">
           {% render 'icon', name: 'plus' %}
@@ -106,7 +107,8 @@
         class="cart-item__remove"
         href="{{ item.url_to_remove }}"
         data-line-remove="{{ line }}"
-        aria-label="{{ 'cart.remove_item' | t: title: item.product.title | escape }}"
+        data-line-key="{{ item.key }}"
+        aria-label="{{ 'cart.remove_item' | t: title: item.product.title }}"
       >
         {% render 'icon', name: 'trash' %}
       </a>

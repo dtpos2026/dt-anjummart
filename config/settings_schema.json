@@ -165,6 +165,85 @@
     ]
   },
   {
+    "name": "Logo on product images",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Shows your logo on top of every product photo in product cards and on the product page, including photos you add later. The original image files in Shopify are not changed."
+      },
+      {
+        "type": "checkbox",
+        "id": "watermark_enable",
+        "label": "Show logo on product images",
+        "default": true
+      },
+      {
+        "type": "image_picker",
+        "id": "watermark_image",
+        "label": "Watermark logo",
+        "info": "Optional. Leave empty to use the store logo. A transparent PNG works best."
+      },
+      {
+        "type": "select",
+        "id": "watermark_position",
+        "label": "Position",
+        "options": [
+          { "value": "bottom_right", "label": "Bottom right" },
+          { "value": "bottom_left", "label": "Bottom left" },
+          { "value": "top_right", "label": "Top right" },
+          { "value": "center", "label": "Center" }
+        ],
+        "default": "bottom_right"
+      },
+      {
+        "type": "range",
+        "id": "watermark_size",
+        "label": "Size",
+        "min": 10,
+        "max": 30,
+        "step": 1,
+        "unit": "%",
+        "default": 18
+      },
+      {
+        "type": "range",
+        "id": "watermark_opacity",
+        "label": "Opacity",
+        "min": 30,
+        "max": 100,
+        "step": 5,
+        "unit": "%",
+        "default": 95
+      },
+      {
+        "type": "checkbox",
+        "id": "watermark_chip",
+        "label": "White background behind logo",
+        "info": "Keeps the logo readable on dark or busy photos.",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Animations",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "animations_enable",
+        "label": "Reveal sections on scroll",
+        "info": "Sections and products fade in as shoppers scroll. Turned off automatically for visitors who prefer reduced motion.",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "animations_hover",
+        "label": "Hover effects",
+        "info": "Lift and zoom effects on product cards, category cards and buttons.",
+        "default": true
+      }
+    ]
+  },
+  {
     "name": "Cart",
     "settings": [
       {
@@ -181,6 +260,7 @@
         "type": "checkbox",
         "id": "cart_show_note",
         "label": "Enable order notes",
+        "info": "Shown on the cart page.",
         "default": false
       },
       {
@@ -310,8 +390,21 @@
     ]
   },
   {
-    "name": "Social sharing image",
+    "name": "SEO and sharing",
     "settings": [
+      {
+        "type": "text",
+        "id": "google_site_verification",
+        "label": "Google Search Console verification code",
+        "info": "In Search Console choose the HTML tag method and paste only the content value, e.g. abc123XYZ. Not needed if you verify your domain through DNS."
+      },
+      {
+        "type": "textarea",
+        "id": "seo_default_description",
+        "label": "Default search description",
+        "info": "Used when a page has no description of its own. Set the homepage title and description in Online Store > Preferences.",
+        "default": "Anjum Mart online store: shop watches, ladies bags, artificial jewellery, dresses and shoes for men and women."
+      },
       {
         "type": "image_picker",
         "id": "share_image",

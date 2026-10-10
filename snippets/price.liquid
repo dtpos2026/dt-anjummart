@@ -14,7 +14,8 @@
   else
     assign target = product
     assign price = product.price
-    assign compare_at = product.compare_at_price
+    assign cheapest = product.variants | sort: 'price' | first
+    assign compare_at = cheapest.compare_at_price
   endif
 
   assign on_sale = false

@@ -21,8 +21,14 @@
     | image_tag: alt: shop.name, width: logo_w, height: logo_h, loading: loading, class: class
   }}
 {%- else -%}
+  {%- liquid
+    assign s1 = logo_h | append: 'x'
+    assign s2 = logo_h | times: 2 | append: 'x'
+    assign s3 = logo_h | times: 3 | append: 'x'
+  -%}
   <img
-    src="{{ 'anjum-mart-logo.webp' | asset_url }}"
+    src="{{ 'anjum-mart-logo.png' | asset_img_url: s2 }}"
+    srcset="{{ 'anjum-mart-logo.png' | asset_img_url: s1 }} 1x, {{ 'anjum-mart-logo.png' | asset_img_url: s2 }} 2x, {{ 'anjum-mart-logo.png' | asset_img_url: s3 }} 3x"
     alt="{{ shop.name | escape }}"
     width="{{ logo_h }}"
     height="{{ logo_h }}"

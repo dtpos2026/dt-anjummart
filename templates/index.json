@@ -85,7 +85,7 @@
         "button_label": "Shop New Arrivals",
         "button_link": "shopify://collections/new-arrivals",
         "button_label_2": "Browse all categories",
-        "button_link_2": "shopify://collections/all",
+        "button_link_2": "",
         "background": "#124FA3",
         "text_color": "#FFFFFF",
         "tight": false
@@ -94,7 +94,7 @@
     "best-sellers": {
       "type": "product-rail",
       "settings": {
-        "eyebrow": "Customer favourites",
+        "eyebrow": "",
         "heading": "Best Sellers",
         "subheading": "",
         "collection": "best-sellers",
@@ -147,7 +147,7 @@
           "settings": {
             "icon": "truck",
             "title": "Delivery Information",
-            "text": "Delivery areas, times and charges are shown at checkout.",
+            "text": "Shipping options and charges are shown at checkout.",
             "auto_link": "shipping_policy",
             "link": "",
             "link_label": "Shipping policy"

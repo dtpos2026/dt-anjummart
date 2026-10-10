@@ -20,6 +20,18 @@
           {%- endif -%}
         </p>
       {%- endfor -%}
+      {%- if section.blocks.size > 1 -%}
+        <button
+          type="button"
+          class="announcement-bar__toggle"
+          data-announcement-toggle
+          aria-pressed="false"
+          aria-label="{{ 'general.pause_announcements' | t }}"
+          hidden
+        >
+          <span class="announcement-bar__toggle-icon" aria-hidden="true"></span>
+        </button>
+      {%- endif -%}
     </div>
   </div>
 {%- endif -%}

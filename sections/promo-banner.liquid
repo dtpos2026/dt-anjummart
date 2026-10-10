@@ -20,8 +20,8 @@
               {% render 'icon', name: 'arrow-right' %}
             </a>
           {%- endif -%}
-          {%- if section.settings.button_label_2 != blank and section.settings.button_link_2 != blank -%}
-            <a class="button button--outline-light" href="{{ section.settings.button_link_2 }}">
+          {%- if section.settings.button_label_2 != blank -%}
+            <a class="button button--outline-light" href="{{ section.settings.button_link_2 | default: routes.collections_url }}">
               {{- section.settings.button_label_2 | escape -}}
             </a>
           {%- endif -%}
@@ -35,7 +35,7 @@
             | image_tag:
               loading: 'lazy',
               widths: '500, 700, 900, 1100, 1400',
-              sizes: '(min-width: 990px) 50vw, 100vw',
+              sizes: '(min-width: 1384px) 630px, (min-width: 990px) 50vw, 100vw',
               alt: section.settings.image.alt
           }}
         </div>

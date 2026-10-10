@@ -26,12 +26,33 @@
       {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
     </title>
 
-    {%- if page_description -%}
-      <meta name="description" content="{{ page_description | escape }}">
+    {%- liquid
+      assign meta_description = page_description | default: settings.seo_default_description
+    -%}
+    {%- if meta_description != blank -%}
+      <meta name="description" content="{{ meta_description | strip_html | strip_newlines | escape }}">
+    {%- endif -%}
+    {%- if settings.google_site_verification != blank -%}
+      {%- liquid
+        assign google_code = settings.google_site_verification | strip
+        if google_code contains 'content="'
+          assign google_code = google_code | split: 'content="' | last | split: '"' | first
+        endif
+      -%}
+      <meta name="google-site-verification" content="{{ google_code | escape }}">
     {%- endif -%}
 
     {% render 'meta-tags' %}
     {% render 'css-variables' %}
+
+    {%- unless settings.type_heading_font.system? -%}
+      {%- if template.name == 'index' -%}
+        {%- assign hero_font = settings.type_heading_font | font_modify: 'weight', '800' -%}
+        {%- if hero_font -%}
+          {{ hero_font | font_url | preload_tag: as: 'font', type: 'font/woff2', crossorigin: 'anonymous' }}
+        {%- endif -%}
+      {%- endif -%}
+    {%- endunless -%}
 
     {{ 'base.css' | asset_url | stylesheet_tag }}
     <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
@@ -62,7 +83,11 @@
           percentOff: {{ 'products.product.percent_off' | t: percent: '[percent]' | json }},
           loading: {{ 'general.loading' | t | json }},
           cartError: {{ 'cart.error' | t | json }},
-          genericError: {{ 'general.error' | t | json }}
+          genericError: {{ 'general.error' | t | json }},
+          suggestions: {{ 'search.suggestions_count' | t | json }},
+          removed: {{ 'cart.removed' | t | json }},
+          cartUpdated: {{ 'cart.updated' | t | json }},
+          subtotal: {{ 'cart.subtotal' | t | json }}
         }
       };
     </script>
@@ -70,8 +95,17 @@
     {{ content_for_header }}
   </head>
 
-  <body class="template-{{ template.name | handle }}{% if template.suffix %} template-{{ template.suffix | handle }}{% endif %}">
+  <body
+    class="template-{{ template.name | handle }}{% if template.suffix %} template-{{ template.suffix | handle }}{% endif %}"
+    {% if settings.animations_enable %}
+      data-animate
+    {% endif %}
+    {% if settings.animations_hover %}
+      data-hover-effects
+    {% endif %}
+  >
     <a class="skip-link" href="#MainContent">{{ 'general.skip_to_content' | t }}</a>
+    <p id="A11yStatus" class="visually-hidden" role="status" aria-live="polite"></p>
 
     {% sections 'header-group' %}
 
@@ -105,21 +139,24 @@
           "@type": "Organization",
           "name": {{ shop.name | json }},
           "url": {{ request.origin | append: routes.root_url | json }},
-          "logo": {{ 'anjum-mart-logo.png' | asset_url | prepend: 'https:' | json }}
+          {%- if settings.logo != blank -%}
+            "logo": {{ settings.logo | image_url: width: 600 | prepend: 'https:' | json }}
+          {%- else -%}
+            "logo": {{ 'anjum-mart-logo.png' | asset_url | prepend: 'https:' | json }}
+          {%- endif -%}
           {%- liquid
             assign same_as = ''
-            if settings.social_facebook_link != blank
-              assign same_as = same_as | append: settings.social_facebook_link | append: '|'
-            endif
-            if settings.social_instagram_link != blank
-              assign same_as = same_as | append: settings.social_instagram_link | append: '|'
-            endif
-            if settings.social_tiktok_link != blank
-              assign same_as = same_as | append: settings.social_tiktok_link | append: '|'
-            endif
-            if settings.social_youtube_link != blank
-              assign same_as = same_as | append: settings.social_youtube_link | append: '|'
-            endif
+            assign social_keys = 'facebook,instagram,tiktok,youtube,pinterest,x' | split: ','
+            for key in social_keys
+              assign setting_key = 'social_' | append: key | append: '_link'
+              assign link = settings[setting_key] | strip
+              if link != blank
+                unless link contains '://'
+                  assign link = link | prepend: 'https://'
+                endunless
+                assign same_as = same_as | append: link | append: '|'
+              endif
+            endfor
             assign same_as_list = same_as | split: '|'
           -%}
           {%- if same_as_list.size > 0 -%},

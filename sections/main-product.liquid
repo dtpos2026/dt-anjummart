@@ -8,7 +8,10 @@
   assign low_stock = section.settings.low_stock_threshold
 
   assign stock_class = 'stock--in'
-  assign stock_text = 'products.product.in_stock' | t
+  assign stock_text = ''
+  if current_variant.available and current_variant.inventory_management == 'shopify' and current_variant.inventory_quantity > 0
+    assign stock_text = 'products.product.in_stock' | t
+  endif
   if current_variant.available == false
     assign stock_class = 'stock--out'
     assign stock_text = 'products.product.sold_out' | t
@@ -43,46 +46,50 @@
   <div class="product" data-product data-low-stock="{{ low_stock }}" data-update-url="true">
     <div class="product__media">
       {%- if media_count > 0 -%}
+        {%- assign featured_media = current_variant.featured_media | default: product.featured_media -%}
         <div class="gallery" data-product-gallery aria-label="{{ 'products.product.gallery' | t }}" role="region">
           <div class="gallery__viewport">
             <ul class="gallery__track" role="list" data-gallery-track>
-              {%- for media in product.media -%}
-                <li class="gallery__slide" data-media-id="{{ media.id }}">
-                  {%- case media.media_type -%}
-                    {%- when 'image' -%}
-                      {%- liquid
-                        assign loading = 'lazy'
-                        assign priority = 'auto'
-                        if forloop.first
-                          assign loading = 'eager'
-                          assign priority = 'high'
-                        endif
-                        assign media_alt = media.alt | default: product.title
-                      -%}
-                      {{
-                        media
-                        | image_url: width: 1600
-                        | image_tag:
-                          loading: loading,
-                          fetchpriority: priority,
-                          widths: '400, 550, 700, 900, 1100, 1300, 1600',
-                          sizes: '(min-width: 1320px) 640px, (min-width: 990px) 50vw, 100vw',
-                          alt: media_alt
-                      }}
-                    {%- when 'video' -%}
-                      {{ media | video_tag: controls: true, playsinline: true, preload: 'metadata', image_size: '1200x' }}
-                    {%- when 'external_video' -%}
-                      {{ media | external_video_tag: loading: 'lazy' }}
-                    {%- else -%}
-                      {{ media | media_tag }}
-                  {%- endcase -%}
-                </li>
+              {%- for pass in (1..2) -%}
+                {%- for media in product.media -%}
+                  {%- if pass == 1 and media.id != featured_media.id -%}{%- continue -%}{%- endif -%}
+                  {%- if pass == 2 and media.id == featured_media.id -%}{%- continue -%}{%- endif -%}
+                  <li class="gallery__slide" data-media-id="{{ media.id }}">
+                    {%- case media.media_type -%}
+                      {%- when 'image' -%}
+                        {%- liquid
+                          assign loading = 'lazy'
+                          assign priority = 'auto'
+                          if pass == 1
+                            assign loading = 'eager'
+                            assign priority = 'high'
+                          endif
+                          assign media_alt = media.alt | default: product.title
+                        -%}
+                        {{
+                          media
+                          | image_url: width: 1600
+                          | image_tag:
+                            loading: loading,
+                            fetchpriority: priority,
+                            widths: '400, 550, 700, 900, 1100, 1300, 1600',
+                            sizes: '(min-width: 1320px) 640px, (min-width: 990px) 50vw, 100vw',
+                            alt: media_alt
+                        }}
+                        {% render 'image-watermark', context: 'gallery' %}
+                      {%- when 'video' -%}
+                        {{ media | video_tag: controls: true, playsinline: true, preload: 'metadata', image_size: '1200x' }}
+                      {%- when 'external_video' -%}
+                        {{ media | external_video_tag: loading: 'lazy' }}
+                      {%- else -%}
+                        {{ media | media_tag }}
+                    {%- endcase -%}
+                  </li>
+                {%- endfor -%}
               {%- endfor -%}
             </ul>
 
-            {%- if product.available and product.compare_at_price > product.price -%}
-              <span class="badge badge--sale gallery__badge">{{ 'products.product.on_sale' | t }}</span>
-            {%- elsif product.available == false -%}
+            {%- if product.available == false -%}
               <span class="badge badge--soldout gallery__badge">{{ 'products.product.sold_out' | t }}</span>
             {%- endif -%}
 
@@ -98,19 +105,25 @@
           </div>
 
           {%- if media_count > 1 -%}
+            {%- assign thumb_index = 0 -%}
             <ul class="gallery__thumbs" role="list">
-              {%- for media in product.media -%}
-                <li>
-                  <button
-                    type="button"
-                    class="gallery__thumb{% if forloop.first %} is-active{% endif %}"
-                    data-gallery-thumb="{{ media.id }}"
-                    aria-label="{{ 'products.product.media_open' | t: index: forloop.index, total: media_count }}"
-                    aria-current="{% if forloop.first %}true{% else %}false{% endif %}"
-                  >
-                    {{ media.preview_image | image_url: width: 180, height: 180, crop: 'center' | image_tag: loading: 'lazy', alt: '' }}
-                  </button>
-                </li>
+              {%- for pass in (1..2) -%}
+                {%- for media in product.media -%}
+                  {%- if pass == 1 and media.id != featured_media.id -%}{%- continue -%}{%- endif -%}
+                  {%- if pass == 2 and media.id == featured_media.id -%}{%- continue -%}{%- endif -%}
+                  {%- assign thumb_index = thumb_index | plus: 1 -%}
+                  <li>
+                    <button
+                      type="button"
+                      class="gallery__thumb{% if pass == 1 %} is-active{% endif %}"
+                      data-gallery-thumb="{{ media.id }}"
+                      aria-label="{{ 'products.product.media_open' | t: index: thumb_index, total: media_count }}"
+                      aria-current="{% if pass == 1 %}true{% else %}false{% endif %}"
+                    >
+                      {{ media.preview_image | image_url: width: 180, height: 180, crop: 'center' | image_tag: loading: 'lazy', alt: '' }}
+                    </button>
+                  </li>
+                {%- endfor -%}
               {%- endfor -%}
             </ul>
           {%- endif -%}
@@ -118,7 +131,10 @@
       {%- else -%}
         <div class="gallery">
           <div class="gallery__viewport gallery__viewport--empty">
-            {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            <div class="product-card__noimage">
+              {% render 'icon', name: 'sparkle' %}
+              <span>{{ 'products.product.no_image' | t }}</span>
+            </div>
           </div>
         </div>
       {%- endif -%}
@@ -145,7 +161,7 @@
       </p>
 
       <div class="product__status">
-        <p class="stock {{ stock_class }}" data-stock>{{ stock_text }}</p>
+        <p class="stock {{ stock_class }}" data-stock {% if stock_text == blank %}hidden{% endif %}>{{ stock_text }}</p>
         {%- if section.settings.show_sku -%}
           <p class="product__sku" data-sku {% if current_variant.sku == blank %}hidden{% endif %}>
             {{ 'products.product.sku' | t }}: <span data-sku-value>{{ current_variant.sku | escape }}</span>
@@ -154,7 +170,7 @@
       </div>
 
       {%- unless product.has_only_default_variant -%}
-        <div class="product__options" data-variant-picker>
+        <div class="product__options js-only" data-variant-picker>
           {%- for option in product.options_with_values -%}
             {%- assign option_index = forloop.index0 -%}
             {%- if section.settings.picker_type == 'dropdown' and option.values.size > 6 -%}
@@ -205,6 +221,28 @@
 
       {%- form 'product', product, id: form_id, class: 'product__form', data-product-form: '', novalidate: 'novalidate' -%}
         <input type="hidden" name="id" value="{{ current_variant.id }}">
+        {%- unless product.has_only_default_variant -%}
+          <noscript>
+            <div class="option">
+              <label class="option__legend" for="Variants-{{ section.id }}">{{ 'products.product.variant' | t }}</label>
+              <select class="select" name="id" id="Variants-{{ section.id }}">
+                {%- for variant in product.variants -%}
+                  <option
+                    value="{{ variant.id }}"
+                    {% if variant == current_variant %}
+                      selected
+                    {% endif %}
+                    {% unless variant.available %}
+                      disabled
+                    {% endunless %}
+                  >
+                    {{ variant.title | escape }} – {{ variant.price | money }}
+                  </option>
+                {%- endfor -%}
+              </select>
+            </div>
+          </noscript>
+        {%- endunless -%}
 
         <div class="product__buy">
           <div class="product__quantity">
@@ -261,7 +299,7 @@
       {%- endform -%}
 
       {%- if whatsapp_digits != blank and section.settings.show_whatsapp -%}
-        {%- capture wa_text -%}{{ 'general.whatsapp' | t }}: {{ product.title }} — {{ request.origin }}{{ product.url }}{%- endcapture -%}
+        {%- capture wa_text -%}{% if settings.whatsapp_message != blank %}{{ settings.whatsapp_message }} {% endif %}{{ product.title }} — {{ request.origin }}{{ product.url }}{%- endcapture -%}
         <a class="product__whatsapp" href="https://wa.me/{{ whatsapp_digits }}?text={{ wa_text | url_encode }}" target="_blank" rel="noopener">
           {% render 'icon', name: 'whatsapp' %}
           {{ section.settings.whatsapp_label | escape }}
@@ -286,29 +324,29 @@
           </details>
         {%- endif -%}
 
-        <details class="accordion">
-          <summary class="accordion__summary">
-            {{ 'products.product.shipping_returns' | t }}
-            {% render 'icon', name: 'chevron-down' %}
-          </summary>
-          <div class="accordion__content rte">
-            {%- if section.settings.shipping_text != blank -%}
-              {{ section.settings.shipping_text }}
-            {%- else -%}
-              <p>{{ 'products.product.shipping_returns_default' | t }}</p>
-            {%- endif -%}
-            {%- if shop.shipping_policy.body != blank or shop.refund_policy.body != blank -%}
-              <ul>
-                {%- if shop.shipping_policy.body != blank -%}
-                  <li><a href="{{ shop.shipping_policy.url }}">{{ shop.shipping_policy.title | escape }}</a></li>
-                {%- endif -%}
-                {%- if shop.refund_policy.body != blank -%}
-                  <li><a href="{{ shop.refund_policy.url }}">{{ shop.refund_policy.title | escape }}</a></li>
-                {%- endif -%}
-              </ul>
-            {%- endif -%}
-          </div>
-        </details>
+        {%- if section.settings.shipping_text != blank or shop.shipping_policy.body != blank or shop.refund_policy.body != blank -%}
+          <details class="accordion">
+            <summary class="accordion__summary">
+              {{ 'products.product.shipping_returns' | t }}
+              {% render 'icon', name: 'chevron-down' %}
+            </summary>
+            <div class="accordion__content rte">
+              {%- if section.settings.shipping_text != blank -%}
+                {{ section.settings.shipping_text }}
+              {%- endif -%}
+              {%- if shop.shipping_policy.body != blank or shop.refund_policy.body != blank -%}
+                <ul>
+                  {%- if shop.shipping_policy.body != blank -%}
+                    <li><a href="{{ shop.shipping_policy.url }}">{{ shop.shipping_policy.title | escape }}</a></li>
+                  {%- endif -%}
+                  {%- if shop.refund_policy.body != blank -%}
+                    <li><a href="{{ shop.refund_policy.url }}">{{ shop.refund_policy.title | escape }}</a></li>
+                  {%- endif -%}
+                </ul>
+              {%- endif -%}
+            </div>
+          </details>
+        {%- endif -%}
       </div>
     </div>
 
@@ -331,6 +369,7 @@
             "sku": {{ v.sku | json }},
             "featured_media_id": {{ v.featured_media.id | default: 'null' }},
             "inventory": {% if v.inventory_management == 'shopify' and v.inventory_policy == 'deny' %}{{ v.inventory_quantity }}{% else %}null{% endif %},
+            "in_stock": {% if v.inventory_management == 'shopify' and v.inventory_quantity > 0 %}true{% else %}false{% endif %},
             "unit_price": {% if v.unit_price_measurement %}{{ v.unit_price }}{% else %}null{% endif %},
             "unit_price_reference": {{ unit_ref | json }}
           }{% unless forloop.last %},{% endunless %}
@@ -342,6 +381,36 @@
 
 <script type="application/ld+json">
   {{ product | structured_data }}
+</script>
+
+{%- liquid
+  assign crumb_collection = collection
+  unless crumb_collection
+    for c in product.collections
+      if c.handle != 'frontpage' and c.handle != 'new-arrivals' and c.handle != 'best-sellers' and c.handle != 'sale'
+        assign crumb_collection = c
+        break
+      endif
+    endfor
+  endunless
+  assign home_url = request.origin | append: routes.root_url
+  assign product_url = request.origin | append: product.url
+-%}
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": {{ 'general.home' | t | json }}, "item": {{ home_url | json }} },
+      {%- if crumb_collection -%}
+        {%- assign crumb_url = request.origin | append: crumb_collection.url -%}
+        { "@type": "ListItem", "position": 2, "name": {{ crumb_collection.title | json }}, "item": {{ crumb_url | json }} },
+        { "@type": "ListItem", "position": 3, "name": {{ product.title | json }}, "item": {{ product_url | json }} }
+      {%- else -%}
+        { "@type": "ListItem", "position": 2, "name": {{ product.title | json }}, "item": {{ product_url | json }} }
+      {%- endif -%}
+    ]
+  }
 </script>
 
 {% schema %}

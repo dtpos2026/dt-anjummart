@@ -14,7 +14,7 @@
             <li class="article-card">
               {%- if article.image -%}
                 <a href="{{ article.url }}" class="article-card__media" tabindex="-1" aria-hidden="true">
-                  {{ article.image | image_url: width: 800 | image_tag: loading: 'lazy', widths: '400, 600, 800', sizes: '(min-width: 990px) 33vw, (min-width: 750px) 50vw, 100vw', alt: '' }}
+                  {{ article.image | image_url: width: 800 | image_tag: loading: 'lazy', widths: '400, 600, 800', sizes: '(min-width: 1384px) 425px, (min-width: 990px) 33vw, (min-width: 750px) 50vw, 100vw', alt: '' }}
                 </a>
               {%- endif -%}
               <div class="article-card__body">
