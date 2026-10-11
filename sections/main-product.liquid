@@ -320,6 +320,12 @@
       {%- endif -%}
 
       <ul class="product__assurances" role="list">
+        {%- if section.settings.assurance_shipping != blank -%}
+          <li>{% render 'icon', name: 'truck' %} {{ section.settings.assurance_shipping | escape }}</li>
+        {%- endif -%}
+        {%- if section.settings.assurance_payment != blank -%}
+          <li>{% render 'icon', name: 'badge' %} {{ section.settings.assurance_payment | escape }}</li>
+        {%- endif -%}
         <li>{% render 'icon', name: 'lock' %} {{ 'cart.secure_checkout' | t }}</li>
         {%- if shop.refund_policy.body != blank -%}
           <li>{% render 'icon', name: 'return' %} <a href="{{ shop.refund_policy.url }}">{{ shop.refund_policy.title | escape }}</a></li>
@@ -392,6 +398,31 @@
   </div>
 </div>
 
+{%- if section.settings.show_sticky_cart -%}
+  <div class="sticky-cart" data-sticky-cart hidden>
+    <div class="sticky-cart__info">
+      <span class="sticky-cart__title">{{ product.title | escape }}</span>
+      <span class="sticky-cart__price" data-sticky-price>{{ current_variant.price | money }}</span>
+    </div>
+    <button
+      type="submit"
+      form="{{ form_id }}"
+      name="add"
+      class="button sticky-cart__button"
+      data-sticky-button
+      {% unless current_variant.available %}
+        disabled
+      {% endunless %}
+    >
+      {%- if current_variant.available -%}
+        {{- 'products.product.add_to_cart' | t -}}
+      {%- else -%}
+        {{- 'products.product.sold_out' | t -}}
+      {%- endif -%}
+    </button>
+  </div>
+{%- endif -%}
+
 <script type="application/ld+json">
   {{ product | structured_data }}
 </script>
@@ -432,6 +463,26 @@
   "tag": "section",
   "class": "main-product-section",
   "settings": [
+    {
+      "type": "text",
+      "id": "assurance_shipping",
+      "label": "Shipping line",
+      "info": "Leave empty to hide. Keep it in line with Settings > Shipping and delivery.",
+      "default": "Free standard shipping on orders of Rs. 2,000 or more"
+    },
+    {
+      "type": "text",
+      "id": "assurance_payment",
+      "label": "Payment line",
+      "info": "Leave empty to hide. Only list payment methods that are active in Settings > Payments.",
+      "default": "Cash on Delivery available"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sticky_cart",
+      "label": "Show sticky Add to cart bar on mobile",
+      "default": true
+    },
     {
       "type": "page",
       "id": "size_guide_page",

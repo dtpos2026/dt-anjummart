@@ -4564,3 +4564,191 @@ body.overflow-hidden .whatsapp-float {
   text-decoration: underline;
   text-underline-offset: 4px;
 }
+
+/* --------------------------------------------------------------------------
+   Sticky Add to cart bar (mobile product page)
+   -------------------------------------------------------------------------- */
+.sticky-cart {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 45;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px var(--gutter) calc(10px + env(safe-area-inset-bottom));
+  background: var(--color-bg);
+  border-top: 1px solid var(--color-border);
+  box-shadow: 0 -10px 30px -20px rgba(var(--color-text-rgb), 0.4);
+  transform: translateY(110%);
+  visibility: hidden;
+  transition: transform 300ms var(--ease), visibility 0s linear 300ms;
+}
+
+.sticky-cart.is-visible {
+  transform: none;
+  visibility: visible;
+  transition: transform 300ms var(--ease), visibility 0s;
+}
+
+.sticky-cart[hidden] {
+  display: none;
+}
+
+.sticky-cart__info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.sticky-cart__title {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 0.86rem;
+}
+
+.sticky-cart__price {
+  font-size: 0.86rem;
+  font-weight: var(--font-body-weight-medium);
+}
+
+.sticky-cart__button {
+  flex: none;
+  min-height: 46px;
+  padding: 12px 22px;
+}
+
+@media (min-width: 990px) {
+  .sticky-cart {
+    display: none;
+  }
+}
+
+body.overflow-hidden .sticky-cart {
+  visibility: hidden;
+}
+
+/* Lift the WhatsApp button above the sticky bar */
+body.has-sticky-cart .whatsapp-float {
+  bottom: calc(84px + env(safe-area-inset-bottom));
+}
+
+@media (min-width: 990px) {
+  body.has-sticky-cart .whatsapp-float {
+    bottom: calc(16px + env(safe-area-inset-bottom));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sticky-cart,
+  .sticky-cart.is-visible {
+    transition: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Shop for Him / Her
+   -------------------------------------------------------------------------- */
+.gender-banners__grid {
+  display: grid;
+  gap: 16px;
+  list-style: none;
+}
+
+@media (min-width: 750px) {
+  .gender-banners__grid {
+    grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+    grid-auto-flow: column;
+    gap: 24px;
+  }
+}
+
+.gender-banner__link {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  color: var(--color-bg);
+}
+
+.gender-banner__media {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  background: var(--color-surface);
+}
+
+.gender-banner__media img,
+.gender-banner__fallback {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 900ms var(--ease);
+}
+
+.gender-banner__fallback {
+  background: linear-gradient(160deg, var(--color-surface), var(--color-accent-soft));
+}
+
+.gender-banner--no-image .gender-banner__link {
+  color: var(--color-text);
+}
+
+.gender-banner--no-image .gender-banner__media::after {
+  display: none;
+}
+
+@media (min-width: 750px) {
+  .gender-banner__media {
+    aspect-ratio: 1 / 1.05;
+  }
+}
+
+.gender-banner__media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(var(--color-text-rgb), 0.62), rgba(var(--color-text-rgb), 0) 55%);
+}
+
+.gender-banner__caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 28px;
+}
+
+.gender-banner__title {
+  font-family: var(--font-heading-family);
+  font-size: clamp(2rem, 1.6rem + 1.6vw, 3rem);
+  line-height: 1;
+}
+
+.gender-banner__text {
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.gender-banner__cta {
+  align-self: flex-start;
+  margin-top: 8px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid currentColor;
+  font-size: 0.72rem;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
+@media (hover: hover) {
+  .gender-banner__link:hover .gender-banner__media img {
+    transform: scale(1.03);
+  }
+}

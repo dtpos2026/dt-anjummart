@@ -21,26 +21,57 @@
       "blocks": {
         "watches": {
           "type": "category",
-          "settings": { "collection": "watches", "title": "", "icon": "watch", "color": "blue" }
+          "settings": {
+            "collection": "watches",
+            "title": "",
+            "icon": "watch",
+            "color": "blue"
+          }
         },
         "ladies-bags": {
           "type": "category",
-          "settings": { "collection": "ladies-bags", "title": "", "icon": "handbag", "color": "red" }
+          "settings": {
+            "collection": "ladies-bags",
+            "title": "",
+            "icon": "handbag",
+            "color": "red"
+          }
         },
         "artificial-jewellery": {
           "type": "category",
-          "settings": { "collection": "artificial-jewellery", "title": "", "icon": "jewellery", "color": "green" }
+          "settings": {
+            "collection": "artificial-jewellery",
+            "title": "",
+            "icon": "jewellery",
+            "color": "green"
+          }
         },
         "dresses": {
           "type": "category",
-          "settings": { "collection": "dresses", "title": "", "icon": "dress", "color": "blue" }
+          "settings": {
+            "collection": "dresses",
+            "title": "",
+            "icon": "dress",
+            "color": "blue"
+          }
         },
         "shoes": {
           "type": "category",
-          "settings": { "collection": "shoes", "title": "", "icon": "shoe", "color": "red" }
+          "settings": {
+            "collection": "shoes",
+            "title": "",
+            "icon": "shoe",
+            "color": "red"
+          }
         }
       },
-      "block_order": ["watches", "ladies-bags", "artificial-jewellery", "dresses", "shoes"],
+      "block_order": [
+        "watches",
+        "ladies-bags",
+        "artificial-jewellery",
+        "dresses",
+        "shoes"
+      ],
       "settings": {
         "eyebrow": "Shop by category",
         "heading": "Find exactly what you love",
@@ -165,12 +196,58 @@
           }
         }
       },
-      "block_order": ["quality", "secure", "delivery", "support"],
+      "block_order": [
+        "quality",
+        "secure",
+        "delivery",
+        "support"
+      ],
       "settings": {
         "heading": "",
         "surface": true
       }
+    },
+    "gender": {
+      "type": "gender-banners",
+      "blocks": {
+        "him": {
+          "type": "tile",
+          "settings": {
+            "title": "For Him",
+            "text": "Watches, chains and sneakers",
+            "button_label": "Shop men",
+            "tag": "men"
+          }
+        },
+        "her": {
+          "type": "tile",
+          "settings": {
+            "title": "For Her",
+            "text": "Watches, bags, jewellery and dresses",
+            "button_label": "Shop women",
+            "tag": "women"
+          }
+        }
+      },
+      "block_order": [
+        "him",
+        "her"
+      ],
+      "settings": {
+        "eyebrow": "Curated edits",
+        "heading": "Shop by style"
+      }
     }
   },
-  "order": ["hero", "categories", "featured", "new-arrivals", "promo", "best-sellers", "special-offers", "service"]
+  "order": [
+    "hero",
+    "categories",
+    "gender",
+    "featured",
+    "new-arrivals",
+    "promo",
+    "best-sellers",
+    "special-offers",
+    "service"
+  ]
 }

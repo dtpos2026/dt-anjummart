@@ -985,6 +985,15 @@
     var sku = root.querySelector('[data-sku]');
     var buyNow = root.querySelector('[data-buy-now]');
 
+    var sticky = document.querySelector('[data-sticky-cart]');
+    var stickyButton = sticky && sticky.querySelector('[data-sticky-button]');
+    var stickyPrice = sticky && sticky.querySelector('[data-sticky-price]');
+    if (stickyButton) {
+      stickyButton.disabled = !variant || !variant.available;
+      stickyButton.textContent = !variant ? strings.unavailable : variant.available ? strings.addToCart : strings.soldOut;
+    }
+    if (stickyPrice && variant) stickyPrice.textContent = formatMoney(variant.price);
+
     if (!variant) {
       if (button) button.disabled = true;
       if (buttonText) buttonText.textContent = strings.unavailable;
@@ -1311,6 +1320,42 @@
   }
 
   /* ------------------------------------------------------------------
+     Sticky Add to cart bar (mobile product page)
+     ------------------------------------------------------------------ */
+  function initStickyCart() {
+    var bar = document.querySelector('[data-sticky-cart]');
+    var main = document.querySelector('[data-product] [data-add-button]');
+    if (!bar || !main || bar._stickyInit) return;
+    bar._stickyInit = true;
+    bar.hidden = false;
+    var header = document.querySelector('.header-section');
+    var shown = null;
+    var ticking = false;
+    var update = function () {
+      ticking = false;
+      // The sticky header covers the top of the viewport, so treat that strip as off-screen
+      var cover = header && getComputedStyle(header).position === 'sticky' ? header.offsetHeight : 0;
+      var show = main.getBoundingClientRect().bottom < cover;
+      if (show === shown) return;
+      shown = show;
+      bar.classList.toggle('is-visible', show);
+      bar.setAttribute('aria-hidden', show ? 'false' : 'true');
+      bar.querySelectorAll('button').forEach(function (b) {
+        b.tabIndex = show ? 0 : -1;
+      });
+      document.body.classList.toggle('has-sticky-cart', show);
+    };
+    var onScroll = function () {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    update();
+  }
+
+  /* ------------------------------------------------------------------
      Scroll reveal animations
      ------------------------------------------------------------------ */
   var REVEAL_SELECTOR = [
@@ -1320,6 +1365,7 @@
     '.category-list > li',
     '.collection-list-grid > li',
     '.features > *',
+    '.gender-banners__grid > li',
     '.promo',
     '.rich-text',
     '.article-grid > li',
@@ -1402,6 +1448,7 @@
     initSliders();
     initCopy();
     initReveal();
+    initStickyCart();
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
