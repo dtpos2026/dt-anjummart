@@ -11,7 +11,7 @@
     assign max_qty = item.variant.inventory_quantity
   endif
 -%}
-<li class="cart-item" data-cart-item>
+<li class="cart-item" data-cart-item data-line-key="{{ item.key }}" data-variant-id="{{ item.variant_id }}" data-product-id="{{ item.product_id }}">
   <a class="cart-item__media" href="{{ item.url }}" tabindex="-1" aria-hidden="true">
     {%- if item.image -%}
       {{
@@ -59,14 +59,24 @@
       </ul>
     {%- endif -%}
 
+    {%- liquid
+      assign line_compare = item.original_line_price
+      if item.variant.compare_at_price > item.original_price
+        assign line_compare = item.variant.compare_at_price | times: item.quantity
+      endif
+    -%}
     <div class="price">
-      {%- if item.original_line_price != item.final_line_price -%}
+      {%- if line_compare > item.final_line_price -%}
         <span class="visually-hidden">{{ 'products.product.sale_price' | t }}</span>
         <span class="price-item price-item--sale">{{ item.final_line_price | money }}</span>
         <span class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>
-        <s class="price-item price-item--compare">{{ item.original_line_price | money }}</s>
+        <s class="price-item price-item--compare">{{ line_compare | money }}</s>
       {%- else -%}
         <span class="price-item price-item--regular">{{ item.final_line_price | money }}</span>
+      {%- endif -%}
+      {%- if item.quantity > 1 -%}
+        {%- assign each_price = item.final_price | money -%}
+        <span class="price__each">{{ 'cart.price_each' | t: price: each_price }}</span>
       {%- endif -%}
       {%- if item.unit_price_measurement -%}
         <span class="price__unit">
@@ -113,6 +123,6 @@
         {% render 'icon', name: 'trash' %}
       </a>
     </div>
-    <p class="cart-item__error" data-line-error role="alert" hidden></p>
+    <p class="cart-item__error" data-line-error hidden></p>
   </div>
 </li>

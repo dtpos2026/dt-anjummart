@@ -48,40 +48,64 @@
     "name": "Colors",
     "settings": [
       {
+        "type": "paragraph",
+        "content": "Ivory & Indigo palette. The logo keeps its own colours; the interface uses calm neutrals with one deep brand colour."
+      },
+      {
         "type": "color",
         "id": "color_primary",
-        "label": "Primary (brand blue)",
-        "default": "#124FA3"
+        "label": "Primary (buttons, links)",
+        "default": "#14284B"
       },
       {
         "type": "color",
         "id": "color_accent",
-        "label": "Accent (brand red)",
-        "default": "#E31837"
+        "label": "Detail accent (lines, icons)",
+        "info": "Decorative only. Not used for text.",
+        "default": "#B08D57"
+      },
+      {
+        "type": "color",
+        "id": "color_accent_text",
+        "label": "Accent text (small labels)",
+        "info": "Must stay readable on the page background.",
+        "default": "#80602C"
+      },
+      {
+        "type": "color",
+        "id": "color_sale",
+        "label": "Sale and error",
+        "default": "#A51C30"
       },
       {
         "type": "color",
         "id": "color_success",
-        "label": "Success (brand green)",
-        "default": "#139447"
+        "label": "Success",
+        "default": "#1F6A43"
       },
       {
         "type": "color",
         "id": "color_text",
         "label": "Text",
-        "default": "#172033"
+        "default": "#1C1F2A"
       },
       {
         "type": "color",
         "id": "color_background",
         "label": "Page background",
-        "default": "#FFFFFF"
+        "default": "#FBF8F3"
       },
       {
         "type": "color",
         "id": "color_surface",
-        "label": "Light section background",
-        "default": "#F5F8FC"
+        "label": "Soft section background",
+        "default": "#F3EDE4"
+      },
+      {
+        "type": "color",
+        "id": "color_border",
+        "label": "Hairlines and borders",
+        "default": "#E2D9CC"
       }
     ]
   },
@@ -92,13 +116,13 @@
         "type": "font_picker",
         "id": "type_heading_font",
         "label": "Headings",
-        "default": "montserrat_n7"
+        "default": "cormorant_n5"
       },
       {
         "type": "font_picker",
         "id": "type_body_font",
         "label": "Body",
-        "default": "assistant_n4"
+        "default": "jost_n4"
       },
       {
         "type": "range",
@@ -108,7 +132,7 @@
         "max": 120,
         "step": 5,
         "unit": "%",
-        "default": 100
+        "default": 105
       }
     ]
   },
@@ -199,11 +223,11 @@
         "type": "range",
         "id": "watermark_size",
         "label": "Size",
-        "min": 10,
+        "min": 8,
         "max": 30,
         "step": 1,
         "unit": "%",
-        "default": 18
+        "default": 12
       },
       {
         "type": "range",
@@ -213,7 +237,7 @@
         "max": 100,
         "step": 5,
         "unit": "%",
-        "default": 95
+        "default": 90
       },
       {
         "type": "checkbox",
@@ -268,6 +292,43 @@
         "id": "cart_info",
         "label": "Cart information text",
         "info": "Optional. Only add delivery or payment details you have confirmed in Shopify settings."
+      },
+      {
+        "type": "header",
+        "content": "Free shipping progress"
+      },
+      {
+        "type": "number",
+        "id": "cart_free_shipping_threshold",
+        "label": "Free shipping threshold (Rs.)",
+        "info": "Leave empty to hide. Must match the free-shipping rate in Settings > Shipping and delivery (it cannot be read automatically). Currently Rs. 2,000 for Standard shipping in Pakistan."
+      },
+      {
+        "type": "header",
+        "content": "Cart recommendations"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_recs_enable",
+        "label": "Show recommendations in the cart drawer",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "cart_recs_heading",
+        "label": "Heading",
+        "default": "Complete your look"
+      },
+      {
+        "type": "select",
+        "id": "cart_recs_intent",
+        "label": "Recommendation type",
+        "info": "Complementary products are set up in the Shopify Search & Discovery app. When none are set, related products are shown instead.",
+        "options": [
+          { "value": "related", "label": "Related products" },
+          { "value": "complementary", "label": "Complementary, then related" }
+        ],
+        "default": "related"
       }
     ]
   },

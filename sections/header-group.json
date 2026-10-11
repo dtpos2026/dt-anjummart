@@ -5,36 +5,40 @@
     "announcement-bar": {
       "type": "announcement-bar",
       "blocks": {
-        "welcome": {
+        "free-shipping": {
           "type": "announcement",
           "settings": {
-            "text": "Welcome to Anjum Mart — watches, bags, jewellery, dresses & shoes in one place",
+            "text": "Free standard shipping on orders of Rs. 2,000 or more",
             "link": "",
-            "icon": "sparkle"
+            "icon": "truck"
+          }
+        },
+        "cod": {
+          "type": "announcement",
+          "settings": {
+            "text": "Cash on Delivery available at checkout",
+            "link": "",
+            "icon": "none"
           }
         },
         "new-arrivals": {
           "type": "announcement",
           "settings": {
-            "text": "Discover our latest arrivals",
+            "text": "Discover the new arrivals",
             "link": "shopify://collections/new-arrivals",
-            "icon": "tag"
-          }
-        },
-        "secure-checkout": {
-          "type": "announcement",
-          "settings": {
-            "text": "Secure checkout powered by Shopify",
-            "link": "",
-            "icon": "shield"
+            "icon": "none"
           }
         }
       },
-      "block_order": ["welcome", "new-arrivals", "secure-checkout"],
+      "block_order": [
+        "free-shipping",
+        "cod",
+        "new-arrivals"
+      ],
       "settings": {
         "label": "Store announcements",
-        "background": "#124FA3",
-        "text_color": "#FFFFFF",
+        "background": "#14284B",
+        "text_color": "#FBF8F3",
         "speed": 5
       }
     },
@@ -45,5 +49,8 @@
       }
     }
   },
-  "order": ["announcement-bar", "header"]
+  "order": [
+    "announcement-bar",
+    "header"
+  ]
 }

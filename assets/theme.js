@@ -139,6 +139,7 @@
   }
 
   Drawer.prototype.open = function (trigger) {
+    if (openDrawer === this && this.el.classList.contains('is-open')) return;
     if (openDrawer && openDrawer !== this) openDrawer.close(true);
     this.trigger = trigger || document.activeElement;
     this.el.hidden = false;
@@ -159,6 +160,7 @@
       if (focusTarget) setTimeout(function () { focusTarget.focus(); }, 60);
     });
     openDrawer = this;
+    if (this.el.id === 'CartDrawer') CartRecs.load(this.el.querySelector('[data-cart-recs]'));
   };
 
   Drawer.prototype.close = function (skipFocus) {
@@ -443,6 +445,101 @@
   };
 
   /* ------------------------------------------------------------------
+     Cart drawer recommendations ("Complete your look")
+     ------------------------------------------------------------------ */
+  var CartRecs = {
+    cache: {},
+    lastSource: null,
+    limit: 3,
+
+    inCart: function (el) {
+      return (el.getAttribute('data-in-cart') || '').split(',').filter(Boolean);
+    },
+
+    source: function (el) {
+      var inCart = this.inCart(el);
+      if (this.lastSource && inCart.indexOf(this.lastSource) > -1) return this.lastSource;
+      return el.getAttribute('data-source-product');
+    },
+
+    key: function (el) {
+      return [this.source(el), el.getAttribute('data-in-cart'), el.getAttribute('data-intent')].join('|');
+    },
+
+    fetchSection: function (productId, intent) {
+      var url =
+        routes.productRecommendations +
+        '?product_id=' + encodeURIComponent(productId) +
+        '&limit=8&intent=' + intent +
+        '&section_id=cart-drawer-recommendations';
+      var self = this;
+      if (this.cache[url]) return Promise.resolve(this.cache[url]);
+      return fetch(url)
+        .then(function (r) {
+          if (!r.ok) throw new Error(r.status);
+          return r.text();
+        })
+        .then(function (text) {
+          self.cache[url] = text;
+          return text;
+        });
+    },
+
+    prune: function (el, inCartList) {
+      var inCart = (inCartList || '').split(',').filter(Boolean);
+      el.querySelectorAll('[data-product-id]').forEach(function (item) {
+        if (inCart.indexOf(item.getAttribute('data-product-id')) > -1) item.remove();
+      });
+      if (!el.querySelector('[data-product-id]')) {
+        el.hidden = true;
+        el.innerHTML = '';
+      }
+    },
+
+    load: function (el) {
+      if (!el || !routes.productRecommendations) return;
+      var productId = this.source(el);
+      if (!productId) return;
+      var key = this.key(el);
+      if (el._recsKey === key) return;
+      el._recsKey = key;
+      var inCart = this.inCart(el);
+      var limit = this.limit;
+      var self = this;
+      var render = function (text) {
+        var doc = parseHTML(text);
+        var src = doc.querySelector('[data-cart-recs-source]');
+        if (!src) return 0;
+        var shown = 0;
+        src.querySelectorAll('[data-product-id]').forEach(function (item) {
+          if (inCart.indexOf(item.getAttribute('data-product-id')) > -1 || shown >= limit) item.remove();
+          else shown++;
+        });
+        if (shown && el._recsKey === key) {
+          el.innerHTML = src.innerHTML;
+          el.hidden = false;
+        }
+        return shown;
+      };
+      var intent = el.getAttribute('data-intent') || 'related';
+      var chain = this.fetchSection(productId, intent).then(render);
+      if (intent === 'complementary') {
+        chain = chain.then(function (count) {
+          return count ? count : self.fetchSection(productId, 'related').then(render);
+        });
+      }
+      chain
+        .then(function (count) {
+          if (!count && el._recsKey === key) el.hidden = true;
+        })
+        .catch(function () {
+          // Recommendations are optional: a failure never affects the cart
+          if (el._recsKey === key) el.hidden = true;
+        });
+    }
+  };
+
+  /* ------------------------------------------------------------------
      Cart
      ------------------------------------------------------------------ */
   var Cart = {
@@ -494,10 +591,19 @@
             window.location.href = routes.cart;
             return;
           }
-          self.renderSections(res.data.sections);
+          if (res.data.product_id) CartRecs.lastSource = String(res.data.product_id);
           var drawer = getDrawer(self.drawerId);
+          var wasOpen = drawer && openDrawer === drawer;
+          self.renderSections(res.data.sections);
+          announce((strings.addedToCart || 'Added to cart: [title]').replace('[title]', res.data.product_title || res.data.title || ''));
           if (drawer && !document.querySelector('[data-cart-page]')) {
-            drawer.open(button);
+            if (wasOpen) {
+              var added = drawer.el.querySelector('[data-cart-item][data-variant-id="' + res.data.variant_id + '"] .cart-item__title');
+              if (added) added.focus();
+              CartRecs.load(drawer.el.querySelector('[data-cart-recs]'));
+            } else {
+              drawer.open(button);
+            }
           } else {
             toast(strings.added || 'Added to cart');
           }
@@ -523,8 +629,9 @@
     change: function (key, quantity, itemEl) {
       var self = this;
       if (this.pending) {
-        // Run the latest change made while a request is in flight once it finishes
-        this.queued = { key: key, quantity: quantity };
+        // Keep the latest pending quantity for every line changed while a request is in flight
+        this.queue = this.queue || {};
+        this.queue[String(key)] = quantity;
         return Promise.resolve();
       }
       this.pending = true;
@@ -579,11 +686,13 @@
         .finally(function () {
           self.pending = false;
           self.setBusy(false);
-          var next = self.queued;
-          self.queued = null;
-          if (next) {
-            var control = document.querySelector('[data-cart-item] [data-line-key="' + String(next.key).replace(/"/g, '\\"') + '"]');
-            self.change(next.key, next.quantity, control ? control.closest('[data-cart-item]') : null);
+          var pendingKeys = self.queue ? Object.keys(self.queue) : [];
+          if (pendingKeys.length) {
+            var nextKey = pendingKeys[0];
+            var nextQty = self.queue[nextKey];
+            delete self.queue[nextKey];
+            var line = document.querySelector('[data-cart-item][data-line-key="' + nextKey.replace(/"/g, '\\"') + '"]');
+            self.change(nextKey, nextQty, line);
           }
         });
     },
@@ -604,12 +713,35 @@
       var focusIndex = -1;
       if (focusContainer) focusIndex = Array.prototype.indexOf.call(focusContainer.querySelectorAll(FOCUSABLE), active);
 
+      // Identify the focused control by line key + role so it can be found again after the swap
+      var focusKey = null;
+      var focusRole = null;
+      var activeLine = active && active.closest ? active.closest('[data-cart-item]') : null;
+      if (activeLine) {
+        focusKey = activeLine.getAttribute('data-line-key');
+        focusRole = active.getAttribute('data-qty-step') ? 'step' + active.getAttribute('data-qty-step') : active.matches('input') ? 'input' : active.hasAttribute('data-line-remove') ? 'remove' : 'title';
+      }
+      // Quantities typed but not yet committed survive the re-render
+      var dirty = {};
+      document.querySelectorAll('input[data-line-key]').forEach(function (input) {
+        if (input !== active && input.value !== input.defaultValue) dirty[input.getAttribute('data-line-key')] = input.value;
+      });
+
       var drawerHTML = sections['cart-drawer'];
       if (drawerHTML) {
         var doc = parseHTML(drawerHTML);
         var source = doc.querySelector('[data-cart-drawer-content]');
         var target = document.querySelector('[data-cart-drawer-content]');
+        var oldRecs = target ? target.querySelector('[data-cart-recs]') : null;
+        if (oldRecs) oldRecs.remove();
         if (source && target) target.innerHTML = source.innerHTML;
+        var newRecs = target ? target.querySelector('[data-cart-recs]') : null;
+        if (newRecs && oldRecs && CartRecs.key(newRecs) === oldRecs._recsKey && !oldRecs.hidden) {
+          newRecs.replaceWith(oldRecs);
+          CartRecs.prune(oldRecs, newRecs.getAttribute('data-in-cart'));
+        } else if (newRecs && openDrawer && openDrawer.el.contains(newRecs)) {
+          CartRecs.load(newRecs);
+        }
         var countSource = doc.querySelector('[data-cart-count]');
         if (countSource) this.updateCount(countSource.getAttribute('data-cart-count'));
       }
@@ -627,7 +759,24 @@
           if (newNote && noteValue !== null) newNote.value = noteValue;
         }
       }
-      if (focusContainer && focusIndex > -1 && document.contains(focusContainer)) {
+      Object.keys(dirty).forEach(function (key) {
+        var input = document.querySelector('input[data-line-key="' + key.replace(/"/g, '\\"') + '"]');
+        if (input) input.value = dirty[key];
+      });
+      if (focusKey && focusContainer && document.contains(focusContainer)) {
+        var line = focusContainer.querySelector('[data-cart-item][data-line-key="' + focusKey.replace(/"/g, '\\"') + '"]');
+        var target2 = null;
+        if (line) {
+          if (focusRole === 'step1' || focusRole === 'step-1') target2 = line.querySelector('[data-qty-step="' + focusRole.slice(4) + '"]');
+          else if (focusRole === 'input') target2 = line.querySelector('input[data-line-key]');
+          else if (focusRole === 'remove') target2 = line.querySelector('[data-line-remove]');
+          else target2 = line.querySelector('.cart-item__title');
+        } else {
+          // The line was removed: move to the next line, else the empty-cart heading, else Close
+          target2 = focusContainer.querySelector('[data-cart-item] [data-line-remove]') || focusContainer.querySelector('[data-cart-empty-heading]') || focusContainer.querySelector('[data-drawer-close].icon-button');
+        }
+        if (target2) target2.focus();
+      } else if (focusContainer && focusIndex > -1 && document.contains(focusContainer)) {
         var nodes = focusContainer.querySelectorAll(FOCUSABLE);
         if (nodes.length) nodes[Math.min(focusIndex, nodes.length - 1)].focus();
       }

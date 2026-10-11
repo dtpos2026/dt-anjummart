@@ -92,7 +92,8 @@
       "share": "Share",
       "select_option": "Select {{ option }}",
       "no_image": "Image coming soon",
-      "variant": "Option"
+      "variant": "Option",
+      "size_guide": "Size guide"
     },
     "facets": {
       "filter": "Filter",
@@ -152,7 +153,12 @@
     "secure_checkout": "Secure checkout powered by Shopify",
     "update": "Update cart",
     "removed": "Removed [title]",
-    "updated": "Cart updated"
+    "updated": "Cart updated",
+    "free_shipping_remaining": "Spend {{ amount }} more for free standard shipping",
+    "free_shipping_unlocked": "Your order qualifies for free standard shipping",
+    "you_save": "You save {{ amount }}",
+    "price_each": "{{ price }} each",
+    "added": "Added to cart: [title]"
   },
   "search": {
     "title": "Search",

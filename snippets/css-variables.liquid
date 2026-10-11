@@ -1,9 +1,10 @@
 {%- liquid
   assign heading_font = settings.type_heading_font
   assign body_font = settings.type_body_font
-  assign heading_font_bold = heading_font | font_modify: 'weight', '800'
-  assign body_font_medium = body_font | font_modify: 'weight', '600'
-  assign body_font_bold = body_font | font_modify: 'weight', 'bold'
+  assign heading_font_bold = heading_font | font_modify: 'weight', '600'
+  assign heading_font_italic = heading_font | font_modify: 'style', 'italic'
+  assign body_font_medium = body_font | font_modify: 'weight', '500'
+  assign body_font_bold = body_font | font_modify: 'weight', '600'
   assign body_font_italic = body_font | font_modify: 'style', 'italic'
 
   case settings.card_image_ratio
@@ -19,6 +20,7 @@
 <style>
   {{ heading_font | font_face: font_display: 'swap' }}
   {{ heading_font_bold | font_face: font_display: 'swap' }}
+  {{ heading_font_italic | font_face: font_display: 'swap' }}
   {{ body_font | font_face: font_display: 'swap' }}
   {{ body_font_medium | font_face: font_display: 'swap' }}
   {{ body_font_bold | font_face: font_display: 'swap' }}
@@ -27,21 +29,25 @@
   :root {
     --color-primary: {{ settings.color_primary }};
     --color-primary-rgb: {{ settings.color_primary | color_extract: 'red' }}, {{ settings.color_primary | color_extract: 'green' }}, {{ settings.color_primary | color_extract: 'blue' }};
-    --color-primary-dark: {{ settings.color_primary | color_darken: 10 }};
-    --color-primary-soft: {{ settings.color_primary | color_mix: '#ffffff', 10 }};
+    --color-primary-dark: {{ settings.color_primary | color_darken: 6 }};
+    --color-primary-soft: {{ settings.color_primary | color_mix: settings.color_background, 8 }};
     --color-accent: {{ settings.color_accent }};
-    --color-accent-dark: {{ settings.color_accent | color_darken: 8 }};
-    --color-accent-soft: {{ settings.color_accent | color_mix: '#ffffff', 10 }};
+    --color-accent-text: {{ settings.color_accent_text | default: settings.color_accent }};
+    --color-accent-soft: {{ settings.color_accent | color_mix: settings.color_background, 14 }};
+    --color-sale: {{ settings.color_sale | default: '#A51C30' }};
+    --color-sale-soft: {{ settings.color_sale | default: '#A51C30' | color_mix: settings.color_background, 8 }};
+    --color-accent-dark: var(--color-sale);
     --color-success: {{ settings.color_success }};
-    --color-success-soft: {{ settings.color_success | color_mix: '#ffffff', 12 }};
-    --color-success-text: {{ settings.color_success | color_darken: 8 }};
+    --color-success-soft: {{ settings.color_success | color_mix: settings.color_background, 10 }};
+    --color-success-text: {{ settings.color_success }};
     --color-text: {{ settings.color_text }};
     --color-text-rgb: {{ settings.color_text | color_extract: 'red' }}, {{ settings.color_text | color_extract: 'green' }}, {{ settings.color_text | color_extract: 'blue' }};
-    --color-muted: {{ settings.color_text | color_mix: '#ffffff', 68 }};
+    --color-muted: {{ settings.color_text | color_mix: settings.color_background, 70 }};
     --color-bg: {{ settings.color_background }};
+    --color-bg-rgb: {{ settings.color_background | color_extract: 'red' }}, {{ settings.color_background | color_extract: 'green' }}, {{ settings.color_background | color_extract: 'blue' }};
     --color-surface: {{ settings.color_surface }};
-    --color-border: {{ settings.color_surface | color_mix: settings.color_text, 90 }};
-    --color-input-border: {{ settings.color_text | color_mix: '#ffffff', 55 }};
+    --color-border: {{ settings.color_border | default: '#E2D9CC' }};
+    --color-input-border: {{ settings.color_text | color_mix: settings.color_background, 52 }};
 
     --font-heading-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
     --font-heading-style: {{ heading_font.style }};
@@ -51,7 +57,7 @@
     --font-body-style: {{ body_font.style }};
     --font-body-weight: {{ body_font.weight }};
     --font-body-weight-medium: {{ body_font_medium.weight | default: body_font.weight }};
-    --font-body-weight-bold: {{ body_font_bold.weight | default: 700 }};
+    --font-body-weight-bold: {{ body_font_bold.weight | default: 600 }};
     --font-body-scale: {{ settings.body_scale | divided_by: 100.0 }};
 
     --logo-height: {{ settings.logo_height }}px;

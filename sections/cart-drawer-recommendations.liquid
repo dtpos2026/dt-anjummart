@@ -1,0 +1,74 @@
+{%- comment -%}
+  Rendered only through the Product Recommendations API for the cart drawer:
+  /recommendations/products?section_id=cart-drawer-recommendations&product_id=…&intent=…
+  theme.js removes products that are already in the cart and shows up to three.
+{%- endcomment -%}
+<div data-cart-recs-source data-intent="{{ recommendations.intent | default: 'related' }}">
+  {%- if recommendations.products_count > 0 -%}
+    <h3 class="cart-recs__heading" id="CartRecsHeading">{{ settings.cart_recs_heading | default: 'Complete your look' | escape }}</h3>
+    <ul class="cart-recs__list" role="list" aria-labelledby="CartRecsHeading">
+      {%- for product in recommendations.products -%}
+        {%- if product.available -%}
+          {%- liquid
+            assign rec_variant = product.selected_or_first_available_variant
+            assign rec_form_id = 'CartRec-' | append: product.id
+            assign rec_select_id = 'CartRecVariant-' | append: product.id
+          -%}
+          <li class="cart-rec" data-product-id="{{ product.id }}">
+            <a class="cart-rec__media" href="{{ product.url }}" tabindex="-1" aria-hidden="true">
+              {%- if product.featured_media -%}
+                {{
+                  product.featured_media
+                  | image_url: width: 180
+                  | image_tag: loading: 'lazy', widths: '90, 135, 180', sizes: '72px', alt: ''
+                }}
+              {%- endif -%}
+            </a>
+            <div class="cart-rec__info">
+              <a class="cart-rec__title" href="{{ product.url }}">{{ product.title | escape }}</a>
+              {% render 'price', product: product %}
+              {%- form 'product', product, id: rec_form_id, class: 'cart-rec__form', data-product-form: '', novalidate: 'novalidate' -%}
+                {%- if product.has_only_default_variant -%}
+                  <input type="hidden" name="id" value="{{ rec_variant.id }}">
+                {%- else -%}
+                  <label class="visually-hidden" for="{{ rec_select_id }}">{{ 'products.product.variant' | t }}: {{ product.title | escape }}</label>
+                  <div class="select-wrapper cart-rec__select">
+                    <select class="select" id="{{ rec_select_id }}" name="id">
+                      {%- for variant in product.variants -%}
+                        {%- if variant.available -%}
+                          <option
+                            value="{{ variant.id }}"
+                            {% if variant.id == rec_variant.id %}
+                              selected
+                            {% endif %}
+                          >
+                            {{ variant.title | escape }}
+                          </option>
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </select>
+                    {% render 'icon', name: 'chevron-down' %}
+                  </div>
+                {%- endif -%}
+                <input type="hidden" name="quantity" value="1">
+                <button type="submit" class="button button--secondary button--small cart-rec__add">
+                  {{ 'products.product.add_to_cart' | t }}
+                  <span class="visually-hidden">: {{ product.title | escape }}</span>
+                </button>
+              {%- endform -%}
+            </div>
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+    </ul>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Cart recommendations",
+  "tag": "div",
+  "class": "cart-drawer-recommendations",
+  "settings": []
+}
+{% endschema %}

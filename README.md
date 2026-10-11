@@ -7,6 +7,23 @@ It is a native Shopify theme (Liquid + vanilla JavaScript, no build step, no thi
 cart, checkout, customer accounts, search, filters and product recommendations all run on Shopify itself.
 No API keys or secrets are stored in this repository.
 
+## Brand system (Ivory & Indigo)
+
+| Token | Value | Use |
+| --- | --- | --- |
+| Background / surface | `#FBF8F3` / `#F3EDE4` | Page and soft sections |
+| Text / muted | `#1C1F2A` / derived | Copy |
+| Primary (indigo, from the logo blue) | `#14284B` | Buttons, links, announcement bar |
+| Detail accent (antique gold) | `#B08D57` | Hairlines and icons only |
+| Accent text | `#80602C` | Small labels (AA contrast) |
+| Sale and error (crimson) | `#A51C30` | Sale price, badges, errors |
+| Success | `#1F6A43` | Discounts, confirmations |
+| Fonts | Cormorant (headings) + Jost (body) | Shopify font library |
+
+All are theme settings (*Customize → Theme settings → Colors / Typography*). The logo keeps its own colours and
+always sits on a light background. Corners are near-square, shadows are replaced by hairlines, and buttons are
+uppercase with letter-spacing.
+
 ## What's included
 
 | Area | Details |
@@ -15,7 +32,7 @@ No API keys or secrets are stored in this repository.
 | Homepage | Announcement bar → hero banner → category cards → Featured Products → New Arrivals → promo banner → Best Sellers → Special Offers → service highlights → footer |
 | Collections | Banner, Shopify filters (availability, price, product type, plus anything set in Search & Discovery), sorting, numbered pagination, empty states |
 | Product page | Gallery with thumbnails/swipe (selected variant's image first), variant buttons that update price, compare-at price, stock and image, quantity, Add to cart, Shopify *Buy it now*, shipping & returns links once policies exist, related products |
-| Cart | Slide-out cart drawer and full cart page: update quantity, remove, subtotal, Shopify checkout |
+| Cart | Branded slide-out cart drawer and full cart page: update quantity (safe with fast taps on several lines), remove, Subtotal → Shopify discounts → Total, savings line, free-shipping progress (from a setting that must match your shipping rates), "Complete your look" recommendations with variant choice and Add to cart, Continue shopping, policy links once policies exist, Shopify checkout |
 | Search | Predictive search in the header and a full results page with filters and sorting |
 | Other pages | Collections list, contact form, generic pages, blog/article, 404, password page, gift card, classic customer account pages |
 | Logo on product photos | The store logo is layered on every product photo (product cards, product gallery, homepage collage), including photos added later. Position, size, opacity and background are theme settings. The image files in Shopify are not changed |
@@ -63,6 +80,15 @@ The theme is uploaded to the store as an **unpublished** theme named *Anjum Mart
 To keep the store in sync with this repository you can instead connect it from GitHub:
 **Online Store → Themes → Add theme → Connect from GitHub** → repository `dtpos2026/dt-anjummart`, this branch.
 With Shopify CLI: `shopify theme dev --store anjummart-mux` (local preview) or `shopify theme push --unpublished`.
+
+## Checkout on the Basic plan
+
+Shopify only allows checkout styling through code (Checkout Branding API, checkout UI extensions on the
+information/shipping/payment steps) on **Shopify Plus**. On Basic:
+
+* Set the logo, colours and fonts in **Settings → Checkout → Customize** (checkout editor). Use the palette above.
+* Thank-you and Order status page extensions are allowed on Basic but need a Shopify app (built with Shopify CLI).
+* The theme never replaces or simulates checkout; the cart sends shoppers to Shopify's secure checkout.
 
 ## Things the store owner needs to do
 

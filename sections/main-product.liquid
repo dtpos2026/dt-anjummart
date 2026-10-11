@@ -219,6 +219,19 @@
         </div>
       {%- endunless -%}
 
+      {%- if section.settings.size_guide_page != blank -%}
+        {%- assign has_size_option = false -%}
+        {%- for option in product.options -%}
+          {%- assign option_lower = option | downcase -%}
+          {%- if option_lower contains 'size' -%}
+            {%- assign has_size_option = true -%}
+          {%- endif -%}
+        {%- endfor -%}
+        {%- if has_size_option -%}
+          <a class="size-guide-link" href="{{ section.settings.size_guide_page.url }}">{{ 'products.product.size_guide' | t }}</a>
+        {%- endif -%}
+      {%- endif -%}
+
       {%- form 'product', product, id: form_id, class: 'product__form', data-product-form: '', novalidate: 'novalidate' -%}
         <input type="hidden" name="id" value="{{ current_variant.id }}">
         {%- unless product.has_only_default_variant -%}
@@ -419,6 +432,12 @@
   "tag": "section",
   "class": "main-product-section",
   "settings": [
+    {
+      "type": "page",
+      "id": "size_guide_page",
+      "label": "Size guide page",
+      "info": "Optional. Shown as a link on products that have a Size option."
+    },
     {
       "type": "checkbox",
       "id": "show_vendor",

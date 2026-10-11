@@ -352,15 +352,19 @@
 }
 
 .product__buy-now .shopify-payment-button__button--unbranded {
-  background: var(--color-accent);
-  color: #fff;
+  border: 1px solid var(--color-text);
+  background: transparent;
+  color: var(--color-text);
   font-family: var(--font-body-family);
-  font-weight: var(--font-body-weight-bold);
-  font-size: 1rem;
+  font-weight: var(--font-body-weight-medium);
+  font-size: 0.78rem;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
 }
 
 .product__buy-now .shopify-payment-button__button--unbranded:hover:not([disabled]) {
-  background: var(--color-accent-dark);
+  background: var(--color-text);
+  color: var(--color-bg);
 }
 
 .product__buy-now .shopify-payment-button__more-options {
@@ -375,8 +379,8 @@
   align-items: center;
   gap: 10px;
   margin: 4px 0 16px;
-  font-weight: var(--font-body-weight-bold);
-  color: #128c4a;
+  font-weight: var(--font-body-weight-medium);
+  color: var(--color-success);
 }
 
 .product__whatsapp .icon {
@@ -428,6 +432,7 @@
 }
 
 .accordion__summary {
+  font-family: var(--font-body-family);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -462,4 +467,82 @@
 
 .related-products > .section {
   border-top: 1px solid var(--color-border);
+}
+
+/* Luxe layer — product page */
+.gallery__viewport,
+.gallery__slide {
+  border-radius: 0;
+}
+
+.gallery__thumb {
+  border-radius: 0;
+}
+
+.gallery__counter {
+  border-radius: var(--radius);
+  background: rgba(var(--color-text-rgb), 0.72);
+  font-size: 0.7rem;
+  letter-spacing: var(--tracking);
+}
+
+.product__title {
+  font-weight: var(--font-heading-weight);
+  font-size: clamp(2rem, 1.5rem + 1.6vw, 3rem);
+  line-height: 1.05;
+}
+
+.product__vendor {
+  color: var(--color-accent-text);
+}
+
+.product__price .price-item--regular,
+.product__price .price-item--sale {
+  font-size: 1.35rem;
+  font-weight: var(--font-body-weight);
+  letter-spacing: 0.02em;
+}
+
+.option__legend {
+  font-size: 0.72rem;
+  font-weight: var(--font-body-weight-medium);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
+.option__pill {
+  border-radius: var(--radius);
+  font-size: 0.86rem;
+}
+
+.option__input:checked + .option__pill {
+  background: var(--color-bg);
+  color: var(--color-text);
+  border-color: var(--color-text);
+  box-shadow: inset 0 0 0 1px var(--color-text);
+}
+
+.product__add {
+  font-size: 0.78rem;
+}
+
+.product__assurances {
+  border-radius: 0;
+  background: transparent;
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.accordion__summary {
+  font-family: var(--font-body-family);
+  font-size: 0.74rem;
+  font-weight: var(--font-body-weight-medium);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
+.breadcrumbs {
+  font-size: 0.72rem;
+  letter-spacing: var(--tracking);
+  text-transform: uppercase;
 }

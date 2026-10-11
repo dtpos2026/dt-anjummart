@@ -1,43 +1,102 @@
 {%- liquid
   assign category_handles = 'watches,ladies-bags,artificial-jewellery,dresses,shoes' | split: ','
+  assign threshold = settings.cart_free_shipping_threshold | default: 0 | times: 100
+  assign show_shipping_bar = false
+  if threshold > 0 and cart.requires_shipping and cart.currency.iso_code == shop.currency
+    assign show_shipping_bar = true
+    assign shipping_remaining = threshold | minus: cart.total_price
+    assign shipping_percent = cart.total_price | times: 100 | divided_by: threshold
+    if shipping_percent > 100
+      assign shipping_percent = 100
+    endif
+  endif
+  assign in_cart_ids = cart.items | map: 'product_id' | uniq | join: ','
+  assign compare_savings = 0
+  for item in cart.items
+    if item.variant.compare_at_price > item.original_price
+      assign line_saving = item.variant.compare_at_price | minus: item.original_price | times: item.quantity
+      assign compare_savings = compare_savings | plus: line_saving
+    endif
+  endfor
 -%}
 <div id="CartDrawer" class="drawer drawer--right cart-drawer" aria-hidden="true" hidden>
   <div class="drawer__overlay" data-drawer-close></div>
   <div class="drawer__panel" role="dialog" aria-modal="true" aria-labelledby="CartDrawerTitle">
     <div class="cart-drawer__content" data-cart-drawer-content>
-      <div class="drawer__header" data-cart-count="{{ cart.item_count }}">
-        <h2 id="CartDrawerTitle">
-          {{ 'cart.title' | t }}
-          {%- if cart.item_count > 0 %}
-            <span class="cart-drawer__count">({{ 'header.cart_count' | t: count: cart.item_count }})</span>
-          {%- endif -%}
-        </h2>
+      <div class="drawer__header cart-drawer__header" data-cart-count="{{ cart.item_count }}">
+        <div class="cart-drawer__brand">
+          {% render 'logo', height: 34, lazy: true, class: 'cart-drawer__logo' %}
+          <h2 id="CartDrawerTitle">
+            {{ 'cart.title' | t }}
+            {%- if cart.item_count > 0 %}
+              <span class="cart-drawer__count">({{ 'header.cart_count' | t: count: cart.item_count }})</span>
+            {%- endif -%}
+          </h2>
+        </div>
         <button type="button" class="icon-button" data-drawer-close aria-label="{{ 'general.close' | t }}">
           {% render 'icon', name: 'close' %}
         </button>
       </div>
 
       {%- if cart.item_count > 0 -%}
+        {%- if show_shipping_bar -%}
+          <div class="cart-shipping">
+            <p class="cart-shipping__text">
+              {%- if shipping_remaining > 0 -%}
+                {%- assign remaining_money = shipping_remaining | money -%}
+                {{ 'cart.free_shipping_remaining' | t: amount: remaining_money }}
+              {%- else -%}
+                {% render 'icon', name: 'truck' %}
+                {{ 'cart.free_shipping_unlocked' | t }}
+              {%- endif -%}
+            </p>
+            <div class="cart-shipping__bar" aria-hidden="true">
+              <span style="width: {{ shipping_percent }}%;"></span>
+            </div>
+          </div>
+        {%- endif -%}
+
         <div class="drawer__body">
           <ul class="cart-items" role="list">
             {%- for item in cart.items -%}
               {% render 'cart-line', item: item, line: forloop.index, id_prefix: 'Drawer' %}
             {%- endfor -%}
           </ul>
+
+          {%- if settings.cart_recs_enable -%}
+            <div
+              class="cart-recs"
+              data-cart-recs
+              data-source-product="{{ cart.items.first.product_id }}"
+              data-in-cart="{{ in_cart_ids }}"
+              data-intent="{{ settings.cart_recs_intent | default: 'related' }}"
+              hidden
+            ></div>
+          {%- endif -%}
         </div>
 
         <div class="drawer__footer">
-          {%- if cart.cart_level_discount_applications.size > 0 -%}
-            <ul class="cart-discounts" role="list">
-              {%- for discount in cart.cart_level_discount_applications -%}
-                <li>{{ discount.title | escape }} (−{{ discount.total_allocated_amount | money }})</li>
-              {%- endfor -%}
-            </ul>
+          <dl class="cart-totals">
+            <div class="cart-summary__row">
+              <dt>{{ 'cart.subtotal' | t }}</dt>
+              <dd>{{ cart.items_subtotal_price | money }}</dd>
+            </div>
+            {%- for discount in cart.cart_level_discount_applications -%}
+              <div class="cart-summary__row cart-summary__row--discount">
+                <dt>{% render 'icon', name: 'tag' %} {{ discount.title | escape }}</dt>
+                <dd>−{{ discount.total_allocated_amount | money }}</dd>
+              </div>
+            {%- endfor -%}
+            <div class="cart-summary__row cart-summary__row--total">
+              <dt>{{ 'cart.total' | t }}</dt>
+              <dd class="cart-summary__total">{{ cart.total_price | money_with_currency }}</dd>
+            </div>
+          </dl>
+          {%- assign all_savings = cart.total_discount | plus: compare_savings -%}
+          {%- if all_savings > 0 -%}
+            {%- assign savings_money = all_savings | money -%}
+            <p class="cart-summary__savings">{{ 'cart.you_save' | t: amount: savings_money }}</p>
           {%- endif -%}
-          <div class="cart-summary__row">
-            <span>{{ 'cart.subtotal' | t }}</span>
-            <span class="cart-summary__total">{{ cart.total_price | money_with_currency }}</span>
-          </div>
           <p class="cart-summary__note">
             {%- if cart.taxes_included -%}
               {{ 'cart.taxes_included_shipping' | t }}
@@ -55,14 +114,25 @@
             </button>
           </form>
           <div class="cart-summary__links">
+            <a class="link" href="{{ routes.all_products_collection_url }}" data-drawer-close>{{ 'general.continue_shopping' | t }}</a>
             <a class="link" href="{{ routes.cart_url }}">{{ 'cart.view_cart' | t }}</a>
           </div>
+          {%- if shop.shipping_policy.body != blank or shop.refund_policy.body != blank -%}
+            <ul class="cart-policies" role="list">
+              {%- if shop.shipping_policy.body != blank -%}
+                <li><a href="{{ shop.shipping_policy.url }}">{{ shop.shipping_policy.title | escape }}</a></li>
+              {%- endif -%}
+              {%- if shop.refund_policy.body != blank -%}
+                <li><a href="{{ shop.refund_policy.url }}">{{ shop.refund_policy.title | escape }}</a></li>
+              {%- endif -%}
+            </ul>
+          {%- endif -%}
         </div>
       {%- else -%}
         <div class="drawer__body">
           <div class="empty-state cart-drawer__empty">
             <span class="empty-state__icon">{% render 'icon', name: 'cart' %}</span>
-            <h3 class="h3">{{ 'cart.empty' | t }}</h3>
+            <h3 class="h3" tabindex="-1" data-cart-empty-heading>{{ 'cart.empty' | t }}</h3>
             <p>{{ 'cart.empty_text' | t }}</p>
             <a class="button" href="{{ routes.all_products_collection_url }}">{{ 'general.continue_shopping' | t }}</a>
             <ul class="empty-state__links" role="list">

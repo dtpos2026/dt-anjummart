@@ -47,7 +47,7 @@
 
     {%- unless settings.type_heading_font.system? -%}
       {%- if template.name == 'index' -%}
-        {%- assign hero_font = settings.type_heading_font | font_modify: 'weight', '800' -%}
+        {%- assign hero_font = settings.type_heading_font -%}
         {%- if hero_font -%}
           {{ hero_font | font_url | preload_tag: as: 'font', type: 'font/woff2', crossorigin: 'anonymous' }}
         {%- endif -%}
@@ -67,7 +67,8 @@
           cartChange: {{ routes.cart_change_url | json }},
           cartUpdate: {{ routes.cart_update_url | json }},
           predictiveSearch: {{ routes.predictive_search_url | json }},
-          search: {{ routes.search_url | json }}
+          search: {{ routes.search_url | json }},
+          productRecommendations: {{ routes.product_recommendations_url | json }}
         },
         cartType: {{ settings.cart_type | json }},
         moneyFormat: {{ shop.money_format | json }},
@@ -87,7 +88,8 @@
           suggestions: {{ 'search.suggestions_count' | t | json }},
           removed: {{ 'cart.removed' | t | json }},
           cartUpdated: {{ 'cart.updated' | t | json }},
-          subtotal: {{ 'cart.subtotal' | t | json }}
+          subtotal: {{ 'cart.subtotal' | t | json }},
+          addedToCart: {{ 'cart.added' | t | json }}
         }
       };
     </script>

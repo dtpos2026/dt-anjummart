@@ -8,10 +8,10 @@
         "text": "Discover Watches, Bags, Jewellery, Fashion & More.",
         "button_label": "Shop Now",
         "button_link": "shopify://collections/all",
-        "button_label_2": "Explore Categories",
+        "button_label_2": "Explore Collections",
         "button_link_2": "",
         "show_chips": true,
-        "background": "#F5F8FC",
+        "background": "#F3EDE4",
         "collage_collection": "new-arrivals",
         "collage_label": "New arrivals"
       }
@@ -86,8 +86,8 @@
         "button_link": "shopify://collections/new-arrivals",
         "button_label_2": "Browse all categories",
         "button_link_2": "",
-        "background": "#124FA3",
-        "text_color": "#FFFFFF",
+        "background": "#14284B",
+        "text_color": "#FBF8F3",
         "tight": false
       }
     },
