@@ -110,8 +110,9 @@ information/shipping/payment steps) on **Shopify Plus**. On Basic:
    *Theme settings → SEO and sharing*), then submit `https://anjummart.com/sitemap.xml`. Shopify generates the
    sitemap and robots.txt. Set the homepage title and description in *Online Store → Preferences*. Indexing
    takes from a few days to a few weeks; rankings depend on content and links and cannot be guaranteed.
-7. **Theme settings** (*Customize → Theme settings*): phone number, WhatsApp number (WhatsApp links stay hidden
-   until a number is entered), address, support hours, social profile links (icons appear only for profiles entered).
+7. **Theme settings** (*Customize → Theme settings*): the phone, WhatsApp number (+92 371 4661514) and Multan office address
+   are already set. Still to add: support hours and the social profile links (Facebook, Instagram, TikTok; each icon
+   appears only once its link is entered).
 8. **Homepage images** (*Customize → Home page*): upload campaign photos for the hero and promo banner and,
    optionally, category images. Until then the hero shows a collage of real product photos from New Arrivals,
    and category cards use the collection's first product image or a branded tile.

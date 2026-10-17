@@ -146,6 +146,12 @@
           {%- else -%}
             "logo": {{ 'anjum-mart-logo.png' | asset_url | prepend: 'https:' | json }}
           {%- endif -%}
+          {%- if settings.contact_phone != blank -%},
+          "telephone": {{ settings.contact_phone | json }}
+          {%- endif -%}
+          {%- if settings.contact_address != blank -%},
+          "address": { "@type": "PostalAddress", "streetAddress": {{ settings.contact_address | json }}, "addressCountry": "PK" }
+          {%- endif -%}
           {%- liquid
             assign same_as = ''
             assign social_keys = 'facebook,instagram,tiktok,youtube,pinterest,x' | split: ','
