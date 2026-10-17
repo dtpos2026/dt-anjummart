@@ -1016,7 +1016,7 @@ h4,
   outline-offset: -2px;
 }
 
-.predictive-search__item img,
+.predictive-search__media > img,
 .predictive-search__thumb {
   flex: none;
   width: 52px;
@@ -2708,6 +2708,7 @@ a.pagination__item:hover {
 }
 
 .cart-item__media {
+  position: relative;
   display: block;
   width: 84px;
   aspect-ratio: 1;
@@ -2716,7 +2717,7 @@ a.pagination__item:hover {
   background: var(--color-surface);
 }
 
-.cart-item__media img {
+.cart-item__media > img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -4492,13 +4493,14 @@ h2,
 }
 
 .cart-rec__media {
+  position: relative;
   display: block;
   aspect-ratio: 3 / 4;
   background: var(--color-surface);
   overflow: hidden;
 }
 
-.cart-rec__media img {
+.cart-rec__media > img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -4751,4 +4753,259 @@ body.has-sticky-cart .whatsapp-float {
   .gender-banner__link:hover .gender-banner__media img {
     transform: scale(1.03);
   }
+}
+
+/* --------------------------------------------------------------------------
+   Noir layer: black, gold and white
+   Dark areas (announcement bar, hero, promo, footer) use ink + gold; pages stay white.
+   -------------------------------------------------------------------------- */
+:root {
+  --color-ink: #0b0b0b;
+  --color-gold: #c9a24b;
+  --color-gold-light: #e8cf8a;
+  --color-gold-deep: #856318;
+  --on-dark: #fff;
+  --on-dark-muted: rgba(255, 255, 255, 0.72);
+  --on-dark-line: rgba(255, 255, 255, 0.16);
+}
+
+.button:not(.button--secondary):not(.button--light):not(.button--accent):not(.button--outline-light):hover {
+  --btn-bg: var(--color-gold-deep);
+  --btn-color: #fff;
+  --btn-border: var(--color-gold-deep);
+}
+
+.cart-count {
+  background: var(--color-gold);
+  color: var(--color-ink);
+}
+
+.cart-shipping__bar span {
+  background: linear-gradient(90deg, var(--color-gold-deep), var(--color-gold-light));
+}
+
+.cart-shipping__text .icon {
+  color: var(--color-gold-deep);
+}
+
+.feature__icon,
+.features li:nth-child(4n + 2) .feature__icon,
+.features li:nth-child(4n + 3) .feature__icon,
+.features li:nth-child(4n + 4) .feature__icon {
+  background: var(--color-accent-soft);
+  color: var(--color-accent-text);
+}
+
+/* Hero on a dark background */
+.hero--dark {
+  --hero-heading: var(--on-dark);
+  --hero-text: var(--on-dark-muted);
+}
+
+.hero--dark .eyebrow {
+  color: var(--color-gold-light);
+}
+
+.hero--dark .eyebrow::before {
+  background: var(--color-gold);
+}
+
+.hero--dark .hero__heading em {
+  color: var(--color-gold-light);
+}
+
+.hero--dark .hero__text {
+  color: var(--on-dark-muted);
+}
+
+.hero--dark .button {
+  --btn-bg: var(--color-gold);
+  --btn-color: var(--color-ink);
+  --btn-border: var(--color-gold);
+}
+
+.hero--dark .button:hover {
+  --btn-bg: #fff;
+  --btn-color: var(--color-ink);
+  --btn-border: #fff;
+}
+
+.hero--dark .button--secondary {
+  --btn-bg: transparent;
+  --btn-color: #fff;
+  --btn-border: rgba(255, 255, 255, 0.55);
+}
+
+.hero--dark .button--secondary:hover {
+  --btn-bg: #fff;
+  --btn-color: var(--color-ink);
+  --btn-border: #fff;
+}
+
+.hero--dark .hero__chips a {
+  color: var(--on-dark);
+}
+
+.hero--dark .hero__chips a:hover {
+  border-color: var(--color-gold);
+  color: var(--color-gold-light);
+}
+
+.hero--dark .hero__image,
+.hero--dark .hero__tile {
+  background: #1a1a1a;
+}
+
+.hero--dark .hero__tile-label {
+  background: var(--color-ink);
+  color: var(--color-gold-light);
+}
+
+.hero--dark :focus-visible {
+  outline-color: var(--color-gold-light);
+}
+
+/* Promo banner */
+.promo .eyebrow {
+  color: var(--color-gold-light);
+}
+
+.promo .eyebrow::before {
+  background: var(--color-gold);
+}
+
+.promo .button--accent {
+  --btn-bg: var(--color-gold);
+  --btn-color: var(--color-ink);
+  --btn-border: var(--color-gold);
+}
+
+.promo .button--accent:hover {
+  --btn-bg: #fff;
+  --btn-border: #fff;
+}
+
+.promo__decor span:nth-child(1) {
+  background: rgba(201, 162, 75, 0.1);
+}
+
+.promo__decor span:nth-child(2) {
+  background: var(--color-gold);
+  opacity: 0.16;
+}
+
+.promo__decor span:nth-child(3) {
+  border-top-color: var(--color-gold);
+  opacity: 0.35;
+}
+
+/* Footer */
+.site-footer {
+  background: var(--color-ink);
+  border-top: 2px solid var(--color-gold);
+  color: var(--on-dark-muted);
+}
+
+.site-footer__heading {
+  color: var(--color-gold-light);
+}
+
+.site-footer__about,
+.site-footer__links a,
+.site-footer__contact li {
+  color: var(--on-dark-muted);
+}
+
+.site-footer__links a:hover,
+.site-footer__contact a:hover {
+  color: var(--color-gold-light);
+}
+
+.site-footer__contact .icon {
+  color: var(--color-gold);
+}
+
+.site-footer__contact .icon-whatsapp {
+  color: #25d366;
+}
+
+.site-footer .social-links a {
+  background: transparent;
+  border-color: var(--on-dark-line);
+  color: var(--on-dark);
+}
+
+.site-footer .social-links a:hover {
+  background: var(--color-gold);
+  border-color: var(--color-gold);
+  color: var(--color-ink);
+}
+
+.site-footer__bottom {
+  border-top-color: var(--on-dark-line);
+}
+
+.site-footer__copyright {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.site-footer :focus-visible {
+  outline-color: var(--color-gold-light);
+}
+
+.site-footer .payment-icons svg {
+  background: #fff;
+  border-radius: 3px;
+}
+
+/* Logo on small thumbnails (cart, recommendations, search suggestions) */
+.predictive-search__media {
+  position: relative;
+  display: block;
+  flex: none;
+  width: 52px;
+  height: 52px;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+}
+
+.predictive-search__media > img {
+  width: 100%;
+  height: 100%;
+}
+
+.watermark--thumb {
+  width: 36%;
+  min-width: 20px;
+  max-width: 34px;
+}
+
+.watermark--thumb.watermark--chip {
+  padding: 2px;
+  border-radius: 3px;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.watermark--thumb.watermark--bottom_right,
+.watermark--thumb.watermark--bottom_left {
+  bottom: 3px;
+}
+
+.watermark--thumb.watermark--bottom_right,
+.watermark--thumb.watermark--top_right {
+  right: 3px;
+}
+
+.watermark--thumb.watermark--bottom_left {
+  left: 3px;
+}
+
+.watermark--thumb.watermark--top_right {
+  top: 3px;
+}
+
+.watermark--thumb.watermark--center {
+  width: 56%;
+  max-width: 64px;
 }

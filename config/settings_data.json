@@ -2,20 +2,20 @@
   "current": "Default",
   "presets": {
     "Default": {
-      "color_primary": "#14284B",
-      "color_accent": "#B08D57",
+      "color_primary": "#0B0B0B",
+      "color_accent": "#C9A24B",
       "color_success": "#1F6A43",
-      "color_text": "#1C1F2A",
-      "color_background": "#FBF8F3",
-      "color_surface": "#F3EDE4",
+      "color_text": "#111111",
+      "color_background": "#FFFFFF",
+      "color_surface": "#F6F4EF",
       "type_heading_font": "cormorant_n5",
       "type_body_font": "jost_n4",
       "card_image_ratio": "tall",
       "card_image_fit": "cover",
       "cart_type": "drawer",
-      "color_accent_text": "#80602C",
+      "color_accent_text": "#7A5C14",
       "color_sale": "#A51C30",
-      "color_border": "#E2D9CC",
+      "color_border": "#E6E1D5",
       "body_scale": 105,
       "cart_free_shipping_threshold": 2000
     }

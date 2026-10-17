@@ -3,14 +3,20 @@
   product image — including ones added later — carries the brand. The original image
   file in Shopify is not changed; the logo is layered on by the theme.
   Accepts:
-  - context: {String} 'card' (default) or 'gallery'
+  - context: {String} 'card' (default), 'gallery' or 'thumb' (small cart / search thumbnails)
 {%- endcomment -%}
 {%- if settings.watermark_enable -%}
   {%- liquid
     assign wm_context = context | default: 'card'
     assign wm_sizes = '84px'
+    assign wm_widths = '130, 260, 520'
+    assign wm_width = 520
     if wm_context == 'gallery'
       assign wm_sizes = '112px'
+    elsif wm_context == 'thumb'
+      assign wm_sizes = '34px'
+      assign wm_widths = '34, 68, 102'
+      assign wm_width = 102
     endif
     if settings.watermark_position == 'center'
       assign wm_sizes = '260px'
@@ -24,8 +30,8 @@
     {%- if wm_image != blank -%}
       {{
         wm_image
-        | image_url: width: 520
-        | image_tag: alt: '', loading: 'lazy', widths: '130, 260, 520', sizes: wm_sizes, draggable: 'false'
+        | image_url: width: wm_width
+        | image_tag: alt: '', loading: 'lazy', widths: wm_widths, sizes: wm_sizes, draggable: 'false'
       }}
     {%- else -%}
       <img

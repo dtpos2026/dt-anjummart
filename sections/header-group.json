@@ -37,8 +37,8 @@
       ],
       "settings": {
         "label": "Store announcements",
-        "background": "#14284B",
-        "text_color": "#FBF8F3",
+        "background": "#0B0B0B",
+        "text_color": "#E8CF8A",
         "speed": 5
       }
     },

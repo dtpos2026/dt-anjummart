@@ -5,7 +5,7 @@
     assign use_fallback_menu = false
   endif
 
-  assign fallback_handles = 'watches,ladies-bags,artificial-jewellery,dresses,shoes,new-arrivals,best-sellers' | split: ','
+  assign fallback_handles = 'watches,gold-watches,two-tone-watches,steel-watches,diver-watches,sport-watches,strap-watches,new-arrivals' | split: ','
 
   if customer
     assign account_url = routes.account_url
@@ -78,7 +78,7 @@
             </li>
             {%- for handle in fallback_handles -%}
               {%- assign c = collections[handle] -%}
-              {%- if c.id -%}
+              {%- if c.id and c.products_count > 0 -%}
                 <li class="site-nav__item">
                   <a class="site-nav__link" href="{{ c.url }}" {% if collection.handle == handle %}aria-current="page"{% endif %}>
                     {{- c.title | escape -}}
@@ -152,7 +152,7 @@
           </li>
           {%- for handle in fallback_handles -%}
             {%- assign c = collections[handle] -%}
-            {%- if c.id -%}
+            {%- if c.id and c.products_count > 0 -%}
               <li>
                 <a class="mobile-nav__link" href="{{ c.url }}" {% if collection.handle == handle %}aria-current="page"{% endif %}>
                   {{- c.title | escape -}}

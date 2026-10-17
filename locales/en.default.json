@@ -34,7 +34,7 @@
     "pause_announcements": "Pause announcements"
   },
   "header": {
-    "search_placeholder": "Search watches, bags, jewellery…",
+    "search_placeholder": "Search watches…",
     "cart_count": {
       "one": "{{ count }} item",
       "other": "{{ count }} items"
@@ -64,6 +64,7 @@
       "unavailable": "Unavailable",
       "in_stock": "In stock",
       "low_stock": "Only {{ count }} left in stock",
+      "photo_note": "The photo may show another dial colour. The colour you selected is as named above.",
       "on_sale": "Sale",
       "percent_off": "{{ percent }}% off",
       "you_save": "You save {{ amount }}",

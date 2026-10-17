@@ -2,7 +2,7 @@
 
 {%- liquid
   assign colors = 'blue,red,green' | split: ','
-  assign icon_map = 'watches:watch,ladies-bags:handbag,artificial-jewellery:jewellery,dresses:dress,shoes:shoe' | split: ','
+  assign icon_map = 'watches:watch,gold-watches:watch,two-tone-watches:watch,steel-watches:watch,diver-watches:watch,sport-watches:watch,strap-watches:watch' | split: ','
 -%}
 
 <div class="collection-hero">
@@ -21,7 +21,7 @@
 <div class="page-width section">
   <ul class="collection-list-grid" role="list">
     {%- for c in collections -%}
-      {%- if c.handle == 'frontpage' or c.handle == 'new-arrivals' or c.handle == 'best-sellers' or c.handle == 'sale' -%}
+      {%- if c.handle == 'frontpage' or c.handle == 'new-arrivals' or c.handle == 'best-sellers' or c.handle == 'sale' or c.products_count == 0 -%}
         {%- continue -%}
       {%- endif -%}
       {%- liquid

@@ -219,6 +219,10 @@
         </div>
       {%- endunless -%}
 
+      {%- unless product.has_only_default_variant -%}
+        <p class="product__photo-note" data-photo-note {% if current_variant.featured_media != blank %}hidden{% endif %}>{{ 'products.product.photo_note' | t }}</p>
+      {%- endunless -%}
+
       {%- if section.settings.size_guide_page != blank -%}
         {%- assign has_size_option = false -%}
         {%- for option in product.options -%}

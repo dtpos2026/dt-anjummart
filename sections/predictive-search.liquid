@@ -26,7 +26,10 @@
         {%- for product in products -%}
           <a class="predictive-search__item" href="{{ product.url }}" role="option" aria-selected="false">
             {%- if product.featured_media -%}
-              {{ product.featured_media | image_url: width: 120, height: 120, crop: 'center' | image_tag: loading: 'lazy', alt: '' }}
+              <span class="predictive-search__media">
+                {{ product.featured_media | image_url: width: 120, height: 120, crop: 'center' | image_tag: loading: 'lazy', alt: '' }}
+                {% render 'image-watermark', context: 'thumb' %}
+              </span>
             {%- else -%}
               <span class="predictive-search__thumb" aria-hidden="true"></span>
             {%- endif -%}

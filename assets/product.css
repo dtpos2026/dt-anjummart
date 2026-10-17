@@ -233,6 +233,18 @@
   color: var(--color-muted);
 }
 
+.product__photo-note {
+  margin: -8px 0 18px;
+  padding-left: 12px;
+  border-left: 2px solid var(--color-accent);
+  font-size: 0.82rem;
+  color: var(--color-muted);
+}
+
+.product__photo-note[hidden] {
+  display: none;
+}
+
 /* Options */
 .product__options {
   display: grid;

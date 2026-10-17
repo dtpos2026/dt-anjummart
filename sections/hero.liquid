@@ -1,7 +1,7 @@
 {%- liquid
-  assign category_handles = 'watches,ladies-bags,artificial-jewellery,dresses,shoes' | split: ','
-  assign category_icons = 'watch,handbag,jewellery,dress,shoe' | split: ','
-  assign category_labels = 'Watches,Ladies Bags,Jewellery,Dresses,Shoes' | split: ','
+  assign category_handles = 'watches,gold-watches,two-tone-watches,steel-watches,diver-watches,sport-watches' | split: ','
+  assign category_icons = 'watch,watch,watch,watch,watch,watch' | split: ','
+  assign category_labels = 'Watches,Gold Watches,Two-Tone Watches,Steel Watches,Diver Watches,Sport Watches' | split: ','
   assign tile_colors = 'blue,red,green,white' | split: ','
 
   assign collage_products = section.settings.collage_collection.products | where: 'featured_media'
@@ -10,7 +10,7 @@
 -%}
 
 <section
-  class="hero"
+  class="hero{% if section.settings.dark %} hero--dark{% endif %}"
   aria-labelledby="HeroHeading-{{ section.id }}"
   style="--hero-bg: {{ section.settings.background }};"
 >
@@ -150,20 +150,20 @@
       "type": "text",
       "id": "eyebrow",
       "label": "Small heading",
-      "default": "Watches · Bags · Jewellery · Fashion · Shoes"
+      "default": "Watches · Cash on Delivery"
     },
     {
       "type": "inline_richtext",
       "id": "heading",
       "label": "Heading",
-      "info": "Italic text is highlighted in brand blue.",
-      "default": "Everything You Love, <em>All in One Place</em>"
+      "info": "Italic text is highlighted in gold.",
+      "default": "Time, <em>Worn Well</em>"
     },
     {
       "type": "text",
       "id": "text",
       "label": "Supporting text",
-      "default": "Discover Watches, Bags, Jewellery, Fashion & More."
+      "default": "Discover the RUSTET collection of classic, sport and two-tone watches."
     },
     {
       "type": "text",
@@ -181,7 +181,7 @@
       "type": "text",
       "id": "button_label_2",
       "label": "Secondary button label",
-      "default": "Explore Categories"
+      "default": "Explore Collections"
     },
     {
       "type": "url",
@@ -199,7 +199,13 @@
       "type": "color",
       "id": "background",
       "label": "Background",
-      "default": "#F3EDE4"
+      "default": "#0B0B0B"
+    },
+    {
+      "type": "checkbox",
+      "id": "dark",
+      "label": "Light text (use with a dark background)",
+      "default": true
     },
     {
       "type": "header",

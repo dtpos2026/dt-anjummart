@@ -1,5 +1,5 @@
 {%- liquid
-  assign category_handles = 'watches,ladies-bags,artificial-jewellery,dresses,shoes' | split: ','
+  assign category_handles = 'watches,gold-watches,two-tone-watches,steel-watches,diver-watches,sport-watches,strap-watches' | split: ','
   assign threshold = settings.cart_free_shipping_threshold | default: 0 | times: 100
   assign show_shipping_bar = false
   if threshold > 0 and cart.requires_shipping and cart.currency.iso_code == shop.currency

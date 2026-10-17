@@ -22,6 +22,7 @@
                   | image_url: width: 180
                   | image_tag: loading: 'lazy', widths: '90, 135, 180', sizes: '72px', alt: ''
                 }}
+                {% render 'image-watermark', context: 'thumb' %}
               {%- endif -%}
             </a>
             <div class="cart-rec__info">

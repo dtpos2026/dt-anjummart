@@ -984,6 +984,8 @@
     var stock = root.querySelector('[data-stock]');
     var sku = root.querySelector('[data-sku]');
     var buyNow = root.querySelector('[data-buy-now]');
+    var photoNote = root.querySelector('[data-photo-note]');
+    if (photoNote) photoNote.hidden = !variant || !!variant.featured_media_id;
 
     var sticky = document.querySelector('[data-sticky-cart]');
     var stickyButton = sticky && sticky.querySelector('[data-sticky-button]');

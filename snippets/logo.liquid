@@ -4,12 +4,17 @@
   - height: {Number} rendered height in px (used for width/height attributes)
   - lazy: {Boolean} lazy-load (default false)
   - class: {String} optional class
+  - on_dark: {Boolean} use the white/gold version on dark backgrounds
 {%- endcomment -%}
 {%- liquid
   assign logo_h = height | default: 72
   assign loading = 'eager'
   if lazy
     assign loading = 'lazy'
+  endif
+  assign logo_file = 'anjum-mart-logo.png'
+  if on_dark
+    assign logo_file = 'anjum-mart-logo-dark.png'
   endif
 -%}
 {%- if settings.logo != blank -%}
@@ -27,8 +32,8 @@
     assign s3 = logo_h | times: 3 | append: 'x'
   -%}
   <img
-    src="{{ 'anjum-mart-logo.png' | asset_img_url: s2 }}"
-    srcset="{{ 'anjum-mart-logo.png' | asset_img_url: s1 }} 1x, {{ 'anjum-mart-logo.png' | asset_img_url: s2 }} 2x, {{ 'anjum-mart-logo.png' | asset_img_url: s3 }} 3x"
+    src="{{ logo_file | asset_img_url: s2 }}"
+    srcset="{{ logo_file | asset_img_url: s1 }} 1x, {{ logo_file | asset_img_url: s2 }} 2x, {{ logo_file | asset_img_url: s3 }} 3x"
     alt="{{ shop.name | escape }}"
     width="{{ logo_h }}"
     height="{{ logo_h }}"

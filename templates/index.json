@@ -3,78 +3,79 @@
     "hero": {
       "type": "hero",
       "settings": {
-        "eyebrow": "Watches · Bags · Jewellery · Fashion · Shoes",
-        "heading": "Everything You Love, <em>All in One Place</em>",
-        "text": "Discover Watches, Bags, Jewellery, Fashion & More.",
-        "button_label": "Shop Now",
-        "button_link": "shopify://collections/all",
+        "eyebrow": "The RUSTET collection",
+        "heading": "Time, <em>Worn Well</em>",
+        "text": "Classic, sport and two-tone watches. Choose your finish and dial colour.",
+        "button_label": "Shop Watches",
+        "button_link": "shopify://collections/watches",
         "button_label_2": "Explore Collections",
-        "button_link_2": "",
+        "button_link_2": "shopify://collections",
         "show_chips": true,
-        "background": "#F3EDE4",
-        "collage_collection": "new-arrivals",
-        "collage_label": "New arrivals"
+        "background": "#0B0B0B",
+        "collage_collection": "watches",
+        "collage_label": "New in",
+        "dark": true
       }
     },
     "categories": {
       "type": "category-cards",
       "blocks": {
-        "watches": {
+        "gold-watches": {
           "type": "category",
           "settings": {
-            "collection": "watches",
+            "collection": "gold-watches",
             "title": "",
             "icon": "watch",
             "color": "blue"
           }
         },
-        "ladies-bags": {
+        "two-tone-watches": {
           "type": "category",
           "settings": {
-            "collection": "ladies-bags",
+            "collection": "two-tone-watches",
             "title": "",
-            "icon": "handbag",
-            "color": "red"
-          }
-        },
-        "artificial-jewellery": {
-          "type": "category",
-          "settings": {
-            "collection": "artificial-jewellery",
-            "title": "",
-            "icon": "jewellery",
-            "color": "green"
-          }
-        },
-        "dresses": {
-          "type": "category",
-          "settings": {
-            "collection": "dresses",
-            "title": "",
-            "icon": "dress",
+            "icon": "watch",
             "color": "blue"
           }
         },
-        "shoes": {
+        "steel-watches": {
           "type": "category",
           "settings": {
-            "collection": "shoes",
+            "collection": "steel-watches",
             "title": "",
-            "icon": "shoe",
-            "color": "red"
+            "icon": "watch",
+            "color": "blue"
+          }
+        },
+        "diver-watches": {
+          "type": "category",
+          "settings": {
+            "collection": "diver-watches",
+            "title": "",
+            "icon": "watch",
+            "color": "blue"
+          }
+        },
+        "sport-watches": {
+          "type": "category",
+          "settings": {
+            "collection": "sport-watches",
+            "title": "",
+            "icon": "watch",
+            "color": "blue"
           }
         }
       },
       "block_order": [
-        "watches",
-        "ladies-bags",
-        "artificial-jewellery",
-        "dresses",
-        "shoes"
+        "gold-watches",
+        "two-tone-watches",
+        "steel-watches",
+        "diver-watches",
+        "sport-watches"
       ],
       "settings": {
-        "eyebrow": "Shop by category",
-        "heading": "Find exactly what you love",
+        "eyebrow": "Collections",
+        "heading": "Shop by style",
         "subheading": "",
         "show_view_all": true,
         "show_count": true,
@@ -85,9 +86,9 @@
       "type": "product-rail",
       "settings": {
         "eyebrow": "Our picks",
-        "heading": "Featured Products",
+        "heading": "Featured Watches",
         "subheading": "",
-        "collection": "frontpage",
+        "collection": "watches",
         "products_to_show": 8,
         "show_view_all": true,
         "view_all_label": "View all",
@@ -110,29 +111,16 @@
     "promo": {
       "type": "promo-banner",
       "settings": {
-        "eyebrow": "New season",
-        "heading": "Fresh styles for every occasion",
-        "text": "Explore new dresses, bags and accessories to complete your look.",
-        "button_label": "Shop New Arrivals",
-        "button_link": "shopify://collections/new-arrivals",
-        "button_label_2": "Browse all categories",
-        "button_link_2": "",
-        "background": "#14284B",
-        "text_color": "#FBF8F3",
+        "eyebrow": "RUSTET",
+        "heading": "Gold, steel and two-tone",
+        "text": "From classic day-date to bold octagon and diver styles.",
+        "button_label": "Shop Gold Watches",
+        "button_link": "shopify://collections/gold-watches",
+        "button_label_2": "All collections",
+        "button_link_2": "shopify://collections",
+        "background": "#0B0B0B",
+        "text_color": "#FFFFFF",
         "tight": false
-      }
-    },
-    "best-sellers": {
-      "type": "product-rail",
-      "settings": {
-        "eyebrow": "",
-        "heading": "Best Sellers",
-        "subheading": "",
-        "collection": "best-sellers",
-        "products_to_show": 8,
-        "show_view_all": true,
-        "view_all_label": "Shop best sellers",
-        "surface": false
       }
     },
     "special-offers": {
@@ -155,8 +143,8 @@
           "type": "feature",
           "settings": {
             "icon": "badge",
-            "title": "Quality Products",
-            "text": "A curated range of watches, bags, jewellery, dresses and shoes.",
+            "title": "Curated Watches",
+            "text": "Classic, sport and two-tone styles from RUSTET.",
             "auto_link": "none",
             "link": "",
             "link_label": ""
@@ -206,47 +194,14 @@
         "heading": "",
         "surface": true
       }
-    },
-    "gender": {
-      "type": "gender-banners",
-      "blocks": {
-        "him": {
-          "type": "tile",
-          "settings": {
-            "title": "For Him",
-            "text": "Watches, chains and sneakers",
-            "button_label": "Shop men",
-            "tag": "men"
-          }
-        },
-        "her": {
-          "type": "tile",
-          "settings": {
-            "title": "For Her",
-            "text": "Watches, bags, jewellery and dresses",
-            "button_label": "Shop women",
-            "tag": "women"
-          }
-        }
-      },
-      "block_order": [
-        "him",
-        "her"
-      ],
-      "settings": {
-        "eyebrow": "Curated edits",
-        "heading": "Shop by style"
-      }
     }
   },
   "order": [
     "hero",
     "categories",
-    "gender",
     "featured",
     "new-arrivals",
     "promo",
-    "best-sellers",
     "special-offers",
     "service"
   ]

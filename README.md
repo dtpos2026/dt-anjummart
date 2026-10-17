@@ -1,28 +1,34 @@
 # Anjum Mart — Shopify theme
 
-A custom Online Store 2.0 theme for **Anjum Mart** (`anjummart-mux.myshopify.com`), built for selling
-watches, ladies bags, artificial jewellery, dresses and shoes from one store.
+A custom Online Store 2.0 theme for **Anjum Mart** (`mhwk5r-ks.myshopify.com`), built for selling
+RUSTET watches (the catalogue currently holds watches only).
 
 It is a native Shopify theme (Liquid + vanilla JavaScript, no build step, no third-party apps), so the
 cart, checkout, customer accounts, search, filters and product recommendations all run on Shopify itself.
 No API keys or secrets are stored in this repository.
 
-## Brand system (Ivory & Indigo)
+## Brand system (Black, Gold & White)
 
 | Token | Value | Use |
 | --- | --- | --- |
-| Background / surface | `#FBF8F3` / `#F3EDE4` | Page and soft sections |
-| Text / muted | `#1C1F2A` / derived | Copy |
-| Primary (indigo, from the logo blue) | `#14284B` | Buttons, links, announcement bar |
-| Detail accent (antique gold) | `#B08D57` | Hairlines and icons only |
-| Accent text | `#80602C` | Small labels (AA contrast) |
+| Background / soft surface | `#FFFFFF` / `#F6F4EF` | Pages and soft sections |
+| Text / muted | `#111111` / derived | Copy |
+| Primary (ink black) | `#0B0B0B` | Buttons, announcement bar, hero, promo and footer backgrounds |
+| Detail accent (gold) | `#C9A24B` | Hairlines, icons, hero and promo buttons, cart badge |
+| Accent text | `#7A5C14` | Small gold labels on white (6.2:1 contrast) |
+| Gold on black | `#E8CF8A` | Labels and italic headings on dark areas (12.9:1) |
 | Sale and error (crimson) | `#A51C30` | Sale price, badges, errors |
-| Success | `#1F6A43` | Discounts, confirmations |
+| Success | `#1F6A43` | Stock and confirmations |
 | Fonts | Cormorant (headings) + Jost (body) | Shopify font library |
 
-All are theme settings (*Customize → Theme settings → Colors / Typography*). The logo keeps its own colours and
-always sits on a light background. Corners are near-square, shadows are replaced by hairlines, and buttons are
+All are theme settings (*Customize → Theme settings → Colors / Typography*). The dark layer ("Noir") is the
+last block of `assets/base.css`. Corners are near-square, shadows are replaced by hairlines, and buttons are
 uppercase with letter-spacing.
+
+**Logo.** `assets/anjum-mart-logo.png` is the Anjum Mart logo recoloured black + gold for light backgrounds;
+`assets/anjum-mart-logo-dark.png` is white + gold for dark backgrounds (footer). Only the colours changed;
+the shapes are the original artwork. Upload a logo in *Theme settings → Logo* to override both. The favicon,
+app icon and social share image are rebuilt from the same artwork.
 
 ## What's included
 
@@ -49,28 +55,24 @@ Created in Shopify admin through the Admin API:
 | Collection | Handle | How products get in |
 | --- | --- | --- |
 | Watches | `watches` | Product type **Watches** *or* tag `watches` |
-| Ladies Bags | `ladies-bags` | Product type **Ladies Bags** *or* tag `ladies-bags` |
-| Artificial Jewellery | `artificial-jewellery` | Product type **Artificial Jewellery** *or* tag `artificial-jewellery` |
-| Dresses | `dresses` | Product type **Dresses** *or* tag `dresses` |
-| Shoes | `shoes` | Product type **Shoes** *or* tag `shoes` |
+| Gold / Two-Tone / Steel Watches | `gold-watches`, `two-tone-watches`, `steel-watches` | Tag `gold`, `two-tone`, `steel` |
+| Diver / Sport / Strap Watches | `diver-watches`, `sport-watches`, `strap-watches` | Tag `diver`, `sport`, `strap` |
 | New Arrivals | `new-arrivals` | All priced products, newest first |
-| Best Sellers | `best-sellers` | All priced products, ranked by Shopify's real sales data (newest products until orders exist) |
-| Sale | `sale` | Products whose compare-at price is higher than the price |
-| Featured Products | `frontpage` | Shopify's existing "Home page" collection, renamed — add products manually |
+| Sale | `sale` | Products whose compare-at price is higher than the price (empty until you set one) |
+| Featured Products | `frontpage` | Shopify's existing "Home page" collection — add products manually |
 
-A navigation menu **Anjum Mart main menu** (`anjum-main-menu`) links Home, the five categories, New Arrivals
-and Best Sellers. The live Horizon theme and its menus were not changed.
+A navigation menu **Anjum Mart main menu** (`anjum-main-menu`) links Home, Watches (with the style collections
+as a dropdown), New Arrivals and Contact. There is deliberately no "Best Sellers" collection: nothing has
+been sold yet, so the theme never claims one.
 
-### Demo catalog
+### Catalogue
 
-So the store can be previewed fully, 40 demo products were added from Shopify's sample catalogs
-(mock.shop photos) and renamed for Anjum Mart: 9 watches (men and women), 8 bags, 9 jewellery pieces,
-7 dresses and 7 shoes. Prices are placeholder amounts in PKR, all Rs. 2,000 or more, and a few have a
-compare-at price so the Sale section can be seen. Every demo product is tagged **`demo`**; 24 unused
-sample items are set to *Draft* and tagged **`demo-unused`**.
-
-To replace them: *Products* → search `tag:demo` → edit or delete. Delete the `demo-unused` drafts the same way.
-Review titles, prices, variants and descriptions before selling — they are examples, not real stock.
+The 14 RUSTET watch listings come from the supplier PDF (63 pages, 44 unique photos; duplicate pages were
+skipped). Each listing has Colour variants, SKU `RST-…`, tags for the style collections and a description
+written only from what the brand's own images state (no invented specifications). Listings are **Draft**:
+the prices are estimates (no PKR retail price was published), so confirm them, set stock, then activate the
+products (*Products → select → Set as active*). Dial colours without their own photo show a short note on
+the product page. The store logo is layered over every product photo by the theme.
 
 ## Installing / previewing
 
@@ -79,7 +81,7 @@ The theme is uploaded to the store as an **unpublished** theme named *Anjum Mart
 
 To keep the store in sync with this repository you can instead connect it from GitHub:
 **Online Store → Themes → Add theme → Connect from GitHub** → repository `dtpos2026/dt-anjummart`, this branch.
-With Shopify CLI: `shopify theme dev --store anjummart-mux` (local preview) or `shopify theme push --unpublished`.
+With Shopify CLI: `shopify theme dev --store mhwk5r-ks` (local preview) or `shopify theme push --unpublished`.
 
 ## Checkout on the Basic plan
 
@@ -92,8 +94,8 @@ information/shipping/payment steps) on **Shopify Plus**. On Basic:
 
 ## Things the store owner needs to do
 
-1. **Add products.** Give each one a product type (or tag) from the table above so it lands in the right
-   category. Add compare-at prices only for real discounts — the Sale badge and *x% off* are calculated from them.
+1. **Confirm the watch prices and stock,** then activate the listings. For new products, use product type
+   **Watches** and the style tags above so they land in the right collections. Add compare-at prices only for real discounts — the Sale badge and *x% off* are calculated from them.
 2. **Write store policies** in *Settings → Policies*. Only a Privacy policy exists today. Shipping, Refund and
    Terms of Service links appear in the footer and on product pages automatically once written.
 3. **Payments, Cash on Delivery, shipping rates and taxes** are configured in Shopify *Settings*. The theme

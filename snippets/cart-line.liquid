@@ -19,6 +19,7 @@
         | image_url: width: 240
         | image_tag: loading: 'lazy', widths: '120, 180, 240', sizes: '84px', alt: ''
       }}
+      {% render 'image-watermark', context: 'thumb' %}
     {%- endif -%}
   </a>
 

@@ -1,5 +1,5 @@
 {%- liquid
-  assign fallback_handles = 'watches,ladies-bags,artificial-jewellery,dresses,shoes,new-arrivals,best-sellers,sale' | split: ','
+  assign fallback_handles = 'watches,gold-watches,two-tone-watches,steel-watches,diver-watches,sport-watches,strap-watches,new-arrivals,sale' | split: ','
   assign shop_menu = section.settings.shop_menu
   assign help_menu = section.settings.help_menu
 
@@ -15,7 +15,7 @@
   <div class="brand-stripe" aria-hidden="true"></div>
   <div class="page-width site-footer__top">
     <div class="site-footer__brand">
-      <a href="{{ routes.root_url }}">{% render 'logo', height: 96, lazy: true %}</a>
+      <a href="{{ routes.root_url }}">{% render 'logo', height: 96, lazy: true, on_dark: true %}</a>
       {%- if section.settings.about != blank -%}
         <div class="site-footer__about rte">{{ section.settings.about }}</div>
       {%- endif -%}
@@ -32,7 +32,7 @@
         {%- else -%}
           {%- for handle in fallback_handles -%}
             {%- assign c = collections[handle] -%}
-            {%- if c.id -%}
+            {%- if c.id and c.products_count > 0 -%}
               <li><a href="{{ c.url }}">{{ c.title | escape }}</a></li>
             {%- endif -%}
           {%- endfor -%}
@@ -135,7 +135,7 @@
       "type": "richtext",
       "id": "about",
       "label": "Brand description",
-      "default": "<p>Anjum Mart brings watches, ladies bags, artificial jewellery, dresses and shoes together in one convenient online store.</p>"
+      "default": "<p>Anjum Mart is an online store for RUSTET watches in gold, steel and two-tone finishes.</p>"
     },
     {
       "type": "text",
