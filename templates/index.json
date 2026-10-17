@@ -1,150 +1,183 @@
 {
   "sections": {
-    "hero": {
-      "type": "hero",
-      "settings": {
-        "eyebrow": "The RUSTET collection",
-        "heading": "Time, <em>Worn Well</em>",
-        "text": "Classic, sport and two-tone watches. Choose your finish and dial colour.",
-        "button_label": "Shop Watches",
-        "button_link": "shopify://collections/watches",
-        "button_label_2": "Explore Collections",
-        "button_link_2": "shopify://collections",
-        "show_chips": true,
-        "background": "#0B0B0B",
-        "collage_collection": "watches",
-        "collage_label": "New in",
-        "dark": true
-      }
-    },
-    "categories": {
-      "type": "category-cards",
+    "slideshow": {
+      "type": "slideshow",
       "blocks": {
-        "gold-watches": {
-          "type": "category",
+        "men": {
+          "type": "slide",
           "settings": {
-            "collection": "gold-watches",
-            "title": "",
-            "icon": "watch",
-            "color": "blue"
+            "art": "men",
+            "image_alt": "Three RUSTET men's watches: gold with a black dial, gold and silver with a royal blue dial, and silver with a green dial",
+            "eyebrow": "Men's Watches",
+            "heading": "Bold Style, <em>Everyday Wear</em>",
+            "text": "RUSTET quartz watches in gold, silver, two-tone and black. Free delivery all over Pakistan.",
+            "button_label": "Shop Men's Watches",
+            "button_link": "shopify://collections/mens-watches",
+            "button_label_2": "Shop All",
+            "button_link_2": "shopify://collections/all"
           }
         },
-        "two-tone-watches": {
-          "type": "category",
+        "women": {
+          "type": "slide",
           "settings": {
-            "collection": "two-tone-watches",
-            "title": "",
-            "icon": "watch",
-            "color": "blue"
+            "art": "women",
+            "image_alt": "Three MOONSTON ladies watches: two rose gold with pink dials and a two-tone with an emerald green dial",
+            "eyebrow": "Women's Watches",
+            "heading": "Sparkle That <em>Suits You</em>",
+            "text": "MOONSTON ladies watches with crystal-style detailing in rose gold and two-tone finishes.",
+            "button_label": "Shop Women's Watches",
+            "button_link": "shopify://collections/womens-watches",
+            "button_label_2": "Shop All",
+            "button_link_2": "shopify://collections/all"
           }
         },
-        "steel-watches": {
-          "type": "category",
+        "jewellery": {
+          "type": "slide",
           "settings": {
-            "collection": "steel-watches",
-            "title": "",
-            "icon": "watch",
-            "color": "blue"
-          }
-        },
-        "diver-watches": {
-          "type": "category",
-          "settings": {
-            "collection": "diver-watches",
-            "title": "",
-            "icon": "watch",
-            "color": "blue"
-          }
-        },
-        "sport-watches": {
-          "type": "category",
-          "settings": {
-            "collection": "sport-watches",
-            "title": "",
-            "icon": "watch",
-            "color": "blue"
+            "art": "jewellery",
+            "image_alt": "A silver and white mirror stone jewellery set and a green and gold bridal jewellery set",
+            "eyebrow": "Bridal Jewellery",
+            "heading": "Complete Your <em>Traditional Look</em>",
+            "text": "Necklace, earrings and maang tikka sets for weddings, Mehndi and Eid.",
+            "button_label": "Shop Jewellery",
+            "button_link": "shopify://collections/artificial-jewellery",
+            "button_label_2": "Shop All",
+            "button_link_2": "shopify://collections/all"
           }
         }
       },
       "block_order": [
-        "gold-watches",
-        "two-tone-watches",
-        "steel-watches",
-        "diver-watches",
-        "sport-watches"
+        "men",
+        "women",
+        "jewellery"
       ],
       "settings": {
-        "eyebrow": "Collections",
-        "heading": "Shop by style",
+        "autoplay": true,
+        "speed": 6
+      }
+    },
+    "tiles": {
+      "type": "collection-tiles",
+      "blocks": {
+        "mens": {
+          "type": "tile",
+          "settings": {
+            "collection": "mens-watches",
+            "title": "Men's Watches",
+            "subtitle": "RUSTET quartz",
+            "cta": "Shop now",
+            "art": "mens"
+          }
+        },
+        "womens": {
+          "type": "tile",
+          "settings": {
+            "collection": "womens-watches",
+            "title": "Women's Watches",
+            "subtitle": "MOONSTON crystal-style",
+            "cta": "Shop now",
+            "art": "womens"
+          }
+        },
+        "jewellery": {
+          "type": "tile",
+          "settings": {
+            "collection": "artificial-jewellery",
+            "title": "Jewellery",
+            "subtitle": "Necklace, earrings and maang tikka",
+            "cta": "Shop now",
+            "art": "jewellery"
+          }
+        }
+      },
+      "block_order": [
+        "mens",
+        "womens",
+        "jewellery"
+      ],
+      "settings": {
+        "eyebrow": "",
+        "heading": "Shop by category",
         "subheading": "",
-        "show_view_all": true,
-        "show_count": true,
         "surface": false
       }
     },
-    "featured": {
+    "mens-watches": {
       "type": "product-rail",
       "settings": {
-        "eyebrow": "Our picks",
-        "heading": "Featured Watches",
+        "eyebrow": "",
+        "heading": "Men's Watches",
         "subheading": "",
-        "collection": "watches",
+        "collection": "mens-watches",
+        "layout": "grid",
+        "columns": "3",
         "products_to_show": 8,
         "show_view_all": true,
-        "view_all_label": "View all",
+        "view_all_label": "View all men's watches",
         "surface": false
       }
     },
-    "new-arrivals": {
+    "delivery": {
+      "type": "delivery-banner",
+      "settings": {
+        "eyebrow": "Shop smart!",
+        "heading": "<em>Free</em> Delivery",
+        "text": "All over Pakistan on every order. Cash on Delivery available.",
+        "button_label": "Shop all products",
+        "button_link": "shopify://collections/all",
+        "art": "delivery"
+      }
+    },
+    "womens-watches": {
       "type": "product-rail",
       "settings": {
-        "eyebrow": "Just in",
-        "heading": "New Arrivals",
+        "eyebrow": "",
+        "heading": "Women's Watches",
         "subheading": "",
-        "collection": "new-arrivals",
+        "collection": "womens-watches",
+        "layout": "grid",
+        "columns": "3",
         "products_to_show": 8,
         "show_view_all": true,
-        "view_all_label": "Shop new arrivals",
+        "view_all_label": "View all women's watches",
         "surface": true
       }
     },
-    "promo": {
-      "type": "promo-banner",
-      "settings": {
-        "eyebrow": "RUSTET",
-        "heading": "Gold, steel and two-tone",
-        "text": "From classic day-date to bold octagon and diver styles.",
-        "button_label": "Shop Gold Watches",
-        "button_link": "shopify://collections/gold-watches",
-        "button_label_2": "All collections",
-        "button_link_2": "shopify://collections",
-        "background": "#0B0B0B",
-        "text_color": "#FFFFFF",
-        "tight": false
-      }
-    },
-    "special-offers": {
+    "jewellery": {
       "type": "product-rail",
       "settings": {
-        "eyebrow": "On sale",
-        "heading": "Special Offers",
-        "subheading": "",
-        "collection": "sale",
+        "eyebrow": "",
+        "heading": "Bridal Jewellery Sets",
+        "subheading": "Necklace, earrings and maang tikka in every set",
+        "collection": "artificial-jewellery",
+        "layout": "grid",
+        "columns": "3",
         "products_to_show": 8,
         "show_view_all": true,
-        "view_all_label": "Shop all offers",
-        "surface": true
+        "view_all_label": "View all jewellery",
+        "surface": false
       }
     },
     "service": {
       "type": "trust-features",
       "blocks": {
-        "quality": {
+        "delivery": {
+          "type": "feature",
+          "settings": {
+            "icon": "truck",
+            "title": "Free Delivery",
+            "text": "All over Pakistan on every order.",
+            "auto_link": "shipping_policy",
+            "link": "",
+            "link_label": "Shipping policy"
+          }
+        },
+        "cod": {
           "type": "feature",
           "settings": {
             "icon": "badge",
-            "title": "Curated Watches",
-            "text": "Classic, sport and two-tone styles from RUSTET.",
+            "title": "Cash on Delivery",
+            "text": "Pay the courier when your parcel arrives.",
             "auto_link": "none",
             "link": "",
             "link_label": ""
@@ -155,39 +188,28 @@
           "settings": {
             "icon": "lock",
             "title": "Secure Checkout",
-            "text": "Pay safely through Shopify's encrypted checkout.",
+            "text": "Your details are protected at Shopify's encrypted checkout.",
             "auto_link": "none",
             "link": "",
             "link_label": ""
-          }
-        },
-        "delivery": {
-          "type": "feature",
-          "settings": {
-            "icon": "truck",
-            "title": "Delivery Information",
-            "text": "Shipping options and charges are shown at checkout.",
-            "auto_link": "shipping_policy",
-            "link": "",
-            "link_label": "Shipping policy"
           }
         },
         "support": {
           "type": "feature",
           "settings": {
             "icon": "support",
-            "title": "Customer Support",
-            "text": "Questions about a product or order? We're here to help.",
+            "title": "WhatsApp Support",
+            "text": "Questions about a product or an order? Message us.",
             "auto_link": "whatsapp",
             "link": "",
-            "link_label": "Contact us"
+            "link_label": "Chat with us"
           }
         }
       },
       "block_order": [
-        "quality",
-        "secure",
         "delivery",
+        "cod",
+        "secure",
         "support"
       ],
       "settings": {
@@ -197,12 +219,12 @@
     }
   },
   "order": [
-    "hero",
-    "categories",
-    "featured",
-    "new-arrivals",
-    "promo",
-    "special-offers",
+    "slideshow",
+    "tiles",
+    "mens-watches",
+    "delivery",
+    "womens-watches",
+    "jewellery",
     "service"
   ]
 }

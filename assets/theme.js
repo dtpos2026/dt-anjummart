@@ -592,6 +592,10 @@
             return;
           }
           if (res.data.product_id) CartRecs.lastSource = String(res.data.product_id);
+          if (QuickView.isOpen()) {
+            button = QuickView.opener || document.body;
+            QuickView.close(true);
+          }
           var drawer = getDrawer(self.drawerId);
           var wasOpen = drawer && openDrawer === drawer;
           self.renderSections(res.data.sections);
@@ -1428,6 +1432,252 @@
   }
 
   /* ------------------------------------------------------------------
+     Slideshow (home page hero)
+     ------------------------------------------------------------------ */
+  function Slideshow(root) {
+    var self = this;
+    this.root = root;
+    this.track = root.querySelector('[data-slideshow-track]');
+    this.slides = Array.prototype.slice.call(root.querySelectorAll('[data-slide]'));
+    this.dots = Array.prototype.slice.call(root.querySelectorAll('[data-slideshow-dot]'));
+    this.controls = root.querySelector('[data-slideshow-controls]');
+    this.toggle = root.querySelector('[data-slideshow-toggle]');
+    this.index = 0;
+    this.timer = null;
+    this.userPaused = false;
+    this.hovering = false;
+    this.focusing = false;
+    var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var inEditor = !!(window.Shopify && window.Shopify.designMode);
+    this.autoplay = root.getAttribute('data-autoplay') === 'true' && !reduced && !inEditor;
+    this.speed = (parseInt(root.getAttribute('data-speed'), 10) || 6) * 1000;
+    if (this.slides.length < 2) return;
+    if (this.controls) this.controls.hidden = false;
+    if (this.toggle && !this.autoplay) this.toggle.hidden = true;
+
+    var prev = root.querySelector('[data-slideshow-prev]');
+    var next = root.querySelector('[data-slideshow-next]');
+    if (prev) prev.addEventListener('click', function () { self.go(self.index - 1, true); });
+    if (next) next.addEventListener('click', function () { self.go(self.index + 1, true); });
+    this.dots.forEach(function (dot) {
+      dot.addEventListener('click', function () { self.go(parseInt(dot.getAttribute('data-slideshow-dot'), 10), true); });
+    });
+    if (this.toggle) {
+      this.toggle.addEventListener('click', function () {
+        self.userPaused = !self.userPaused;
+        self.syncToggle();
+        self.restart();
+      });
+    }
+    root.addEventListener('mouseenter', function () { self.hovering = true; self.restart(); });
+    root.addEventListener('mouseleave', function () { self.hovering = false; self.restart(); });
+    // Keyboard focus pauses the rotation; a mouse click on a control does not
+    root.addEventListener('focusin', function (e) {
+      self.focusing = !!(e.target.matches && e.target.matches(':focus-visible'));
+      self.restart();
+    });
+    root.addEventListener('focusout', function (e) {
+      if (!root.contains(e.relatedTarget)) {
+        self.focusing = false;
+        self.restart();
+      }
+    });
+    root.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowLeft') self.go(self.index - 1, true);
+      else if (e.key === 'ArrowRight') self.go(self.index + 1, true);
+    });
+    var startX = null;
+    root.addEventListener('touchstart', function (e) { startX = e.touches.length === 1 ? e.touches[0].clientX : null; }, { passive: true });
+    root.addEventListener('touchend', function (e) {
+      if (startX === null) return;
+      var dx = e.changedTouches[0].clientX - startX;
+      startX = null;
+      if (Math.abs(dx) > 48) self.go(self.index + (dx < 0 ? 1 : -1), true);
+    }, { passive: true });
+    document.addEventListener('visibilitychange', function () {
+      if (!root.isConnected) return;
+      self.restart();
+    });
+    this.syncToggle();
+    this.restart();
+  }
+
+  Slideshow.prototype.running = function () {
+    return this.autoplay && !this.userPaused && !this.hovering && !this.focusing && !document.hidden;
+  };
+
+  Slideshow.prototype.go = function (i, byUser) {
+    var total = this.slides.length;
+    i = ((i % total) + total) % total;
+    if (i === this.index && this.slides[i].classList.contains('is-active')) return;
+    this.slides[this.index].classList.remove('is-active');
+    if (this.dots[this.index]) {
+      this.dots[this.index].classList.remove('is-active');
+      this.dots[this.index].removeAttribute('aria-current');
+    }
+    this.index = i;
+    this.slides[i].classList.add('is-active');
+    if (this.dots[i]) {
+      this.dots[i].classList.add('is-active');
+      this.dots[i].setAttribute('aria-current', 'true');
+    }
+    // A user-initiated change keeps its slide on screen for a full interval
+    this.restart();
+  };
+
+  Slideshow.prototype.syncToggle = function () {
+    if (!this.toggle) return;
+    this.toggle.setAttribute('aria-pressed', this.userPaused ? 'true' : 'false');
+    var label = this.userPaused
+      ? this.toggle.getAttribute('data-label-play') || strings.slidePlay
+      : this.toggle.getAttribute('data-label-pause') || strings.slidePause;
+    if (label) this.toggle.setAttribute('aria-label', label);
+  };
+
+  Slideshow.prototype.restart = function () {
+    var self = this;
+    clearTimeout(this.timer);
+    // Announce changes politely only when the visitor drives them
+    if (this.track) this.track.setAttribute('aria-live', this.running() ? 'off' : 'polite');
+    if (!this.running()) return;
+    this.timer = setTimeout(function () {
+      self.go(self.index + 1, false);
+    }, this.speed);
+  };
+
+  Slideshow.prototype.destroy = function () {
+    clearTimeout(this.timer);
+  };
+
+  function initSlideshows(scope) {
+    (scope || document).querySelectorAll('[data-slideshow]').forEach(function (root) {
+      if (root._slideshow) return;
+      root._slideshow = new Slideshow(root);
+    });
+  }
+
+  /* ------------------------------------------------------------------
+     Quick view (modal loaded from the quick-view section)
+     ------------------------------------------------------------------ */
+  var QuickView = {
+    el: null,
+    body: null,
+    opener: null,
+    token: 0,
+
+    isOpen: function () {
+      return !!this.el && !this.el.hidden;
+    },
+
+    ensure: function () {
+      if (this.el && this.el.isConnected) return;
+      var self = this;
+      var el = document.createElement('div');
+      el.className = 'quick-view-modal';
+      el.id = 'QuickViewModal';
+      el.hidden = true;
+      el.innerHTML =
+        '<div class="quick-view-modal__overlay" data-quick-view-close></div>' +
+        '<div class="quick-view-modal__panel" role="dialog" aria-modal="true" aria-labelledby="QuickViewTitle">' +
+        '<button type="button" class="icon-button quick-view-modal__close" data-quick-view-close></button>' +
+        '<div data-quick-view-body></div>' +
+        '</div>';
+      document.body.appendChild(el);
+      var closeButton = el.querySelector('.quick-view-modal__close');
+      closeButton.setAttribute('aria-label', strings.quickViewClose || 'Close');
+      var icon = document.querySelector('[data-drawer-close] svg');
+      closeButton.innerHTML = icon ? icon.outerHTML : '&times;';
+      this.el = el;
+      this.body = el.querySelector('[data-quick-view-body]');
+      el.addEventListener('click', function (e) {
+        if (e.target.closest('[data-quick-view-close]')) {
+          e.preventDefault();
+          self.close();
+        }
+      });
+      el.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+          e.stopPropagation();
+          self.close();
+        }
+        if (e.key === 'Tab') self.trapFocus(e);
+      });
+    },
+
+    trapFocus: function (e) {
+      var panel = this.el.querySelector('.quick-view-modal__panel');
+      var nodes = Array.prototype.filter.call(panel.querySelectorAll(FOCUSABLE), function (n) {
+        return n.offsetParent !== null;
+      });
+      if (!nodes.length) return;
+      var first = nodes[0];
+      var last = nodes[nodes.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    },
+
+    open: function (url, opener) {
+      if (!window.fetch || !url) {
+        if (url) window.location.href = url;
+        return;
+      }
+      this.ensure();
+      var self = this;
+      var token = ++this.token;
+      this.opener = opener || document.activeElement;
+      this.body.innerHTML = '<p class="quick-view-modal__loading" role="status">' + (strings.loading || 'Loading…') + '</p>';
+      this.el.hidden = false;
+      document.body.classList.add('overflow-hidden');
+      var close = this.el.querySelector('.quick-view-modal__close');
+      if (close) close.focus();
+      var sep = url.indexOf('?') === -1 ? '?' : '&';
+      fetch(url + sep + 'section_id=quick-view', { credentials: 'same-origin', headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+        .then(function (r) {
+          if (!r.ok) throw new Error('quick view ' + r.status);
+          return r.text();
+        })
+        .then(function (html) {
+          if (token !== self.token || !self.isOpen()) return;
+          var content = parseHTML(html).querySelector('[data-quick-view-content]');
+          if (!content) throw new Error('quick view empty');
+          self.body.innerHTML = '';
+          self.body.appendChild(content);
+          var focusTarget = self.el.querySelector('[data-quick-view-add]') || self.el.querySelector('.quick-view-modal__close');
+          if (focusTarget) focusTarget.focus();
+        })
+        .catch(function () {
+          if (token !== self.token) return;
+          self.close(true);
+          toast(strings.quickViewError || strings.genericError, 'error');
+          window.location.href = url;
+        });
+    },
+
+    close: function (skipFocus) {
+      if (!this.isOpen()) return;
+      this.token++;
+      this.el.hidden = true;
+      this.body.innerHTML = '';
+      if (!openDrawer) document.body.classList.remove('overflow-hidden');
+      if (!skipFocus && this.opener && this.opener.focus) this.opener.focus();
+    }
+  };
+
+  function initQuickView() {
+    document.addEventListener('click', function (e) {
+      var trigger = e.target.closest('[data-quick-view]');
+      if (!trigger) return;
+      e.preventDefault();
+      QuickView.open(trigger.getAttribute('data-quick-view-url'), trigger);
+    });
+  }
+
+  /* ------------------------------------------------------------------
      Init
      ------------------------------------------------------------------ */
   function init() {
@@ -1448,6 +1698,8 @@
     initFacets();
     initRecommendations();
     initSliders();
+    initSlideshows();
+    initQuickView();
     initCopy();
     initReveal();
     initStickyCart();
@@ -1459,6 +1711,7 @@
   // Re-initialise when sections are edited in the theme editor
   document.addEventListener('shopify:section:load', function (e) {
     initSliders(e.target);
+    initSlideshows(e.target);
     initAnnouncements(e.target);
     initRecommendations(e.target);
     if (e.target.querySelector('[data-facets-form]')) initFacets();
@@ -1480,6 +1733,9 @@
     }
     e.target.querySelectorAll('[data-announcement]').forEach(function (bar) {
       clearInterval(bar._timer);
+    });
+    e.target.querySelectorAll('[data-slideshow]').forEach(function (root) {
+      if (root._slideshow) root._slideshow.destroy();
     });
   });
 

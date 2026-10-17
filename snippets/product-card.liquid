@@ -39,6 +39,15 @@
       assign on_sale = true
     endif
     assign card_alt = product.featured_media.alt | default: product.title
+    assign card_label = product.type
+    if product.tags contains 'mens-watches'
+      assign card_label = 'products.product.label_mens_watch' | t
+    elsif product.tags contains 'womens-watches'
+      assign card_label = 'products.product.label_womens_watch' | t
+    elsif product.tags contains 'necklace-set'
+      assign card_label = 'products.product.label_jewellery_set' | t
+    endif
+    assign quick_form_id = 'quick-add-' | append: section_id | append: '-' | append: product.id
     assign second_media = nil
     if settings.card_show_second_image and product.media.size > 1
       assign second_media = product.media[1]
@@ -48,6 +57,7 @@
     endif
   -%}
   <div class="product-card" data-product-card>
+    <div class="product-card__figure">
     <div class="product-card__media">
       {%- if product.featured_media -%}
         {{
@@ -94,7 +104,37 @@
       </div>
     </div>
 
+    {%- if settings.card_show_quick_add -%}
+      <div class="product-card__hoverbar">
+        {%- if product.available == false -%}
+          <span class="product-card__hoverbtn product-card__hoverbtn--disabled">{{ 'products.product.sold_out' | t }}</span>
+        {%- elsif product.has_only_default_variant -%}
+          <button type="submit" form="{{ quick_form_id }}" class="product-card__hoverbtn" aria-label="{{ 'products.product.add_to_cart' | t }}: {{ product.title | escape }}">
+            {{- 'products.product.add_to_cart' | t -}}
+          </button>
+        {%- else -%}
+          <a class="product-card__hoverbtn" href="{{ product.url }}" aria-label="{{ 'products.product.choose_options' | t }}: {{ product.title | escape }}">
+            {{- 'products.product.choose_options' | t -}}
+          </a>
+        {%- endif -%}
+        <button
+          type="button"
+          class="product-card__hoverbtn"
+          data-quick-view
+          data-quick-view-url="{{ product.url }}"
+          aria-haspopup="dialog"
+          aria-label="{{ 'products.product.quick_view_for' | t: title: product.title }}"
+        >
+          {{- 'products.product.quick_view' | t -}}
+        </button>
+      </div>
+    {%- endif -%}
+    </div>
+
     <div class="product-card__info">
+      {%- if card_label != blank -%}
+        <span class="product-card__label">{{ card_label | escape }}</span>
+      {%- endif -%}
       {%- if settings.card_show_vendor and product.vendor != blank -%}
         <span class="product-card__vendor">{{ product.vendor }}</span>
       {%- endif -%}
@@ -133,8 +173,7 @@
               {{- 'products.product.sold_out' | t -}}
             </button>
           {%- elsif product.has_only_default_variant -%}
-            {%- capture form_id %}quick-add-{{ section_id }}-{{ product.id }}{% endcapture -%}
-            {%- form 'product', product, id: form_id, data-product-form: '', novalidate: 'novalidate' -%}
+            {%- form 'product', product, id: quick_form_id, data-product-form: '', novalidate: 'novalidate' -%}
               <input type="hidden" name="id" value="{{ variant.id }}">
               <button type="submit" class="button button--secondary" aria-label="{{ 'products.product.add_to_cart' | t }}: {{ product.title | escape }}">
                 {{- 'products.product.add_to_cart' | t -}}

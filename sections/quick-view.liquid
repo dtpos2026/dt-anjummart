@@ -1,0 +1,95 @@
+{%- comment -%}
+  Quick view panel. Loaded on demand by assets/theme.js with
+  fetch('/products/<handle>?section_id=quick-view') and shown in a modal dialog.
+  Renders nothing useful outside a product context.
+{%- endcomment -%}
+{%- if product -%}
+  {%- liquid
+    assign variant = product.selected_or_first_available_variant
+    assign qv_label = product.type
+    if product.tags contains 'mens-watches'
+      assign qv_label = 'products.product.label_mens_watch' | t
+    elsif product.tags contains 'womens-watches'
+      assign qv_label = 'products.product.label_womens_watch' | t
+    elsif product.tags contains 'necklace-set'
+      assign qv_label = 'products.product.label_jewellery_set' | t
+    endif
+    assign qv_form_id = 'QuickViewForm-' | append: product.id
+    assign qv_alt = product.featured_media.alt | default: product.title
+    assign summary = product.description | replace: '</p>', ' </p>' | replace: '</li>', ' </li>' | strip_html | strip_newlines | truncatewords: 38
+  -%}
+  <div class="quick-view" data-quick-view-content>
+    <div class="quick-view__media">
+      {%- if product.featured_media -%}
+        {{
+          product.featured_media
+          | image_url: width: 900
+          | image_tag:
+            loading: 'eager',
+            widths: '400, 600, 800, 900',
+            sizes: '(min-width: 750px) 420px, 80vw',
+            alt: qv_alt,
+            class: 'quick-view__image'
+        }}
+        {% render 'image-watermark', context: 'card' %}
+      {%- endif -%}
+    </div>
+    <div class="quick-view__info">
+      {%- if qv_label != blank -%}
+        <p class="product-card__label">{{ qv_label | escape }}</p>
+      {%- endif -%}
+      <h2 class="quick-view__title" id="QuickViewTitle" data-quick-view-title>{{ product.title | escape }}</h2>
+      <div class="quick-view__price">
+        {% render 'price', product: product, use_variant: true, show_badge: true, class: 'price--large' %}
+      </div>
+      {%- if summary != blank -%}
+        <p class="quick-view__summary">{{ summary | escape }}</p>
+      {%- endif -%}
+
+      {%- if product.available -%}
+        {%- form 'product', product, id: qv_form_id, data-product-form: '', novalidate: 'novalidate' -%}
+          {%- if product.has_only_default_variant -%}
+            <input type="hidden" name="id" value="{{ variant.id }}">
+          {%- else -%}
+            <div class="option">
+              <label class="option__legend" for="QuickViewVariant-{{ product.id }}">{{ 'products.product.variant' | t }}</label>
+              <div class="select-wrapper">
+                <select class="select" name="id" id="QuickViewVariant-{{ product.id }}">
+                  {%- for v in product.variants -%}
+                    <option value="{{ v.id }}"{% if v == variant %} selected{% endif %}{% unless v.available %} disabled{% endunless %}>
+                      {{- v.title | escape }} · {{ v.price | money -}}
+                      {%- unless v.available %} · {{ 'products.product.sold_out' | t }}{% endunless -%}
+                    </option>
+                  {%- endfor -%}
+                </select>
+                {% render 'icon', name: 'chevron-down' %}
+              </div>
+            </div>
+          {%- endif -%}
+          <button type="submit" class="button button--full" data-quick-view-add>
+            {{- 'products.product.add_to_cart' | t -}}
+          </button>
+          <p class="form-message form-message--error" data-form-error role="alert" hidden></p>
+        {%- endform -%}
+      {%- else -%}
+        <button type="button" class="button button--full" disabled>{{ 'products.product.sold_out' | t }}</button>
+      {%- endif -%}
+
+      <ul class="quick-view__assurances" role="list">
+        <li>{% render 'icon', name: 'truck' %} {{ 'products.product.free_delivery' | t }}</li>
+        <li>{% render 'icon', name: 'badge' %} {{ 'products.product.cod_available' | t }}</li>
+      </ul>
+      <a class="link-arrow quick-view__details" href="{{ product.url }}">
+        {{- 'products.product.view_full_details' | t -}}
+        {% render 'icon', name: 'arrow-right' %}
+      </a>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Quick view",
+  "settings": []
+}
+{% endschema %}

@@ -301,7 +301,13 @@
         "type": "number",
         "id": "cart_free_shipping_threshold",
         "label": "Free shipping threshold (Rs.)",
-        "info": "Leave empty to hide. Must match the free-shipping rate in Settings > Shipping and delivery (it cannot be read automatically). Currently Rs. 2,000 for Standard shipping in Pakistan."
+        "info": "Leave empty to hide. Must match the free-shipping rate in Settings > Shipping and delivery (it cannot be read automatically). Not needed while delivery is free on every order."
+      },
+      {
+        "type": "text",
+        "id": "cart_free_delivery_text",
+        "label": "Free delivery message",
+        "info": "Shown in the cart (instead of the progress bar) when delivery is free on every order. Leave empty if you charge for shipping."
       },
       {
         "type": "header",
@@ -464,7 +470,7 @@
         "id": "seo_default_description",
         "label": "Default search description",
         "info": "Used when a page has no description of its own. Set the homepage title and description in Online Store > Preferences.",
-        "default": "Anjum Mart online store: shop RUSTET watches in gold, steel and two-tone finishes."
+        "default": "Anjum Mart: premium watches and bridal jewellery sets with free delivery all over Pakistan and Cash on Delivery."
       },
       {
         "type": "image_picker",

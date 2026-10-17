@@ -17,7 +17,7 @@
     assign refund_url = pages['refund-policy'].url
     assign refund_title = pages['refund-policy'].title
   endif
-  assign category_handles = 'watches,gold-watches,two-tone-watches,steel-watches,diver-watches,sport-watches,strap-watches' | split: ','
+  assign category_handles = 'mens-watches,womens-watches,artificial-jewellery' | split: ','
   assign threshold = settings.cart_free_shipping_threshold | default: 0 | times: 100
   assign show_shipping_bar = false
   if threshold > 0 and cart.requires_shipping and cart.currency.iso_code == shop.currency
@@ -70,6 +70,16 @@
             </p>
             <div class="cart-shipping__bar" aria-hidden="true">
               <span style="width: {{ shipping_percent }}%;"></span>
+            </div>
+          </div>
+        {%- elsif settings.cart_free_delivery_text != blank and cart.requires_shipping -%}
+          <div class="cart-shipping">
+            <p class="cart-shipping__text">
+              {% render 'icon', name: 'truck' %}
+              {{ settings.cart_free_delivery_text | escape }}
+            </p>
+            <div class="cart-shipping__bar" aria-hidden="true">
+              <span style="width: 100%;"></span>
             </div>
           </div>
         {%- endif -%}

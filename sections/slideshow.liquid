@@ -1,0 +1,249 @@
+{{ 'home.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign slide_total = section.blocks.size
+-%}
+
+{%- if slide_total > 0 -%}
+  <section
+    class="slideshow"
+    aria-roledescription="carousel"
+    aria-label="{{ 'general.slideshow.label' | t }}"
+    data-slideshow
+    data-autoplay="{{ section.settings.autoplay }}"
+    data-speed="{{ section.settings.speed }}"
+    data-label-slide="{{ 'general.slideshow.slide_of' | t: index: '[index]', total: '[total]' }}"
+  >
+    <div class="slideshow__track" data-slideshow-track>
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign desktop_image = block.settings.image
+          assign mobile_image = block.settings.image_mobile | default: block.settings.image
+          assign art = block.settings.art
+          assign heading_tag = 'h2'
+          assign img_loading = 'lazy'
+          assign img_priority = 'auto'
+          if forloop.first
+            assign heading_tag = 'h1'
+            assign img_loading = 'eager'
+            assign img_priority = 'high'
+          endif
+          assign slide_alt = block.settings.image_alt | default: block.settings.heading | strip_html
+        -%}
+        <div
+          class="slideshow__slide{% if forloop.first %} is-active{% endif %}"
+          role="group"
+          aria-roledescription="slide"
+          aria-label="{{ 'general.slideshow.slide_of' | t: index: forloop.index, total: slide_total }}"
+          data-slide
+          {{ block.shopify_attributes }}
+        >
+          <div class="slideshow__media">
+            {%- if desktop_image != blank -%}
+              <picture>
+                <source
+                  media="(max-width: 749px)"
+                  srcset="{{ mobile_image | image_url: width: 600 }} 600w, {{ mobile_image | image_url: width: 900 }} 900w, {{ mobile_image | image_url: width: 1200 }} 1200w"
+                  sizes="100vw"
+                  width="{{ mobile_image.width }}"
+                  height="{{ mobile_image.height }}"
+                >
+                {{
+                  desktop_image
+                  | image_url: width: 2000
+                  | image_tag:
+                    loading: img_loading,
+                    fetchpriority: img_priority,
+                    widths: '900, 1200, 1500, 1800, 2000',
+                    sizes: '100vw',
+                    alt: slide_alt
+                }}
+              </picture>
+            {%- elsif art != 'none' -%}
+              {%- assign art_desktop = 'slide-' | append: art | append: '-desktop.jpg' -%}
+              {%- assign art_mobile = 'slide-' | append: art | append: '-mobile.jpg' -%}
+              <picture>
+                <source media="(max-width: 749px)" srcset="{{ art_mobile | asset_url }}" width="900" height="1100">
+                <img
+                  src="{{ art_desktop | asset_url }}"
+                  width="1800"
+                  height="760"
+                  alt="{{ slide_alt | escape }}"
+                  loading="{{ img_loading }}"
+                  fetchpriority="{{ img_priority }}"
+                  decoding="async"
+                >
+              </picture>
+            {%- endif -%}
+          </div>
+          <div class="slideshow__overlay">
+            <div class="page-width slideshow__inner">
+              <div class="slideshow__content">
+                {%- if block.settings.eyebrow != blank -%}
+                  <p class="eyebrow">{{ block.settings.eyebrow | escape }}</p>
+                {%- endif -%}
+                {%- if block.settings.heading != blank -%}
+                  <{{ heading_tag }} class="slideshow__heading">{{ block.settings.heading }}</{{ heading_tag }}>
+                {%- endif -%}
+                {%- if block.settings.text != blank -%}
+                  <p class="slideshow__text">{{ block.settings.text | escape }}</p>
+                {%- endif -%}
+                <div class="slideshow__buttons">
+                  {%- if block.settings.button_label != blank -%}
+                    <a class="button" href="{{ block.settings.button_link | default: routes.all_products_collection_url }}">
+                      {{- block.settings.button_label | escape -}}
+                      {% render 'icon', name: 'arrow-right' %}
+                    </a>
+                  {%- endif -%}
+                  {%- if block.settings.button_label_2 != blank -%}
+                    <a class="button button--secondary" href="{{ block.settings.button_link_2 | default: routes.collections_url }}">
+                      {{- block.settings.button_label_2 | escape -}}
+                    </a>
+                  {%- endif -%}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+
+    {%- if slide_total > 1 -%}
+      <div class="slideshow__controls" data-slideshow-controls hidden>
+        <button type="button" class="slideshow__arrow slideshow__arrow--prev" data-slideshow-prev aria-label="{{ 'general.slideshow.previous' | t }}">
+          {% render 'icon', name: 'chevron-left' %}
+        </button>
+        <div class="slideshow__dots" role="group" aria-label="{{ 'general.slideshow.label' | t }}">
+          {%- for block in section.blocks -%}
+            <button
+              type="button"
+              class="slideshow__dot{% if forloop.first %} is-active{% endif %}"
+              data-slideshow-dot="{{ forloop.index0 }}"
+              aria-label="{{ 'general.slideshow.go_to' | t: index: forloop.index }}"
+              {% if forloop.first %}aria-current="true"{% endif %}
+            ></button>
+          {%- endfor -%}
+        </div>
+        <button type="button" class="slideshow__toggle" data-slideshow-toggle aria-pressed="false" aria-label="{{ 'general.slideshow.pause' | t }}" data-label-pause="{{ 'general.slideshow.pause' | t }}" data-label-play="{{ 'general.slideshow.play' | t }}">
+          <span class="slideshow__toggle-icon" aria-hidden="true"></span>
+        </button>
+        <button type="button" class="slideshow__arrow slideshow__arrow--next" data-slideshow-next aria-label="{{ 'general.slideshow.next' | t }}">
+          {% render 'icon', name: 'chevron-right' %}
+        </button>
+      </div>
+    {%- endif -%}
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Slideshow",
+  "tag": "div",
+  "class": "slideshow-section",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Change slides automatically",
+      "info": "Stops while the pointer or keyboard focus is on the slideshow, and for visitors who prefer reduced motion.",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "label": "Seconds per slide",
+      "min": 4,
+      "max": 12,
+      "step": 1,
+      "default": 6
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Desktop image",
+          "info": "Recommended 1800 x 760 px. Keep the left 45% calm: the text sits there. Leave empty to use the built-in artwork below."
+        },
+        {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Mobile image",
+          "info": "Recommended 900 x 1100 px. Keep the top 40% calm for the text."
+        },
+        {
+          "type": "select",
+          "id": "art",
+          "label": "Built-in artwork",
+          "info": "Used when no image is uploaded above.",
+          "options": [
+            { "value": "none", "label": "None" },
+            { "value": "men", "label": "Men's watches" },
+            { "value": "women", "label": "Women's watches" },
+            { "value": "jewellery", "label": "Bridal jewellery" }
+          ],
+          "default": "none"
+        },
+        {
+          "type": "text",
+          "id": "image_alt",
+          "label": "Image description",
+          "info": "Describe the products in the picture. Defaults to the heading."
+        },
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Small heading",
+          "default": "New collection"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "label": "Heading",
+          "info": "Italic text is highlighted in gold.",
+          "default": "Time, <em>Worn Well</em>"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Supporting text"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Primary button label",
+          "default": "Shop Now"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Primary button link"
+        },
+        {
+          "type": "text",
+          "id": "button_label_2",
+          "label": "Secondary button label"
+        },
+        {
+          "type": "url",
+          "id": "button_link_2",
+          "label": "Secondary button link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Slideshow",
+      "blocks": [
+        { "type": "slide" }
+      ]
+    }
+  ]
+}
+{% endschema %}

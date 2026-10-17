@@ -10,7 +10,10 @@
         "show_dynamic_checkout": true,
         "show_whatsapp": true,
         "whatsapp_label": "Ask about this product on WhatsApp",
-        "shipping_text": ""
+        "delivery_note": "Free delivery all over Pakistan",
+        "assurance_shipping": "Free delivery all over Pakistan",
+        "assurance_payment": "Cash on Delivery available",
+        "shipping_text": "<p>Free delivery all over Pakistan on every order. Cash on Delivery is available. Orders usually arrive in 3 to 5 working days to major cities and 5 to 7 working days elsewhere.</p><p>No returns are accepted. If your item arrives damaged or you receive the wrong item, tell us within 48 hours with photos and we will replace it.</p>"
       }
     },
     "related": {

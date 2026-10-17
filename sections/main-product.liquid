@@ -171,7 +171,13 @@
 
       <p class="product__tax">
         {%- if cart.taxes_included -%}{{ 'products.product.taxes_included' | t }} {% endif -%}
-        {%- if ship_url != blank -%}
+        {%- if section.settings.delivery_note != blank -%}
+          {%- if ship_url != blank -%}
+            <a href="{{ ship_url }}">{{ section.settings.delivery_note | escape }}</a>
+          {%- else -%}
+            {{ section.settings.delivery_note | escape }}
+          {%- endif -%}
+        {%- elsif ship_url != blank -%}
           <a href="{{ ship_url }}">{{ 'products.product.shipping_at_checkout' | t }}</a>
         {%- else -%}
           {{ 'products.product.shipping_at_checkout' | t }}
@@ -487,10 +493,17 @@
   "settings": [
     {
       "type": "text",
+      "id": "delivery_note",
+      "label": "Line under the price",
+      "info": "Replaces “Shipping calculated at checkout.” Keep it in line with Settings > Shipping and delivery.",
+      "default": "Free delivery all over Pakistan"
+    },
+    {
+      "type": "text",
       "id": "assurance_shipping",
       "label": "Shipping line",
       "info": "Leave empty to hide. Keep it in line with Settings > Shipping and delivery.",
-      "default": "Free standard shipping on orders of Rs. 2,000 or more"
+      "default": "Free delivery all over Pakistan"
     },
     {
       "type": "text",

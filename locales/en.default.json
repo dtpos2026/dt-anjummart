@@ -31,10 +31,19 @@
       "previous": "Previous",
       "next": "Next"
     },
-    "pause_announcements": "Pause announcements"
+    "pause_announcements": "Pause announcements",
+    "slideshow": {
+      "label": "Featured collections",
+      "slide_of": "Slide {{ index }} of {{ total }}",
+      "go_to": "Go to slide {{ index }}",
+      "pause": "Pause slideshow",
+      "play": "Play slideshow",
+      "previous": "Previous slide",
+      "next": "Next slide"
+    }
   },
   "header": {
-    "search_placeholder": "Search watches…",
+    "search_placeholder": "Search watches and jewellery…",
     "cart_count": {
       "one": "{{ count }} item",
       "other": "{{ count }} items"
@@ -94,7 +103,17 @@
       "select_option": "Select {{ option }}",
       "no_image": "Image coming soon",
       "variant": "Option",
-      "size_guide": "Size guide"
+      "size_guide": "Size guide",
+      "label_mens_watch": "Men's Watch",
+      "label_womens_watch": "Women's Watch",
+      "label_jewellery_set": "Jewellery Set",
+      "quick_view": "Quick view",
+      "quick_view_for": "Quick view: {{ title }}",
+      "quick_view_close": "Close quick view",
+      "view_full_details": "View full details",
+      "quick_view_error": "We could not open the quick view. Opening the product page instead.",
+      "free_delivery": "Free delivery all over Pakistan",
+      "cod_available": "Cash on Delivery available"
     },
     "facets": {
       "filter": "Filter",
@@ -133,15 +152,15 @@
   "cart": {
     "title": "Your cart",
     "empty": "Your cart is empty",
-    "empty_text": "Discover watches, bags, jewellery, dresses and shoes picked for you.",
+    "empty_text": "Discover watches and jewellery sets with free delivery all over Pakistan.",
     "subtotal": "Subtotal",
     "total": "Total",
     "checkout": "Checkout",
     "view_cart": "View cart",
     "remove": "Remove",
     "remove_item": "Remove {{ title }}",
-    "taxes_and_shipping": "Taxes, discounts and shipping are calculated at checkout.",
-    "taxes_included_shipping": "Taxes included. Discounts and shipping are calculated at checkout.",
+    "taxes_and_shipping": "Your final total is confirmed at checkout.",
+    "taxes_included_shipping": "Taxes included. Your final total is confirmed at checkout.",
     "note": "Order note",
     "note_placeholder": "Add special instructions for your order",
     "error": "We could not update your cart. Please try again.",

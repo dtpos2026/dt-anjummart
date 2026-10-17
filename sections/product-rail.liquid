@@ -9,11 +9,11 @@
 
 {%- if has_products or request.design_mode -%}
   <section
-    class="section{% if section.settings.surface %} section--surface{% endif %}"
+    class="section{% if section.settings.surface %} section--surface{% endif %}{% if section.settings.layout == 'grid' %} product-rail--grid{% endif %}"
     aria-labelledby="RailHeading-{{ section.id }}"
   >
-    <div class="page-width" data-slider>
-      <div class="section-header">
+    <div class="page-width"{% if section.settings.layout != 'grid' %} data-slider{% endif %}>
+      <div class="section-header{% if section.settings.layout == 'grid' %} section-header--center{% endif %}">
         <div class="section-header__text">
           {%- if section.settings.eyebrow != blank -%}
             <p class="eyebrow">{{ section.settings.eyebrow | escape }}</p>
@@ -23,43 +23,69 @@
             <p class="section-header__subheading">{{ section.settings.subheading | escape }}</p>
           {%- endif -%}
         </div>
-        <div class="slider-controls">
-          <button type="button" class="icon-button" data-slider-prev aria-label="{{ 'general.slider.previous' | t }}">
-            {% render 'icon', name: 'chevron-left' %}
-          </button>
-          <button type="button" class="icon-button" data-slider-next aria-label="{{ 'general.slider.next' | t }}">
-            {% render 'icon', name: 'chevron-right' %}
-          </button>
-        </div>
-        {%- if section.settings.show_view_all and has_products and rail_collection.products_count > products_to_show -%}
-          <a class="link-arrow rail__link" href="{{ rail_collection.url }}">
-            {{- section.settings.view_all_label | default: 'View all' | escape -}}
-            <span class="visually-hidden">: {{ rail_collection.title | escape }}</span>
-            {% render 'icon', name: 'arrow-right' %}
-          </a>
+        {%- if section.settings.layout != 'grid' -%}
+          <div class="slider-controls">
+            <button type="button" class="icon-button" data-slider-prev aria-label="{{ 'general.slider.previous' | t }}">
+              {% render 'icon', name: 'chevron-left' %}
+            </button>
+            <button type="button" class="icon-button" data-slider-next aria-label="{{ 'general.slider.next' | t }}">
+              {% render 'icon', name: 'chevron-right' %}
+            </button>
+          </div>
+          {%- if section.settings.show_view_all and has_products and rail_collection.products_count > products_to_show -%}
+            <a class="link-arrow rail__link" href="{{ rail_collection.url }}">
+              {{- section.settings.view_all_label | default: 'View all' | escape -}}
+              <span class="visually-hidden">: {{ rail_collection.title | escape }}</span>
+              {% render 'icon', name: 'arrow-right' %}
+            </a>
+          {%- endif -%}
         {%- endif -%}
       </div>
 
-      <ul class="slider slider--desktop-grid" role="list" data-slider-track>
-        {%- if has_products -%}
-          {%- for product in rail_collection.products limit: products_to_show -%}
-            <li>
-              {% render 'product-card', product: product, section_id: section.id, sizes: '(min-width: 1320px) 300px, (min-width: 1100px) calc((100vw - 124px) / 4), (min-width: 750px) 30vw, 46vw' %}
-            </li>
-          {%- endfor -%}
-        {%- else -%}
-          {%- for i in (1..4) -%}
-            <li>{% render 'product-card', placeholder: true, placeholder_index: i %}</li>
-          {%- endfor -%}
+      {%- if section.settings.layout == 'grid' -%}
+        <ul class="product-grid product-grid--center product-grid--cols-{{ section.settings.columns }}" role="list">
+          {%- if has_products -%}
+            {%- for product in rail_collection.products limit: products_to_show -%}
+              <li>
+                {% render 'product-card', product: product, section_id: section.id, sizes: '(min-width: 1320px) 300px, (min-width: 990px) calc((100vw - 140px) / 4), (min-width: 750px) 30vw, 46vw' %}
+              </li>
+            {%- endfor -%}
+          {%- else -%}
+            {%- for i in (1..4) -%}
+              <li>{% render 'product-card', placeholder: true, placeholder_index: i %}</li>
+            {%- endfor -%}
+          {%- endif -%}
+        </ul>
+        {%- if section.settings.show_view_all and has_products -%}
+          <div class="center rail__footer">
+            <a class="button button--secondary" href="{{ rail_collection.url }}">
+              {{- section.settings.view_all_label | default: 'View all' | escape -}}
+              <span class="visually-hidden">: {{ rail_collection.title | escape }}</span>
+            </a>
+          </div>
         {%- endif -%}
-      </ul>
+      {%- else -%}
+        <ul class="slider slider--desktop-grid" role="list" data-slider-track>
+          {%- if has_products -%}
+            {%- for product in rail_collection.products limit: products_to_show -%}
+              <li>
+                {% render 'product-card', product: product, section_id: section.id, sizes: '(min-width: 1320px) 300px, (min-width: 1100px) calc((100vw - 124px) / 4), (min-width: 750px) 30vw, 46vw' %}
+              </li>
+            {%- endfor -%}
+          {%- else -%}
+            {%- for i in (1..4) -%}
+              <li>{% render 'product-card', placeholder: true, placeholder_index: i %}</li>
+            {%- endfor -%}
+          {%- endif -%}
+        </ul>
 
-      {%- if section.settings.show_view_all and has_products and rail_collection.products_count > products_to_show -%}
-        <div class="center rail__footer">
-          <a class="button button--secondary" href="{{ rail_collection.url }}">
-            {{- section.settings.view_all_label | default: 'View all' | escape -}}
-          </a>
-        </div>
+        {%- if section.settings.show_view_all and has_products and rail_collection.products_count > products_to_show -%}
+          <div class="center rail__footer">
+            <a class="button button--secondary" href="{{ rail_collection.url }}">
+              {{- section.settings.view_all_label | default: 'View all' | escape -}}
+            </a>
+          </div>
+        {%- endif -%}
       {%- endif -%}
     </div>
   </section>
@@ -97,6 +123,26 @@
       "label": "Collection"
     },
     {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        { "value": "grid", "label": "Grid" },
+        { "value": "slider", "label": "Slider" }
+      ],
+      "default": "grid"
+    },
+    {
+      "type": "select",
+      "id": "columns",
+      "label": "Columns on desktop (grid layout)",
+      "options": [
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" }
+      ],
+      "default": "4"
+    },
+    {
       "type": "range",
       "id": "products_to_show",
       "label": "Products to show",
@@ -108,7 +154,8 @@
     {
       "type": "checkbox",
       "id": "show_view_all",
-      "label": "Show “View all” button when the collection has more products",
+      "label": "Show “View all” button",
+      "info": "Slider layout: only when the collection has more products than shown.",
       "default": true
     },
     {

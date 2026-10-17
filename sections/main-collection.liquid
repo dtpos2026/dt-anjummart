@@ -8,7 +8,7 @@
   endif
   assign clear_url = collection.url | append: '?sort_by=' | append: sort_by
   assign form_id = 'FacetsForm-' | append: section.id
-  assign category_handles = 'watches,gold-watches,two-tone-watches,steel-watches,diver-watches,sport-watches,strap-watches' | split: ','
+  assign category_handles = 'mens-watches,womens-watches,artificial-jewellery' | split: ','
 
   assign active_filter_count = 0
   for filter in collection.filters

@@ -8,7 +8,7 @@
         "free-shipping": {
           "type": "announcement",
           "settings": {
-            "text": "Free standard shipping on orders of Rs. 2,000 or more",
+            "text": "Free delivery all over Pakistan",
             "link": "",
             "icon": "truck"
           }
@@ -24,7 +24,7 @@
         "new-arrivals": {
           "type": "announcement",
           "settings": {
-            "text": "Discover the new arrivals",
+            "text": "Premium watches and jewellery at affordable prices",
             "link": "shopify://collections/new-arrivals",
             "icon": "none"
           }

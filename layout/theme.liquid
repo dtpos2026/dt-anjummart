@@ -89,7 +89,11 @@
           removed: {{ 'cart.removed' | t | json }},
           cartUpdated: {{ 'cart.updated' | t | json }},
           subtotal: {{ 'cart.subtotal' | t | json }},
-          addedToCart: {{ 'cart.added' | t | json }}
+          addedToCart: {{ 'cart.added' | t | json }},
+          quickViewClose: {{ 'products.product.quick_view_close' | t | json }},
+          quickViewError: {{ 'products.product.quick_view_error' | t | json }},
+          slidePause: {{ 'general.slideshow.pause' | t | json }},
+          slidePlay: {{ 'general.slideshow.play' | t | json }}
         }
       };
     </script>

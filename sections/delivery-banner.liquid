@@ -1,0 +1,126 @@
+{{ 'home.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign banner_image = section.settings.image
+  assign banner_mobile = section.settings.image_mobile | default: section.settings.image
+  assign art = section.settings.art
+-%}
+
+<section class="section section--banner" aria-labelledby="DeliveryBanner-{{ section.id }}">
+  <div class="page-width">
+    <div class="delivery-banner">
+      <div class="delivery-banner__media" aria-hidden="true">
+        {%- if banner_image != blank -%}
+          <picture>
+            <source
+              media="(max-width: 749px)"
+              srcset="{{ banner_mobile | image_url: width: 600 }} 600w, {{ banner_mobile | image_url: width: 900 }} 900w"
+              sizes="100vw"
+            >
+            {{
+              banner_image
+              | image_url: width: 1800
+              | image_tag:
+                loading: 'lazy',
+                widths: '900, 1200, 1500, 1800',
+                sizes: '(min-width: 1384px) 1304px, 100vw',
+                alt: ''
+            }}
+          </picture>
+        {%- elsif art == 'delivery' -%}
+          <picture>
+            <source media="(max-width: 749px)" srcset="{{ 'promo-free-delivery-mobile.jpg' | asset_url }}" width="900" height="700">
+            <img src="{{ 'promo-free-delivery.jpg' | asset_url }}" width="1800" height="560" alt="" loading="lazy" decoding="async">
+          </picture>
+        {%- endif -%}
+      </div>
+      <div class="delivery-banner__content">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="delivery-banner__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+        <h2 class="delivery-banner__heading" id="DeliveryBanner-{{ section.id }}">{{ section.settings.heading }}</h2>
+        {%- if section.settings.text != blank -%}
+          <p class="delivery-banner__text">{{ section.settings.text | escape }}</p>
+        {%- endif -%}
+        {%- if section.settings.button_label != blank -%}
+          <a class="button" href="{{ section.settings.button_link | default: routes.all_products_collection_url }}">
+            {{- section.settings.button_label | escape -}}
+            {% render 'icon', name: 'arrow-right' %}
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Delivery banner",
+  "tag": "div",
+  "class": "delivery-banner-section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Only state delivery terms that match Settings > Shipping and delivery."
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "Shop smart!"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "info": "Italic text is highlighted in gold.",
+      "default": "<em>Free</em> Delivery"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text",
+      "default": "All over Pakistan on every order. Cash on Delivery available."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Shop all products"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "Recommended 1800 x 560 px. Keep the left 60% calm: the text sits there."
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Mobile image",
+      "info": "Optional. Recommended 900 x 700 px."
+    },
+    {
+      "type": "select",
+      "id": "art",
+      "label": "Built-in artwork",
+      "info": "Used when no image is uploaded above.",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "delivery", "label": "Watch on black and gold" }
+      ],
+      "default": "delivery"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Delivery banner"
+    }
+  ]
+}
+{% endschema %}
