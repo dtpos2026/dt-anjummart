@@ -70,8 +70,9 @@ been sold yet, so the theme never claims one.
 The 14 RUSTET watch listings come from the supplier PDF (63 pages, 44 unique photos; duplicate pages were
 skipped). Each listing has Colour variants, SKU `RST-…`, tags for the style collections and a description
 written only from what the brand's own images state (no invented specifications). Listings are **Draft**:
-the prices are estimates (no PKR retail price was published), so confirm them, set stock, then activate the
-products (*Products → select → Set as active*). Dial colours without their own photo show a short note on
+check the prices (the owner chose two price points, Rs 2,999 and Rs 3,999; each model was placed in one of them
+by judgment: simpler classic models at 2,999, octagon, diver, open-heart, sport, chronograph and two-tone models at
+3,999), set stock, then activate the products (*Products → select → Set as active*). Dial colours without their own photo show a short note on
 the product page. The store logo is layered over every product photo by the theme.
 
 ## Installing / previewing
