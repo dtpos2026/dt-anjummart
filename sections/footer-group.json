@@ -9,7 +9,7 @@
         "shop_heading": "Shop",
         "shop_menu": "",
         "help_heading": "Help & policies",
-        "help_menu": "",
+        "help_menu": "footer",
         "show_policies": true,
         "show_payment_icons": true
       }

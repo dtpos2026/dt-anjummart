@@ -1,6 +1,24 @@
 {{ 'product.css' | asset_url | stylesheet_tag }}
 
 {%- liquid
+  assign ship_url = ''
+  assign ship_title = ''
+  assign refund_url = ''
+  assign refund_title = ''
+  if ship_url != blank
+    assign ship_url = ship_url
+    assign ship_title = ship_title
+  elsif pages['shipping-policy'].content != blank
+    assign ship_url = pages['shipping-policy'].url
+    assign ship_title = pages['shipping-policy'].title
+  endif
+  if refund_url != blank
+    assign refund_url = refund_url
+    assign refund_title = refund_title
+  elsif pages['refund-policy'].content != blank
+    assign refund_url = pages['refund-policy'].url
+    assign refund_title = pages['refund-policy'].title
+  endif
   assign current_variant = product.selected_or_first_available_variant
   assign media_count = product.media.size
   assign form_id = 'ProductForm-' | append: section.id
@@ -153,8 +171,8 @@
 
       <p class="product__tax">
         {%- if cart.taxes_included -%}{{ 'products.product.taxes_included' | t }} {% endif -%}
-        {%- if shop.shipping_policy.body != blank -%}
-          <a href="{{ shop.shipping_policy.url }}">{{ 'products.product.shipping_at_checkout' | t }}</a>
+        {%- if ship_url != blank -%}
+          <a href="{{ ship_url }}">{{ 'products.product.shipping_at_checkout' | t }}</a>
         {%- else -%}
           {{ 'products.product.shipping_at_checkout' | t }}
         {%- endif -%}
@@ -331,8 +349,8 @@
           <li>{% render 'icon', name: 'badge' %} {{ section.settings.assurance_payment | escape }}</li>
         {%- endif -%}
         <li>{% render 'icon', name: 'lock' %} {{ 'cart.secure_checkout' | t }}</li>
-        {%- if shop.refund_policy.body != blank -%}
-          <li>{% render 'icon', name: 'return' %} <a href="{{ shop.refund_policy.url }}">{{ shop.refund_policy.title | escape }}</a></li>
+        {%- if refund_url != blank -%}
+          <li>{% render 'icon', name: 'return' %} <a href="{{ refund_url }}">{{ refund_title | escape }}</a></li>
         {%- endif -%}
       </ul>
 
@@ -347,7 +365,7 @@
           </details>
         {%- endif -%}
 
-        {%- if section.settings.shipping_text != blank or shop.shipping_policy.body != blank or shop.refund_policy.body != blank -%}
+        {%- if section.settings.shipping_text != blank or ship_url != blank or refund_url != blank -%}
           <details class="accordion">
             <summary class="accordion__summary">
               {{ 'products.product.shipping_returns' | t }}
@@ -357,13 +375,13 @@
               {%- if section.settings.shipping_text != blank -%}
                 {{ section.settings.shipping_text }}
               {%- endif -%}
-              {%- if shop.shipping_policy.body != blank or shop.refund_policy.body != blank -%}
+              {%- if ship_url != blank or refund_url != blank -%}
                 <ul>
-                  {%- if shop.shipping_policy.body != blank -%}
-                    <li><a href="{{ shop.shipping_policy.url }}">{{ shop.shipping_policy.title | escape }}</a></li>
+                  {%- if ship_url != blank -%}
+                    <li><a href="{{ ship_url }}">{{ ship_title | escape }}</a></li>
                   {%- endif -%}
-                  {%- if shop.refund_policy.body != blank -%}
-                    <li><a href="{{ shop.refund_policy.url }}">{{ shop.refund_policy.title | escape }}</a></li>
+                  {%- if refund_url != blank -%}
+                    <li><a href="{{ refund_url }}">{{ refund_title | escape }}</a></li>
                   {%- endif -%}
                 </ul>
               {%- endif -%}

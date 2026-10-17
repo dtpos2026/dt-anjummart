@@ -1,4 +1,22 @@
 {%- liquid
+  assign ship_url = ''
+  assign ship_title = ''
+  assign refund_url = ''
+  assign refund_title = ''
+  if ship_url != blank
+    assign ship_url = ship_url
+    assign ship_title = ship_title
+  elsif pages['shipping-policy'].content != blank
+    assign ship_url = pages['shipping-policy'].url
+    assign ship_title = pages['shipping-policy'].title
+  endif
+  if refund_url != blank
+    assign refund_url = refund_url
+    assign refund_title = refund_title
+  elsif pages['refund-policy'].content != blank
+    assign refund_url = pages['refund-policy'].url
+    assign refund_title = pages['refund-policy'].title
+  endif
   assign category_handles = 'watches,gold-watches,two-tone-watches,steel-watches,diver-watches,sport-watches,strap-watches' | split: ','
   assign threshold = settings.cart_free_shipping_threshold | default: 0 | times: 100
   assign show_shipping_bar = false
@@ -117,13 +135,13 @@
             <a class="link" href="{{ routes.all_products_collection_url }}" data-drawer-close>{{ 'general.continue_shopping' | t }}</a>
             <a class="link" href="{{ routes.cart_url }}">{{ 'cart.view_cart' | t }}</a>
           </div>
-          {%- if shop.shipping_policy.body != blank or shop.refund_policy.body != blank -%}
+          {%- if ship_url != blank or refund_url != blank -%}
             <ul class="cart-policies" role="list">
-              {%- if shop.shipping_policy.body != blank -%}
-                <li><a href="{{ shop.shipping_policy.url }}">{{ shop.shipping_policy.title | escape }}</a></li>
+              {%- if ship_url != blank -%}
+                <li><a href="{{ ship_url }}">{{ ship_title | escape }}</a></li>
               {%- endif -%}
-              {%- if shop.refund_policy.body != blank -%}
-                <li><a href="{{ shop.refund_policy.url }}">{{ shop.refund_policy.title | escape }}</a></li>
+              {%- if refund_url != blank -%}
+                <li><a href="{{ refund_url }}">{{ refund_title | escape }}</a></li>
               {%- endif -%}
             </ul>
           {%- endif -%}

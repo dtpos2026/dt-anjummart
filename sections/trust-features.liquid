@@ -1,4 +1,22 @@
 {%- liquid
+  assign ship_url = ''
+  assign ship_title = ''
+  assign refund_url = ''
+  assign refund_title = ''
+  if ship_url != blank
+    assign ship_url = ship_url
+    assign ship_title = ship_title
+  elsif pages['shipping-policy'].content != blank
+    assign ship_url = pages['shipping-policy'].url
+    assign ship_title = pages['shipping-policy'].title
+  endif
+  if refund_url != blank
+    assign refund_url = refund_url
+    assign refund_title = refund_title
+  elsif pages['refund-policy'].content != blank
+    assign refund_url = pages['refund-policy'].url
+    assign refund_title = pages['refund-policy'].title
+  endif
   assign whatsapp_digits = settings.whatsapp_number | remove: '+' | remove: ' ' | remove: '-' | remove: '(' | remove: ')'
 -%}
 <section class="section{% if section.settings.surface %} section--surface{% endif %}" aria-label="{{ section.settings.heading | default: 'Why shop with us' | escape }}">
@@ -16,9 +34,9 @@
           assign link_url = block.settings.link
           case block.settings.auto_link
             when 'shipping_policy'
-              assign link_url = shop.shipping_policy.url
+              assign link_url = ship_url
             when 'refund_policy'
-              assign link_url = shop.refund_policy.url
+              assign link_url = refund_url
             when 'contact_page'
               assign link_url = pages.contact.url
             when 'whatsapp'
