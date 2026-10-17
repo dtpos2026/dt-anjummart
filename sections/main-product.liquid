@@ -49,7 +49,7 @@
         {%- assign featured_media = current_variant.featured_media | default: product.featured_media -%}
         <div class="gallery" data-product-gallery aria-label="{{ 'products.product.gallery' | t }}" role="region">
           <div class="gallery__viewport">
-            <ul class="gallery__track" role="list" data-gallery-track>
+            <ul class="gallery__track" role="list" data-gallery-track tabindex="0" aria-label="{{ 'products.product.gallery' | t }}">
               {%- for pass in (1..2) -%}
                 {%- for media in product.media -%}
                   {%- if pass == 1 and media.id != featured_media.id -%}{%- continue -%}{%- endif -%}

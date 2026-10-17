@@ -68,7 +68,7 @@
             <div class="collection__sort">
               <label class="collection__sort-label" for="SortBy-{{ section.id }}">{{ 'products.facets.sort_by' | t }}</label>
               <div class="select-wrapper">
-                <select id="SortBy-{{ section.id }}" class="select" name="sort_by" form="{{ form_id }}" data-sort-external>
+                <select id="SortBy-{{ section.id }}" class="select" aria-label="{{ 'products.facets.sort_by' | t }}" name="sort_by" form="{{ form_id }}" data-sort-external>
                   {%- for option in search.sort_options -%}
                     <option value="{{ option.value | escape }}"{% if option.value == sort_by %} selected{% endif %}>
                       {{- option.name | escape -}}
