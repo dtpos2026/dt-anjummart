@@ -41,7 +41,7 @@
                   }}
                 {%- elsif art != 'none' -%}
                   {%- assign art_file = 'tile-' | append: art | append: '.jpg' -%}
-                  <img src="{{ art_file | asset_url }}" width="800" height="1000" alt="" loading="lazy" decoding="async">
+                  <img src="{{ art_file | asset_url }}" width="800" height="800" alt="" loading="lazy" decoding="async">
                 {%- elsif c.featured_image != blank -%}
                   {{
                     c.featured_image
@@ -133,7 +133,7 @@
           "type": "image_picker",
           "id": "image",
           "label": "Image",
-          "info": "Recommended 800 x 1000 px. Keep the bottom 22% calm: the title sits there."
+          "info": "Recommended 800 x 800 px (square)."
         },
         {
           "type": "select",

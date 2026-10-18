@@ -104,31 +104,18 @@
       </div>
     </div>
 
-    {%- if settings.card_show_quick_add -%}
-      <div class="product-card__hoverbar">
-        {%- if product.available == false -%}
-          <span class="product-card__hoverbtn product-card__hoverbtn--disabled">{{ 'products.product.sold_out' | t }}</span>
-        {%- elsif product.has_only_default_variant -%}
-          <button type="submit" form="{{ quick_form_id }}" class="product-card__hoverbtn" aria-label="{{ 'products.product.add_to_cart' | t }}: {{ product.title | escape }}">
-            {{- 'products.product.add_to_cart' | t -}}
-          </button>
-        {%- else -%}
-          <a class="product-card__hoverbtn" href="{{ product.url }}" aria-label="{{ 'products.product.choose_options' | t }}: {{ product.title | escape }}">
-            {{- 'products.product.choose_options' | t -}}
-          </a>
-        {%- endif -%}
-        <button
-          type="button"
-          class="product-card__hoverbtn"
-          data-quick-view
-          data-quick-view-url="{{ product.url }}"
-          aria-haspopup="dialog"
-          aria-label="{{ 'products.product.quick_view_for' | t: title: product.title }}"
-        >
-          {{- 'products.product.quick_view' | t -}}
-        </button>
-      </div>
-    {%- endif -%}
+    <div class="product-card__hoverbar">
+      <button
+        type="button"
+        class="product-card__hoverbtn"
+        data-quick-view
+        data-quick-view-url="{{ product.url }}"
+        aria-haspopup="dialog"
+        aria-label="{{ 'products.product.quick_view_for' | t: title: product.title }}"
+      >
+        {{- 'products.product.quick_view' | t -}}
+      </button>
+    </div>
     </div>
 
     <div class="product-card__info">
@@ -169,18 +156,18 @@
       {%- if settings.card_show_quick_add -%}
         <div class="product-card__action">
           {%- if product.available == false -%}
-            <button type="button" class="button button--secondary" disabled>
+            <button type="button" class="button button--full" disabled>
               {{- 'products.product.sold_out' | t -}}
             </button>
           {%- elsif product.has_only_default_variant -%}
             {%- form 'product', product, id: quick_form_id, data-product-form: '', novalidate: 'novalidate' -%}
               <input type="hidden" name="id" value="{{ variant.id }}">
-              <button type="submit" class="button button--secondary" aria-label="{{ 'products.product.add_to_cart' | t }}: {{ product.title | escape }}">
+              <button type="submit" class="button button--full" aria-label="{{ 'products.product.add_to_cart' | t }}: {{ product.title | escape }}">
                 {{- 'products.product.add_to_cart' | t -}}
               </button>
             {%- endform -%}
           {%- else -%}
-            <a class="button button--secondary" href="{{ product.url }}" aria-label="{{ 'products.product.choose_options' | t }}: {{ product.title | escape }}">
+            <a class="button button--full" href="{{ product.url }}" aria-label="{{ 'products.product.choose_options' | t }}: {{ product.title | escape }}">
               {{- 'products.product.choose_options' | t -}}
             </a>
           {%- endif -%}

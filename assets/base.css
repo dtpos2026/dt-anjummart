@@ -4125,20 +4125,6 @@ h2,
   color: var(--color-primary);
 }
 
-@media (hover: hover) and (min-width: 990px) {
-  .product-card__action {
-    opacity: 0;
-    transform: translateY(6px);
-    transition: opacity var(--duration) var(--ease), transform var(--duration) var(--ease);
-  }
-
-  .product-card:hover .product-card__action,
-  .product-card:focus-within .product-card__action {
-    opacity: 1;
-    transform: none;
-  }
-}
-
 /* Promo: editorial split on the brand colour */
 .promo {
   border-radius: 0;
@@ -5150,7 +5136,7 @@ body.has-sticky-cart .whatsapp-float {
     left: 0;
     z-index: 3;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     opacity: 0;
     transform: translateY(8px);
     transition: opacity var(--duration) var(--ease), transform var(--duration) var(--ease);
@@ -5160,10 +5146,6 @@ body.has-sticky-cart .whatsapp-float {
   .product-card:focus-within .product-card__hoverbar {
     opacity: 1;
     transform: none;
-  }
-
-  .product-card__action {
-    display: none;
   }
 }
 
@@ -5296,4 +5278,149 @@ body.has-sticky-cart .whatsapp-float {
     justify-content: center;
     padding: 34px 32px;
   }
+}
+
+/* ==========================================================================
+   Champagne & Cream layer
+   Cream page, white panels, black ink, champagne-gold hairline frames.
+   ========================================================================== */
+:root {
+  --color-ink: #111111;
+  --color-gold: #d4af37;
+  --color-gold-light: #ead48a;
+  --color-gold-deep: #8a6a12;
+  --frame-gold: rgba(212, 175, 55, 0.55);
+}
+
+/* Announcement bar: champagne band */
+.announcement-bar__message .icon {
+  color: currentcolor;
+}
+
+.announcement-bar :focus-visible {
+  outline-color: var(--color-ink);
+}
+
+.announcement-bar__toggle {
+  color: currentcolor;
+}
+
+/* Header sits on white above the cream page */
+.site-header-wrapper {
+  background: #fff;
+}
+
+/* Section titles: gold hairline with a diamond */
+.section-header--center h2 {
+  padding-bottom: 22px;
+}
+
+.section-header--center h2::after {
+  width: 110px;
+  height: 1px;
+  margin-left: -55px;
+  background: linear-gradient(90deg, transparent, var(--color-accent) 22%, var(--color-accent) 78%, transparent);
+}
+
+.section-header--center h2::before {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  width: 9px;
+  height: 9px;
+  margin-left: -4.5px;
+  background: var(--color-accent);
+  transform: rotate(45deg);
+}
+
+.section-header--center .section-header__subheading {
+  margin-top: 14px;
+}
+
+/* Product card: white panel with a hairline frame */
+.product-card {
+  padding: 10px 10px 12px;
+  border: 1px solid var(--color-border);
+  background: #fff;
+  transition: border-color var(--duration) var(--ease), box-shadow var(--duration) var(--ease);
+}
+
+@media (hover: hover) {
+  .product-card:hover {
+    border-color: var(--color-accent);
+    box-shadow: 0 18px 36px -24px rgba(17, 17, 17, 0.5);
+  }
+}
+
+.product-card__media {
+  background: #fff;
+}
+
+.product-card__info {
+  padding: 14px 4px 0;
+}
+
+.product-card__title {
+  font-family: var(--font-heading-family);
+  font-size: 1.12rem;
+  font-weight: var(--font-heading-weight-bold);
+  line-height: 1.25;
+}
+
+.product-card__action {
+  padding-top: 12px;
+}
+
+.product-card__action .button {
+  width: 100%;
+  min-height: 46px;
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+}
+
+.product-card__hoverbtn {
+  background: rgba(17, 17, 17, 0.9);
+}
+
+@media (max-width: 749px) {
+  .product-card {
+    padding: 8px 8px 10px;
+  }
+
+  .product-card__title {
+    font-size: 1rem;
+  }
+
+  .product-card__action .button {
+    min-height: 42px;
+    font-size: 0.64rem;
+    letter-spacing: 0.1em;
+  }
+}
+
+/* Gold hairline frame on the main product photo and thumbnails */
+.gallery__viewport {
+  border: 1px solid var(--color-border);
+  background: #fff;
+}
+
+.gallery__thumb {
+  border: 1px solid var(--color-border);
+  background: #fff;
+}
+
+.gallery__thumb.is-active {
+  border-color: var(--color-accent);
+}
+
+/* Service row */
+.features {
+  background: #fff;
+  border-color: var(--color-border);
+}
+
+/* Inputs and cards that sat on the old white page */
+.search-form__input {
+  background: #fff;
 }

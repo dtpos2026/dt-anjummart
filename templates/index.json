@@ -3,6 +3,20 @@
     "slideshow": {
       "type": "slideshow",
       "blocks": {
+        "brand": {
+          "type": "slide",
+          "settings": {
+            "art": "brand",
+            "image_alt": "A RUSTET men's watch, a MOONSTON ladies watch and a bridal jewellery set on a black and gold display",
+            "eyebrow": "Premium collection",
+            "heading": "Timeless Style.<br><em>Everyday Luxury.</em>",
+            "text": "Premium watches and jewellery for every special moment.",
+            "button_label": "Shop Collection",
+            "button_link": "shopify://collections/all",
+            "button_label_2": "",
+            "button_link_2": ""
+          }
+        },
         "men": {
           "type": "slide",
           "settings": {
@@ -47,6 +61,7 @@
         }
       },
       "block_order": [
+        "brand",
         "men",
         "women",
         "jewellery"
@@ -125,7 +140,7 @@
         "text": "All over Pakistan on every order. Cash on Delivery available.",
         "button_label": "Shop all products",
         "button_link": "shopify://collections/all",
-        "art": "delivery"
+        "art": "free-delivery"
       }
     },
     "womens-watches": {
@@ -140,7 +155,7 @@
         "products_to_show": 8,
         "show_view_all": true,
         "view_all_label": "View all women's watches",
-        "surface": true
+        "surface": false
       }
     },
     "jewellery": {
@@ -155,7 +170,7 @@
         "products_to_show": 8,
         "show_view_all": true,
         "view_all_label": "View all jewellery",
-        "surface": false
+        "surface": true
       }
     },
     "service": {
@@ -166,7 +181,7 @@
           "settings": {
             "icon": "truck",
             "title": "Free Delivery",
-            "text": "All over Pakistan on every order.",
+            "text": "All over Pakistan, on every order.",
             "auto_link": "shipping_policy",
             "link": "",
             "link_label": "Shipping policy"
@@ -183,12 +198,12 @@
             "link_label": ""
           }
         },
-        "secure": {
+        "quality": {
           "type": "feature",
           "settings": {
-            "icon": "lock",
-            "title": "Secure Checkout",
-            "text": "Your details are protected at Shopify's encrypted checkout.",
+            "icon": "sparkle",
+            "title": "Premium Style",
+            "text": "Watches and jewellery at affordable prices.",
             "auto_link": "none",
             "link": "",
             "link_label": ""
@@ -209,22 +224,62 @@
       "block_order": [
         "delivery",
         "cod",
-        "secure",
+        "quality",
         "support"
       ],
       "settings": {
         "heading": "",
         "surface": true
       }
+    },
+    "featured": {
+      "type": "product-rail",
+      "settings": {
+        "eyebrow": "",
+        "heading": "Featured Products",
+        "subheading": "",
+        "collection": "frontpage",
+        "layout": "grid",
+        "columns": "4",
+        "products_to_show": 4,
+        "show_view_all": false,
+        "view_all_label": "View all products",
+        "surface": false
+      }
+    },
+    "luxury": {
+      "type": "delivery-banner",
+      "settings": {
+        "eyebrow": "Anjum Mart",
+        "heading": "Luxury in <em>Every Detail</em>",
+        "text": "Necklace, earrings and maang tikka sets for weddings, Mehndi and Eid.",
+        "button_label": "Explore Jewellery",
+        "button_link": "shopify://collections/artificial-jewellery",
+        "art": "luxury"
+      }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "eyebrow": "Stay in touch",
+        "heading": "New arrivals, first",
+        "text": "Join our email list for new watches and jewellery.",
+        "placeholder": "Your email address",
+        "button_label": "Subscribe",
+        "success_text": "Thank you for subscribing."
+      }
     }
   },
   "order": [
     "slideshow",
+    "service",
     "tiles",
+    "featured",
     "mens-watches",
     "delivery",
     "womens-watches",
+    "luxury",
     "jewellery",
-    "service"
+    "newsletter"
   ]
 }

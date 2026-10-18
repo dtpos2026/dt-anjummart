@@ -1,7 +1,7 @@
 # Anjum Mart — Shopify theme
 
 A custom Online Store 2.0 theme for **Anjum Mart** (`mhwk5r-ks.myshopify.com`), built for selling
-RUSTET watches (the catalogue currently holds watches only).
+watches (RUSTET for men, MOONSTON for women) and bridal jewellery sets.
 
 It is a native Shopify theme (Liquid + vanilla JavaScript, no build step, no third-party apps), so the
 cart, checkout, customer accounts, search, filters and product recommendations all run on Shopify itself.
@@ -35,7 +35,8 @@ app icon and social share image are rebuilt from the same artwork.
 | Area | Details |
 | --- | --- |
 | Header | Official logo, product search with live suggestions, account link, cart with live item count, mobile drawer menu |
-| Homepage | Announcement bar → hero banner → category cards → Featured Products → New Arrivals → promo banner → Best Sellers → Special Offers → service highlights → footer |
+| Homepage | Announcement bar → slideshow (3 slides, arrows, dots, pause button, swipe) → category tiles (Men's, Women's, Jewellery) → Men's Watches grid → "Shop smart / Free delivery" banner → Women's Watches grid → Bridal Jewellery grid → service highlights → footer |
+| Product cards | Category label, title, price, "In stock" (from real inventory). On desktop, hovering shows an **ADD TO CART \| QUICK VIEW** bar; on phones a normal Add to cart button sits under the card. Quick view opens a modal (loaded from `sections/quick-view.liquid`) and falls back to the product page if it cannot load |
 | Collections | Banner, Shopify filters (availability, price, product type, plus anything set in Search & Discovery), sorting, numbered pagination, empty states |
 | Product page | Gallery with thumbnails/swipe (selected variant's image first), variant buttons that update price, compare-at price, stock and image, quantity, Add to cart, Shopify *Buy it now*, shipping & returns links once policies exist, related products |
 | Cart | Branded slide-out cart drawer and full cart page: update quantity (safe with fast taps on several lines), remove, Subtotal → Shopify discounts → Total, savings line, free-shipping progress (from a setting that must match your shipping rates), "Complete your look" recommendations with variant choice and Add to cart, Continue shopping, policy links once policies exist, Shopify checkout |
@@ -54,26 +55,32 @@ Created in Shopify admin through the Admin API:
 
 | Collection | Handle | How products get in |
 | --- | --- | --- |
-| Watches | `watches` | Product type **Watches** *or* tag `watches` |
-| Gold / Two-Tone / Steel Watches | `gold-watches`, `two-tone-watches`, `steel-watches` | Tag `gold`, `two-tone`, `steel` |
-| Diver / Sport / Strap Watches | `diver-watches`, `sport-watches`, `strap-watches` | Tag `diver`, `sport`, `strap` |
+| Men's Watches | `mens-watches` | Tag `mens-watches` |
+| Women's Watches | `womens-watches` | Tag `womens-watches` |
+| Jewellery | `artificial-jewellery` | Product type **Artificial Jewellery** or tag `artificial-jewellery` |
+| Watches | `watches` | Product type **Watches** or tag `watches` |
 | New Arrivals | `new-arrivals` | All priced products, newest first |
 | Sale | `sale` | Products whose compare-at price is higher than the price (empty until you set one) |
-| Featured Products | `frontpage` | Shopify's existing "Home page" collection — add products manually |
 
-A navigation menu **Anjum Mart main menu** (`anjum-main-menu`) links Home, Watches (with the style collections
-as a dropdown), New Arrivals and Contact. There is deliberately no "Best Sellers" collection: nothing has
-been sold yet, so the theme never claims one.
+The navigation menu **Anjum Mart main menu** (`anjum-main-menu`) links Home, Men's Watches, Women's Watches,
+Jewellery, New Arrivals and Contact. There is deliberately no "Best Sellers" collection: nothing has been sold yet,
+so the theme never claims one.
 
 ### Catalogue
 
-The 14 RUSTET watch listings come from the supplier PDF (63 pages, 44 unique photos; duplicate pages were
-skipped). Each listing has Colour variants, SKU `RST-…`, tags for the style collections and a description
-written only from what the brand's own images state (no invented specifications). Listings are **Draft**:
-check the prices (the owner chose two price points, Rs 2,999 and Rs 3,999; each model was placed in one of them
-by judgment: simpler classic models at 2,999, octagon, diver, open-heart, sport, chronograph and two-tone models at
-3,999), set stock, then activate the products (*Products → select → Set as active*). Dial colours without their own photo show a short note on
-the product page. The store logo is layered over every product photo by the theme.
+Eleven products are **Active**, published to the Online Store, priced from the owner's product posts and stocked at
+**10 pieces each** (inventory tracked, oversell blocked): six RUSTET men's watches at Rs 3,999, three MOONSTON ladies
+watches at Rs 2,999 and two bridal jewellery sets (necklace, earrings, maang tikka) at Rs 1,999. Descriptions are the
+owner's own text (the two RUSTET models without a post are described only from what their photos show). The photo
+of every product has a pure white background. Catalogue source: `docs/catalog/products-v2.py`. The earlier 14 RUSTET
+listings were not confirmed in stock and are kept as **Draft**.
+
+### Shipping and policies
+
+The only domestic shipping rate is **Free Delivery (All Pakistan)**, Rs 0 on every order, to match the product posts.
+`docs/policies/*.html` hold the Shipping, Return and Refund, and Terms pages (also live as Shopify Pages): free
+delivery, Cash on Delivery, **no returns for change of mind**, and a replacement for a damaged or wrong item when
+reported within 48 hours.
 
 ## Installing / previewing
 
@@ -95,12 +102,15 @@ information/shipping/payment steps) on **Shopify Plus**. On Basic:
 
 ## Things the store owner needs to do
 
-1. **Confirm the watch prices and stock,** then activate the listings. For new products, use product type
-   **Watches** and the style tags above so they land in the right collections. Add compare-at prices only for real discounts — the Sale badge and *x% off* are calculated from them.
-2. **Write store policies** in *Settings → Policies*. Only a Privacy policy exists today. Shipping, Refund and
-   Terms of Service links appear in the footer and on product pages automatically once written.
-3. **Payments, Cash on Delivery, shipping rates and taxes** are configured in Shopify *Settings*. The theme
-   makes no delivery or payment promises of its own.
+1. **Keep stock in step with the warehouse** (*Products → Inventory*). A product shows "Sold out" at 0. For new
+   products use product type **Watches** (or **Artificial Jewellery**) and the tags `mens-watches`,
+   `womens-watches` or `artificial-jewellery` so they land in the right collections. Add compare-at prices only for
+   real discounts: the Sale badge and *x% off* are calculated from them.
+2. **Paste the policies** from `docs/policies/` into *Settings → Policies* (the assistant cannot write them), so the
+   checkout links show them too.
+3. **Payments, Cash on Delivery, shipping rates and taxes** are configured in Shopify *Settings*. The theme's
+   "free delivery all over Pakistan" and "Cash on Delivery" wording (announcement bar, banner, product pages, cart)
+   matches the current rates; if you change the shipping rate, update those texts in the theme editor.
 4. **Remove the storefront password** (*Online Store → Preferences*) when ready to sell. Search engines
    cannot see the store while it is password protected.
 5. **Connect the domain anjummart.com** in *Settings → Domains → Connect existing domain* and follow the DNS
@@ -113,9 +123,9 @@ information/shipping/payment steps) on **Shopify Plus**. On Basic:
 7. **Theme settings** (*Customize → Theme settings*): the phone, WhatsApp number (+92 371 4661514) and Multan office address
    are already set. Still to add: support hours and the social profile links (Facebook, Instagram, TikTok; each icon
    appears only once its link is entered).
-8. **Homepage images** (*Customize → Home page*): upload campaign photos for the hero and promo banner and,
-   optionally, category images. Until then the hero shows a collage of real product photos from New Arrivals,
-   and category cards use the collection's first product image or a branded tile.
+8. **Homepage images** (*Customize → Home page*): the slideshow, category tiles and delivery banner use built-in
+   black-and-gold artwork made from the product photos (`assets/slide-*.jpg`, `tile-*.jpg`, `promo-*.jpg`). To use
+   your own pictures, upload them in the slide, tile or banner settings; they replace the built-in artwork.
 9. Optional: install Shopify **Search & Discovery** to add filters (colour, size, brand) and tune related products.
 
 Not built on purpose: **wishlist** (no wishlist integration exists — install a wishlist app if needed) and
@@ -124,7 +134,7 @@ Not built on purpose: **wishlist** (no wishlist integration exists — install a
 ## Development
 
 ```
-assets/      base.css, collection.css, product.css, theme.js, logo + favicons
+assets/      base.css, home.css, collection.css, product.css, theme.js, logo + favicons, banner artwork
 config/      settings_schema.json, settings_data.json
 layout/      theme.liquid, password.liquid
 locales/     en.default.json (all storefront text)

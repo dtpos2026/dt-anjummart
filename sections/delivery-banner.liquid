@@ -27,10 +27,12 @@
                 alt: ''
             }}
           </picture>
-        {%- elsif art == 'delivery' -%}
+        {%- elsif art != 'none' -%}
+          {%- assign art_desktop = 'promo-' | append: art | append: '.jpg' -%}
+          {%- assign art_mobile = 'promo-' | append: art | append: '-mobile.jpg' -%}
           <picture>
-            <source media="(max-width: 749px)" srcset="{{ 'promo-free-delivery-mobile.jpg' | asset_url }}" width="900" height="700">
-            <img src="{{ 'promo-free-delivery.jpg' | asset_url }}" width="1800" height="560" alt="" loading="lazy" decoding="async">
+            <source media="(max-width: 749px)" srcset="{{ art_mobile | asset_url }}" width="900" height="700">
+            <img src="{{ art_desktop | asset_url }}" width="1800" height="560" alt="" loading="lazy" decoding="async">
           </picture>
         {%- endif -%}
       </div>
@@ -112,9 +114,10 @@
       "info": "Used when no image is uploaded above.",
       "options": [
         { "value": "none", "label": "None" },
-        { "value": "delivery", "label": "Watch on black and gold" }
+        { "value": "free-delivery", "label": "Men's watches on black and gold" },
+        { "value": "luxury", "label": "Jewellery sets on black and gold" }
       ],
-      "default": "delivery"
+      "default": "free-delivery"
     }
   ],
   "presets": [
