@@ -10,10 +10,19 @@
     aria-roledescription="carousel"
     aria-label="{{ 'general.slideshow.label' | t }}"
     data-slideshow
+    data-frame-style="1"
+    data-frame-tick="0"
     data-autoplay="{{ section.settings.autoplay }}"
     data-speed="{{ section.settings.speed }}"
     data-label-slide="{{ 'general.slideshow.slide_of' | t: index: '[index]', total: '[total]' }}"
   >
+    <div class="slideshow__frame" aria-hidden="true">
+      <span class="sf-lt"></span><span class="sf-lr"></span><span class="sf-lb"></span><span class="sf-ll"></span>
+      <span class="sf-it"></span><span class="sf-ir"></span><span class="sf-ib"></span><span class="sf-il"></span>
+      <span class="sf-ctl"></span><span class="sf-ctr"></span><span class="sf-cbr"></span><span class="sf-cbl"></span>
+      <span class="sf-gtl"></span><span class="sf-gtr"></span><span class="sf-gbr"></span><span class="sf-gbl"></span>
+    </div>
+
     <div class="slideshow__track" data-slideshow-track>
       {%- for block in section.blocks -%}
         {%- liquid
@@ -126,6 +135,9 @@
         </div>
         <button type="button" class="slideshow__toggle" data-slideshow-toggle aria-pressed="false" aria-label="{{ 'general.slideshow.pause' | t }}" data-label-pause="{{ 'general.slideshow.pause' | t }}" data-label-play="{{ 'general.slideshow.play' | t }}">
           <span class="slideshow__toggle-icon" aria-hidden="true"></span>
+        </button>
+        <button type="button" class="slideshow__frame-button" data-slideshow-frame aria-label="{{ 'general.slideshow.frame' | t }}">
+          <span class="slideshow__frame-icon" aria-hidden="true"></span>
         </button>
         <button type="button" class="slideshow__arrow slideshow__arrow--next" data-slideshow-next aria-label="{{ 'general.slideshow.next' | t }}">
           {% render 'icon', name: 'chevron-right' %}

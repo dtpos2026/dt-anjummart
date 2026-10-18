@@ -1451,6 +1451,17 @@
     var inEditor = !!(window.Shopify && window.Shopify.designMode);
     this.autoplay = root.getAttribute('data-autoplay') === 'true' && !reduced && !inEditor;
     this.speed = (parseInt(root.getAttribute('data-speed'), 10) || 6) * 1000;
+    this.frameStyle = parseInt(root.getAttribute('data-frame-style'), 10) || 1;
+    this.frameTick = parseInt(root.getAttribute('data-frame-tick'), 10) || 0;
+
+    // Clicking the picture (not a link or button) or the frame button changes the gold frame style
+    root.addEventListener('click', function (e) {
+      if (e.target.closest && e.target.closest('a, button, input, select, textarea, label')) return;
+      self.nextFrame();
+    });
+    var frameButton = root.querySelector('[data-slideshow-frame]');
+    if (frameButton) frameButton.addEventListener('click', function () { self.nextFrame(); });
+
     if (this.slides.length < 2) return;
     if (this.controls) this.controls.hidden = false;
     if (this.toggle && !this.autoplay) this.toggle.hidden = true;
@@ -1521,8 +1532,18 @@
       this.dots[i].classList.add('is-active');
       this.dots[i].setAttribute('aria-current', 'true');
     }
+    this.nextFrame();
     // A user-initiated change keeps its slide on screen for a full interval
     this.restart();
+  };
+
+  // Six frame styles (1-2 lines, 3-4 corner brackets, 5-6 stitched / jewelled). The tick flips so the
+  // CSS draw animation restarts every time without forcing a reflow.
+  Slideshow.prototype.nextFrame = function () {
+    this.frameStyle = (this.frameStyle % 6) + 1;
+    this.frameTick = this.frameTick ? 0 : 1;
+    this.root.setAttribute('data-frame-style', String(this.frameStyle));
+    this.root.setAttribute('data-frame-tick', String(this.frameTick));
   };
 
   Slideshow.prototype.syncToggle = function () {

@@ -2,6 +2,7 @@
   assign heading_font = settings.type_heading_font
   assign body_font = settings.type_body_font
   assign heading_font_bold = heading_font | font_modify: 'weight', '600'
+  assign heading_font_black = heading_font | font_modify: 'weight', 'bold'
   assign heading_font_italic = heading_font | font_modify: 'style', 'italic'
   assign body_font_medium = body_font | font_modify: 'weight', '500'
   assign body_font_bold = body_font | font_modify: 'weight', '600'
@@ -20,6 +21,7 @@
 <style>
   {{ heading_font | font_face: font_display: 'swap' }}
   {{ heading_font_bold | font_face: font_display: 'swap' }}
+  {{ heading_font_black | font_face: font_display: 'swap' }}
   {{ heading_font_italic | font_face: font_display: 'swap' }}
   {{ body_font | font_face: font_display: 'swap' }}
   {{ body_font_medium | font_face: font_display: 'swap' }}
@@ -53,6 +55,7 @@
     --font-heading-style: {{ heading_font.style }};
     --font-heading-weight: {{ heading_font.weight }};
     --font-heading-weight-bold: {{ heading_font_bold.weight | default: heading_font.weight }};
+    --font-heading-weight-black: {{ heading_font_black.weight | default: heading_font_bold.weight }};
     --font-body-family: {{ body_font.family }}, {{ body_font.fallback_families }};
     --font-body-style: {{ body_font.style }};
     --font-body-weight: {{ body_font.weight }};

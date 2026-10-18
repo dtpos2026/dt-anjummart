@@ -39,7 +39,8 @@
       "pause": "Pause slideshow",
       "play": "Play slideshow",
       "previous": "Previous slide",
-      "next": "Next slide"
+      "next": "Next slide",
+      "frame": "Change frame style"
     }
   },
   "header": {
