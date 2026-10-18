@@ -23,7 +23,13 @@
       "cart_free_delivery_text": "Free delivery all over Pakistan on every order",
       "whatsapp_number": "923714661514",
       "contact_phone": "+92 371 4661514",
-      "contact_address": "Office No. 7, Hadi Commercial Center, M.A. Jinnah Road, near Nigaana Chowk, Multan"
+      "contact_address": "Office No. 7, Hadi Commercial Center, M.A. Jinnah Road, near Nigaana Chowk, Multan",
+      "sp_enable": true,
+      "sp_orders": true,
+      "sp_mobile": true,
+      "sp_max": 8,
+      "sp_gap": 20,
+      "sp_days": 14
     }
   }
 }

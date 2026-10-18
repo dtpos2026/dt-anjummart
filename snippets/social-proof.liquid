@@ -1,0 +1,102 @@
+{%- comment -%}
+  Store highlights popup (assets/theme.js initSocialProof, styles at the end of assets/base.css).
+
+  Two data sources, kept apart on purpose:
+    highlights  In-stock products from the catalogue and delivery facts. True statements only, never worded as a purchase.
+    orders      Real purchases. Read from the shop metafield custom.recent_orders (JSON list written from genuine orders,
+                see docs/SOCIAL-PROOF.md). Nothing is generated or sample data: an empty feed shows no purchase notice.
+{%- endcomment -%}
+{%- liquid
+  assign sp_highlights = ''
+  for sp_product in collections['all'].products limit: 12
+    if sp_product.available and sp_product.featured_image
+      capture sp_item
+        echo '{"handle":'
+        echo sp_product.handle | json
+        echo ',"title":'
+        echo sp_product.title | json
+        echo ',"url":'
+        echo sp_product.url | json
+        echo ',"image":'
+        echo sp_product.featured_image | image_url: width: 160 | json
+        echo ',"price":'
+        echo sp_product.price | money | json
+        echo '}'
+      endcapture
+      if sp_highlights != blank
+        assign sp_highlights = sp_highlights | append: ','
+      endif
+      assign sp_highlights = sp_highlights | append: sp_item
+    endif
+  endfor
+
+  assign sp_orders = ''
+  if settings.sp_orders
+    assign sp_feed = shop.metafields.custom.recent_orders.value
+    for sp_entry in sp_feed limit: 20
+      assign sp_order_product = all_products[sp_entry.handle]
+      if sp_order_product != blank and sp_entry.city != blank and sp_entry.at != blank and sp_order_product.featured_image
+        capture sp_item
+          echo '{"city":'
+          echo sp_entry.city | json
+          echo ',"at":'
+          echo sp_entry.at | json
+          echo ',"title":'
+          echo sp_order_product.title | json
+          echo ',"url":'
+          echo sp_order_product.url | json
+          echo ',"image":'
+          echo sp_order_product.featured_image | image_url: width: 160 | json
+          echo '}'
+        endcapture
+        if sp_orders != blank
+          assign sp_orders = sp_orders | append: ','
+        endif
+        assign sp_orders = sp_orders | append: sp_item
+      endif
+    endfor
+  endif
+-%}
+{%- if sp_highlights != blank or sp_orders != blank -%}
+  <div
+    class="proof"
+    id="SocialProof"
+    data-mobile="{{ settings.sp_mobile }}"
+    role="status"
+    aria-live="polite"
+    aria-atomic="true"
+  ></div>
+  <template id="SocialProofIcons">
+    <span data-proof-icon="truck">{% render 'icon', name: 'truck' %}</span>
+    <span data-proof-icon="badge">{% render 'icon', name: 'badge' %}</span>
+    <span data-proof-icon="check">{% render 'icon', name: 'check' %}</span>
+    <span data-proof-icon="close">{% render 'icon', name: 'close' %}</span>
+  </template>
+  <script type="application/json" id="SocialProofData">
+    {
+      "highlights": [{{ sp_highlights }}],
+      "orders": [{{ sp_orders }}],
+      "max": {{ settings.sp_max | default: 8 }},
+      "gap": {{ settings.sp_gap | default: 20 }},
+      "days": {{ settings.sp_days | default: 14 }},
+      "strings": {
+        "inStock": {{ 'general.social_proof.in_stock' | t | json }},
+        "freeDelivery": {{ 'products.product.free_delivery' | t | json }},
+        "freeDeliveryShort": {{ 'general.social_proof.free_delivery_short' | t | json }},
+        "freeDeliverySub": {{ 'general.social_proof.free_delivery_sub' | t | json }},
+        "cod": {{ 'products.product.cod_available' | t | json }},
+        "codSub": {{ 'general.social_proof.cod_sub' | t | json }},
+        "ordered": {{ 'general.social_proof.ordered' | t: city: '[city]' | json }},
+        "verified": {{ 'general.social_proof.verified' | t | json }},
+        "close": {{ 'general.social_proof.close' | t | json }},
+        "view": {{ 'general.social_proof.view' | t | json }},
+        "justNow": {{ 'general.social_proof.just_now' | t | json }},
+        "minutesAgo": {{ 'general.social_proof.minutes_ago' | t: count: '[count]' | json }},
+        "hourAgo": {{ 'general.social_proof.hour_ago' | t | json }},
+        "hoursAgo": {{ 'general.social_proof.hours_ago' | t: count: '[count]' | json }},
+        "yesterday": {{ 'general.social_proof.yesterday' | t | json }},
+        "daysAgo": {{ 'general.social_proof.days_ago' | t: count: '[count]' | json }}
+      }
+    }
+  </script>
+{%- endif -%}

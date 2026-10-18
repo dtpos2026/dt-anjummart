@@ -41,6 +41,22 @@
       "previous": "Previous slide",
       "next": "Next slide",
       "frame": "Change frame style"
+    },
+    "social_proof": {
+      "in_stock": "In stock",
+      "free_delivery_short": "Free delivery",
+      "free_delivery_sub": "On every order",
+      "cod_sub": "Pay when your order arrives",
+      "ordered": "Someone from {{ city }} ordered",
+      "verified": "Verified order",
+      "close": "Close notification",
+      "view": "View",
+      "just_now": "Just now",
+      "minutes_ago": "{{ count }} minutes ago",
+      "hour_ago": "1 hour ago",
+      "hours_ago": "{{ count }} hours ago",
+      "yesterday": "Yesterday",
+      "days_ago": "{{ count }} days ago"
     }
   },
   "header": {

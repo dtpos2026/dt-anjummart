@@ -158,6 +158,10 @@
       </a>
     {%- endif -%}
 
+    {%- if settings.sp_enable and request.design_mode == false and request.page_type != 'cart' and request.page_type != 'password' and request.page_type != 'gift_card' -%}
+      {% render 'social-proof' %}
+    {%- endif -%}
+
     {%- if request.page_type == 'index' -%}
       <script type="application/ld+json">
         {

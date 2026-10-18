@@ -1781,6 +1781,251 @@
   }
 
   /* ------------------------------------------------------------------
+     Store highlights popup (snippets/social-proof.liquid)
+     "highlights" are true catalogue facts and never claim a purchase.
+     "orders" come from the verified feed only; an empty feed shows none.
+     ------------------------------------------------------------------ */
+  function initSocialProof() {
+    var box = document.getElementById('SocialProof');
+    var dataEl = document.getElementById('SocialProofData');
+    var icons = document.getElementById('SocialProofIcons');
+    if (!box || !dataEl) return;
+    var data;
+    try {
+      data = JSON.parse(dataEl.textContent);
+    } catch (e) {
+      return;
+    }
+    var S = data.strings || {};
+    var store = null;
+    try {
+      store = window.sessionStorage;
+    } catch (e) {}
+    var read = function (key) {
+      try {
+        return store ? store.getItem(key) : null;
+      } catch (e) {
+        return null;
+      }
+    };
+    var write = function (key, value) {
+      try {
+        if (store) store.setItem(key, value);
+      } catch (e) {}
+    };
+    if (read('amProofOff')) return;
+
+    var shown = parseInt(read('amProofShown'), 10) || 0;
+    var max = Math.max(1, Number(data.max) || 8);
+    if (shown >= max) return;
+
+    var currentHandle = (window.location.pathname.match(/\/products\/([^/?#]+)/) || [])[1] || '';
+    var now = Date.now();
+    var windowMs = (Number(data.days) || 14) * 86400000;
+
+    var ago = function (ms) {
+      var minutes = Math.floor(ms / 60000);
+      if (minutes < 2) return S.justNow;
+      if (minutes < 60) return String(S.minutesAgo).replace('[count]', minutes);
+      var hours = Math.floor(minutes / 60);
+      if (hours === 1) return S.hourAgo;
+      if (hours < 24) return String(S.hoursAgo).replace('[count]', hours);
+      var days = Math.floor(hours / 24);
+      if (days === 1) return S.yesterday;
+      return String(S.daysAgo).replace('[count]', days);
+    };
+
+    var items = [];
+    (data.orders || []).forEach(function (o) {
+      var at = Date.parse(o.at);
+      var age = now - at;
+      if (!o.city || String(o.city).length > 40 || isNaN(at) || age < -300000 || age > windowMs) return;
+      items.push({ kind: 'order', order: o, age: Math.max(0, age) });
+    });
+    var orderCount = items.length;
+    (data.highlights || []).forEach(function (p) {
+      if (p.handle && p.handle === currentHandle) return;
+      items.push({ kind: 'product', product: p });
+    });
+    items.push({ kind: 'info', icon: 'truck', title: S.freeDelivery, sub: S.freeDeliverySub });
+    items.push({ kind: 'info', icon: 'badge', title: S.cod, sub: S.codSub });
+    if (!items.length) return;
+
+    var shuffle = function (list) {
+      for (var i = list.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var t = list[i];
+        list[i] = list[j];
+        list[j] = t;
+      }
+      return list;
+    };
+    var queue = [];
+    var last = null;
+    var next = function () {
+      if (!queue.length) {
+        queue = shuffle(items.slice());
+        // a verified order leads the first notice of a visit; no item repeats back to back
+        if (!shown && orderCount) {
+          for (var i = 0; i < queue.length; i++) {
+            if (queue[i].kind === 'order') {
+              queue.unshift(queue.splice(i, 1)[0]);
+              break;
+            }
+          }
+        }
+        if (queue.length > 1 && queue[0] === last) queue.push(queue.shift());
+      }
+      last = queue.shift();
+      return last;
+    };
+
+    var make = function (tag, cls, text) {
+      var el = document.createElement(tag);
+      if (cls) el.className = cls;
+      if (text) el.textContent = text;
+      return el;
+    };
+    var icon = function (name) {
+      var src = icons && icons.content ? icons.content.querySelector('[data-proof-icon="' + name + '"]') : null;
+      return src ? src.firstElementChild.cloneNode(true) : document.createElement('span');
+    };
+    var thumb = function (src, alt) {
+      var wrap = make('span', 'proof__thumb');
+      var img = document.createElement('img');
+      img.src = src;
+      img.alt = alt || '';
+      img.width = 64;
+      img.height = 64;
+      img.loading = 'eager';
+      img.decoding = 'async';
+      wrap.appendChild(img);
+      return wrap;
+    };
+
+    var build = function (item) {
+      var card = make('div', 'proof__card');
+      card.setAttribute('data-kind', item.kind);
+      var body = make('div', 'proof__body');
+      var media;
+      if (item.kind === 'order') {
+        var o = item.order;
+        media = make('a', 'proof__media');
+        media.href = o.url;
+        media.tabIndex = -1;
+        media.setAttribute('aria-hidden', 'true');
+        media.appendChild(thumb(o.image, ''));
+        var badge = make('p', 'proof__label');
+        badge.appendChild(icon('check'));
+        badge.appendChild(document.createTextNode(S.verified));
+        body.appendChild(badge);
+        body.appendChild(make('p', 'proof__text', String(S.ordered).replace('[city]', o.city)));
+        var link = make('a', 'proof__title', o.title);
+        link.href = o.url;
+        body.appendChild(link);
+        body.appendChild(make('p', 'proof__meta', ago(item.age)));
+      } else if (item.kind === 'product') {
+        var p = item.product;
+        media = make('a', 'proof__media');
+        media.href = p.url;
+        media.tabIndex = -1;
+        media.setAttribute('aria-hidden', 'true');
+        media.appendChild(thumb(p.image, ''));
+        body.appendChild(make('p', 'proof__label', S.inStock));
+        var title = make('a', 'proof__title', p.title);
+        title.href = p.url;
+        body.appendChild(title);
+        body.appendChild(make('p', 'proof__meta', p.price + ' \u00b7 ' + S.freeDeliveryShort));
+      } else {
+        media = make('span', 'proof__media proof__media--icon');
+        media.appendChild(icon(item.icon));
+        body.appendChild(make('p', 'proof__title proof__title--plain', item.title));
+        body.appendChild(make('p', 'proof__meta', item.sub));
+      }
+      var close = make('button', 'proof__close');
+      close.type = 'button';
+      close.setAttribute('aria-label', S.close);
+      close.appendChild(icon('close'));
+      card.appendChild(media);
+      card.appendChild(body);
+      card.appendChild(close);
+      return card;
+    };
+
+    var timer = null;
+    var held = false;
+    var blocked = function () {
+      var root = document.documentElement;
+      return (
+        document.hidden ||
+        document.body.classList.contains('overflow-hidden') ||
+        root.classList.contains('splash-on') ||
+        root.classList.contains('splash-nav')
+      );
+    };
+    var wait = function (ms, fn) {
+      clearTimeout(timer);
+      timer = setTimeout(fn, ms);
+    };
+    var gap = function () {
+      var avg = (Number(data.gap) || 20) * 1000;
+      return avg * (0.7 + Math.random() * 0.7);
+    };
+    var hide = function (after) {
+      var card = box.firstElementChild;
+      if (!card) return after();
+      card.classList.remove('is-visible');
+      setTimeout(function () {
+        box.innerHTML = '';
+        after();
+      }, 400);
+    };
+    var cycle = function () {
+      if (shown >= max) return;
+      if (blocked()) return wait(3000, cycle);
+      var card = build(next());
+      box.innerHTML = '';
+      box.appendChild(card);
+      shown += 1;
+      write('amProofShown', String(shown));
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          card.classList.add('is-visible');
+        });
+      });
+      var dismiss = function () {
+        write('amProofOff', '1');
+        clearTimeout(timer);
+        hide(function () {});
+      };
+      card.querySelector('.proof__close').addEventListener('click', dismiss);
+      var schedule = function () {
+        wait(6500, function () {
+          if (held) return schedule();
+          hide(function () {
+            wait(gap(), cycle);
+          });
+        });
+      };
+      schedule();
+    };
+    // Reading time is never cut short while the pointer or keyboard focus is on the popup
+    box.addEventListener('mouseenter', function () {
+      held = true;
+    });
+    box.addEventListener('mouseleave', function () {
+      held = false;
+    });
+    box.addEventListener('focusin', function () {
+      held = true;
+    });
+    box.addEventListener('focusout', function () {
+      held = false;
+    });
+    wait(8000 + Math.random() * 4000, cycle);
+  }
+
+  /* ------------------------------------------------------------------
      Init
      ------------------------------------------------------------------ */
   function init() {
@@ -1807,6 +2052,7 @@
     initReveal();
     initStickyCart();
     initSplash();
+    initSocialProof();
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);

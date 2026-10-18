@@ -5724,3 +5724,212 @@ html.splash-on .splash {
     pointer-events: none;
   }
 }
+
+/* ==========================================================================
+   Store highlights popup (snippets/social-proof.liquid, theme.js initSocialProof)
+   Bottom-left card: in-stock product, delivery fact, or a verified order.
+   ========================================================================== */
+.proof {
+  position: fixed;
+  left: 16px;
+  bottom: 16px;
+  z-index: 44;
+  width: min(372px, calc(100vw - 96px));
+  pointer-events: none;
+}
+
+.proof__card {
+  position: relative;
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  gap: 14px;
+  align-items: center;
+  padding: 12px 40px 12px 12px;
+  border: 1px solid var(--color-border);
+  border-left: 3px solid var(--color-gold, #d4af37);
+  border-radius: var(--radius-lg);
+  background: var(--color-bg);
+  color: var(--color-text);
+  box-shadow: var(--shadow-lg);
+  pointer-events: auto;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 350ms var(--ease), transform 350ms var(--ease);
+}
+
+.proof__card.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.proof__media {
+  display: block;
+  width: 64px;
+  height: 64px;
+}
+
+.proof__thumb {
+  display: block;
+  width: 64px;
+  height: 64px;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: #fff;
+}
+
+.proof__thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.proof__media--icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  color: var(--color-gold-deep, #8a6a12);
+}
+
+.proof__media--icon .icon,
+.proof__media--icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+.proof__body {
+  min-width: 0;
+}
+
+.proof__body p {
+  margin: 0;
+}
+
+.proof__label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 3px;
+  font-size: 0.66rem;
+  font-weight: var(--font-body-weight-bold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--color-gold-deep, #8a6a12);
+}
+
+.proof__label svg {
+  flex: none;
+  width: 13px;
+  height: 13px;
+}
+
+.proof__text {
+  font-size: 0.8rem;
+  line-height: 1.3;
+  color: var(--color-muted);
+}
+
+.proof__title {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  font-size: 0.86rem;
+  font-weight: var(--font-body-weight-medium);
+  line-height: 1.3;
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+a.proof__title:hover,
+a.proof__title:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.proof__title--plain {
+  font-size: 0.9rem;
+}
+
+.proof__meta {
+  margin-top: 3px;
+  font-size: 0.74rem;
+  line-height: 1.3;
+  color: var(--color-muted);
+}
+
+.proof__close {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-round);
+  background: transparent;
+  color: var(--color-muted);
+  cursor: pointer;
+}
+
+.proof__close:hover {
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.proof__close svg {
+  width: 14px;
+  height: 14px;
+}
+
+@media (max-width: 749px) {
+  .proof {
+    left: 12px;
+    bottom: calc(12px + env(safe-area-inset-bottom));
+    width: calc(100vw - 88px);
+  }
+
+  .proof__card {
+    grid-template-columns: 52px minmax(0, 1fr);
+    gap: 12px;
+    padding: 10px 36px 10px 10px;
+  }
+
+  .proof__media,
+  .proof__thumb {
+    width: 52px;
+    height: 52px;
+  }
+
+  .proof[data-mobile="false"] {
+    display: none;
+  }
+
+  body.has-sticky-cart .proof {
+    bottom: calc(84px + env(safe-area-inset-bottom));
+  }
+}
+
+body.overflow-hidden .proof {
+  visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .proof__card {
+    transform: none;
+    transition: opacity 150ms linear;
+  }
+}
+
+@media print {
+  .proof {
+    display: none;
+  }
+}

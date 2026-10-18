@@ -144,9 +144,18 @@
         "id": "card_image_ratio",
         "label": "Image ratio",
         "options": [
-          { "value": "square", "label": "Square (1:1)" },
-          { "value": "portrait", "label": "Portrait (4:5)" },
-          { "value": "tall", "label": "Tall (3:4)" }
+          {
+            "value": "square",
+            "label": "Square (1:1)"
+          },
+          {
+            "value": "portrait",
+            "label": "Portrait (4:5)"
+          },
+          {
+            "value": "tall",
+            "label": "Tall (3:4)"
+          }
         ],
         "default": "portrait"
       },
@@ -155,8 +164,14 @@
         "id": "card_image_fit",
         "label": "Image fit",
         "options": [
-          { "value": "cover", "label": "Fill frame" },
-          { "value": "contain", "label": "Show whole image" }
+          {
+            "value": "cover",
+            "label": "Fill frame"
+          },
+          {
+            "value": "contain",
+            "label": "Show whole image"
+          }
         ],
         "default": "cover"
       },
@@ -212,10 +227,22 @@
         "id": "watermark_position",
         "label": "Position",
         "options": [
-          { "value": "bottom_right", "label": "Bottom right" },
-          { "value": "bottom_left", "label": "Bottom left" },
-          { "value": "top_right", "label": "Top right" },
-          { "value": "center", "label": "Center" }
+          {
+            "value": "bottom_right",
+            "label": "Bottom right"
+          },
+          {
+            "value": "bottom_left",
+            "label": "Bottom left"
+          },
+          {
+            "value": "top_right",
+            "label": "Top right"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          }
         ],
         "default": "bottom_right"
       },
@@ -278,6 +305,61 @@
     ]
   },
   {
+    "name": "Store highlights popup",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "A small popup in the bottom-left corner. It rotates in-stock products and delivery facts from your catalogue. It never says someone bought something unless that order is listed in the verified feed (Settings, Custom data, Shop, recent_orders). Nothing is generated or invented."
+      },
+      {
+        "type": "checkbox",
+        "id": "sp_enable",
+        "label": "Show the store highlights popup",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "sp_orders",
+        "label": "Include verified recent orders",
+        "info": "Only orders you add to the recent_orders list appear. An empty list shows no purchase notice.",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "sp_mobile",
+        "label": "Show on phones",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "sp_max",
+        "label": "Notices per visit",
+        "min": 3,
+        "max": 20,
+        "step": 1,
+        "default": 8
+      },
+      {
+        "type": "range",
+        "id": "sp_gap",
+        "label": "Average seconds between notices",
+        "min": 10,
+        "max": 60,
+        "step": 5,
+        "default": 20
+      },
+      {
+        "type": "range",
+        "id": "sp_days",
+        "label": "Show verified orders from the last (days)",
+        "min": 1,
+        "max": 30,
+        "step": 1,
+        "default": 14
+      }
+    ]
+  },
+  {
     "name": "Animations",
     "settings": [
       {
@@ -304,8 +386,14 @@
         "id": "cart_type",
         "label": "When a product is added",
         "options": [
-          { "value": "drawer", "label": "Open cart drawer" },
-          { "value": "page", "label": "Go to cart page" }
+          {
+            "value": "drawer",
+            "label": "Open cart drawer"
+          },
+          {
+            "value": "page",
+            "label": "Go to cart page"
+          }
         ],
         "default": "drawer"
       },
@@ -360,8 +448,14 @@
         "label": "Recommendation type",
         "info": "Complementary products are set up in the Shopify Search & Discovery app. When none are set, related products are shown instead.",
         "options": [
-          { "value": "related", "label": "Related products" },
-          { "value": "complementary", "label": "Complementary, then related" }
+          {
+            "value": "related",
+            "label": "Related products"
+          },
+          {
+            "value": "complementary",
+            "label": "Complementary, then related"
+          }
         ],
         "default": "related"
       }
