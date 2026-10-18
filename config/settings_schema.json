@@ -249,6 +249,35 @@
     ]
   },
   {
+    "name": "Loading screen",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "A short logo animation when the store is opened, and a logo loader while the next page or search results load."
+      },
+      {
+        "type": "checkbox",
+        "id": "splash_enable",
+        "label": "Logo splash screen when the store is opened",
+        "info": "Shown once per visit (about 1.5 seconds). Not shown to visitors who prefer reduced motion. Turn off if you want shoppers from ads to see the page instantly.",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "splash_navigation",
+        "label": "Logo loader between pages and for search",
+        "info": "Appears only when a page takes longer than a moment to load.",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "splash_tagline",
+        "label": "Splash screen text",
+        "default": "Premium Watches · Elegant Jewellery"
+      }
+    ]
+  },
+  {
     "name": "Animations",
     "settings": [
       {

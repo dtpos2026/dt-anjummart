@@ -57,6 +57,21 @@
     {{ 'base.css' | asset_url | stylesheet_tag }}
     <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
 
+    {%- if settings.splash_enable and request.design_mode == false -%}
+      <script>
+        (function () {
+          try {
+            var root = document.documentElement;
+            var store = window.sessionStorage;
+            if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+            if (store.getItem('amSplash') || /[?&]nosplash/.test(window.location.search)) return;
+            store.setItem('amSplash', '1');
+            root.className += ' splash-on';
+          } catch (e) {}
+        })();
+      </script>
+    {%- endif -%}
+
     <script>
       document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
       window.AnjumMart = {
@@ -71,6 +86,7 @@
           productRecommendations: {{ routes.product_recommendations_url | json }}
         },
         cartType: {{ settings.cart_type | json }},
+        splashNavigation: {{ settings.splash_navigation | json }},
         moneyFormat: {{ shop.money_format | json }},
         strings: {
           addToCart: {{ 'products.product.add_to_cart' | t | json }},
@@ -110,6 +126,9 @@
       data-hover-effects
     {% endif %}
   >
+    {%- if settings.splash_enable or settings.splash_navigation -%}
+      {% render 'splash' %}
+    {%- endif -%}
     <a class="skip-link" href="#MainContent">{{ 'general.skip_to_content' | t }}</a>
     <p id="A11yStatus" class="visually-hidden" role="status" aria-live="polite"></p>
 

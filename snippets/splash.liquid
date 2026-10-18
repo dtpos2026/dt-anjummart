@@ -1,0 +1,29 @@
+{%- comment -%}
+  Logo splash screen and page loader. Hidden by default (see "Splash screen" in assets/base.css).
+  Shown by a tiny inline script in layout/theme.liquid on the first visit of a session, and by assets/theme.js
+  while the next page or the search results are loading. Decorative: aria-hidden, never takes focus.
+{%- endcomment -%}
+{%- liquid
+  if settings.logo != blank
+    assign splash_logo_url = settings.logo | image_url: width: 480
+  else
+    assign splash_logo_url = 'anjum-mart-logo-dark.png' | asset_url
+  endif
+-%}
+<div class="splash" id="Splash" data-splash aria-hidden="true" style="--splash-logo: url('{{ splash_logo_url }}');">
+  <span class="splash__panel splash__panel--top"></span>
+  <span class="splash__panel splash__panel--bottom"></span>
+  <div class="splash__center">
+    <div class="splash__mark">
+      <svg class="splash__ring" viewBox="0 0 200 200" focusable="false"><circle cx="100" cy="100" r="96" pathLength="1"></circle></svg>
+      <span class="splash__logo">
+        {% render 'logo', height: 120, on_dark: true %}
+        <span class="splash__shine"></span>
+      </span>
+    </div>
+    {%- if settings.splash_tagline != blank -%}
+      <p class="splash__tag">{{ settings.splash_tagline | escape }}</p>
+    {%- endif -%}
+    <span class="splash__dots"><i></i><i></i><i></i></span>
+  </div>
+</div>

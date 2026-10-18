@@ -1699,6 +1699,88 @@
   }
 
   /* ------------------------------------------------------------------
+     Splash screen (first visit) and page loader (navigation, search)
+     ------------------------------------------------------------------ */
+  function initSplash() {
+    var root = document.documentElement;
+    if (!document.getElementById('Splash')) return;
+
+    // First visit of a session: the curtain opens once the page has loaded and the logo animation has played
+    if (root.classList.contains('splash-on')) {
+      var MIN = 1500;
+      var MAX = 3200;
+      var left = false;
+      var leave = function () {
+        if (left) return;
+        left = true;
+        root.classList.add('splash-leave');
+        setTimeout(function () {
+          root.classList.remove('splash-on');
+          root.classList.remove('splash-leave');
+        }, 1300);
+      };
+      var schedule = function () {
+        var elapsed = window.performance && window.performance.now ? window.performance.now() : MIN;
+        setTimeout(leave, Math.max(0, MIN - elapsed));
+      };
+      if (document.readyState === 'complete') schedule();
+      else window.addEventListener('load', schedule, { once: true });
+      setTimeout(leave, MAX);
+    }
+
+    // Page loader: shown only if the next page takes longer than a moment, so quick navigation never flickers
+    if (!config.splashNavigation) return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var timer = null;
+    var failsafe = null;
+    var hide = function () {
+      clearTimeout(timer);
+      clearTimeout(failsafe);
+      root.classList.remove('splash-nav');
+    };
+    var show = function () {
+      if (root.classList.contains('splash-on')) return;
+      root.classList.add('splash-nav');
+      failsafe = setTimeout(hide, 9000);
+    };
+    var start = function () {
+      clearTimeout(timer);
+      timer = setTimeout(show, 280);
+    };
+    // Also runs when the browser restores this page from its back/forward cache
+    window.addEventListener('pageshow', hide);
+    document.addEventListener('click', function (e) {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      var link = e.target.closest && e.target.closest('a[href]');
+      if (!link) return;
+      if ((link.target && link.target !== '_self') || link.hasAttribute('download')) return;
+      var url;
+      try {
+        url = new URL(link.href, window.location.href);
+      } catch (err) {
+        return;
+      }
+      if (url.origin !== window.location.origin) return;
+      if (url.pathname === window.location.pathname && url.search === window.location.search) return;
+      if (/\.(pdf|zip|png|jpe?g|webp|gif|svg|mp4|xml|txt|json|js|css)$/i.test(url.pathname)) return;
+      start();
+    });
+    document.addEventListener('submit', function (e) {
+      if (e.defaultPrevented) return;
+      var form = e.target;
+      if (!form || form.tagName !== 'FORM' || form.hasAttribute('data-product-form')) return;
+      var url;
+      try {
+        url = new URL(form.getAttribute('action') || window.location.href, window.location.href);
+      } catch (err) {
+        return;
+      }
+      if (url.origin !== window.location.origin) return;
+      start();
+    });
+  }
+
+  /* ------------------------------------------------------------------
      Init
      ------------------------------------------------------------------ */
   function init() {
@@ -1724,6 +1806,7 @@
     initCopy();
     initReveal();
     initStickyCart();
+    initSplash();
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
