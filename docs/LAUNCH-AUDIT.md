@@ -30,8 +30,10 @@ for paid ads. The rest is owner-side settings that cannot be changed or read fro
 | Checkout and COD | Order #1005 came through the web checkout, gateway "Cash on Delivery (COD)", confirmed, shipping Rs 0, fulfilment order open. |
 | Collections / menu | Men's Watches (6), Women's Watches (4), Jewellery (2), New Arrivals (12), Featured (4). The theme menu "Anjum Mart main menu" links Home, Men's, Women's, Jewellery, New Arrivals, Contact. |
 | Pages | Contact, Shipping Policy, Return and Refund Policy, Terms of Service are published and linked in the footer, cart drawer and product pages. The wording says: free delivery, Cash on Delivery, no returns, a damaged or wrong item is replaced when reported within 48 hours. |
-| Theme (local render) | 150 storefront tests (hero carousel and frame styles, cards, quick view, cart drawer, search, splash and loader) pass; 38 + 67 + 24 + 9 older cart/conversion tests pass; axe-core finds 0 serious or critical issues on desktop and mobile; Theme Check 0 offences (79 files); strict Liquid parse 0 errors. |
+| Theme (local render) | 181 storefront tests (hero carousel and frame styles, cards, quick view, cart drawer, search, splash and loader, highlights popup) pass; 38 + 67 + 24 + 9 older cart/conversion tests pass; axe-core finds 0 serious or critical issues on desktop and mobile; Theme Check 0 offences (79 files); strict Liquid parse 0 errors. |
+| Uploaded theme | "Anjum Mart Champagne Final" (unpublished, id 189305946186): all 105 files present with checksums identical to this repository, including both section groups, templates/index.json and the new snippets. |
 | Splash and loader | Logo splash on the first visit of a session (1.5 to 3.2 s), logo loader when the next page takes over 0.28 s (page links and search). Skipped for reduced-motion visitors, crawlers and speed tests, the theme editor and `?nosplash`; a CSS failsafe clears it after 4.4 s even if scripts fail. Switch off in Theme settings, Loading screen. |
+| Store highlights popup | Bottom-left card, random order and timing (about every 14 to 28 s, 8 per visit), closes for the visit, pauses on hover/focus, phone layout above the sticky bar, not on the cart page or in the theme editor. It shows in-stock products and delivery facts and **never claims a purchase**; "Verified order" notices come only from the shop metafield `custom.recent_orders` (empty today, so none appear). No demo purchase messages exist. See `docs/SOCIAL-PROOF.md`. |
 
 ## 2. Fixed during this audit
 
@@ -68,6 +70,7 @@ there too. These are the store's commitments to customers: read them once and ch
 ## 5. Manual actions (in this order)
 
 1. **Publish the theme "Anjum Mart Champagne Final"** (Online Store, Themes, Publish). Older themes named "OLD ..." are superseded.
+   Afterwards the nine unused collections (gold, two-tone, steel, diver, sport, strap, ladies bags, dresses, shoes, plus Sale) can be deleted: the old live theme still links to some of them, the new one does not.
 2. **Remove the storefront password** if one is set (Online Store, Preferences).
 3. Open anjummart.com on a phone: splash, hero, a product, add to cart, checkout.
 4. **Paste the policies** into Settings, Policies and fix the Privacy contact line.
@@ -77,6 +80,7 @@ there too. These are the store's commitments to customers: read them once and ch
 8. Send the Instagram, Facebook and TikTok links (theme settings, Social media).
 9. If two WhatsApp buttons appear (the theme's and the WhatsApp by Meta app's), switch one off.
 10. Delete the empty collections and the obsolete preview themes.
+11. Add real orders (city, product, time) to Settings, Custom data, Shop, Verified recent orders if you want purchase notices; there is no automatic order feed yet.
 
 Paid items: none of the above needs a new paid subscription. Ad spend is the only cost.
 
