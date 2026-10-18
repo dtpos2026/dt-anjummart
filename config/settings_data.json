@@ -29,7 +29,9 @@
       "sp_mobile": true,
       "sp_max": 8,
       "sp_gap": 20,
-      "sp_days": 14
+      "sp_days": 14,
+      "social_facebook_link": "https://www.facebook.com/anjummartpakistan",
+      "social_instagram_link": "https://www.instagram.com/anjummart.co/"
     }
   }
 }
