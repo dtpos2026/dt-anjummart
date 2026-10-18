@@ -1124,6 +1124,7 @@
 }
 
 .slideshow__heading em {
+  display: block;
   font-weight: var(--font-heading-weight-bold, 600);
   color: var(--color-gold-light);
   text-shadow: none;
