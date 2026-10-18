@@ -1,4 +1,4 @@
-# Anjum Mart: in-stock catalogue (supplied by the owner on 17 Oct 2026). Text comes from the owner's product posts;
+# Anjum Mart: in-stock catalogue (supplied by the owner on 17-18 Oct 2026; item 12 details taken from the owner's poster). Text comes from the owner's product posts;
 # the two items without a post (RUSTET gold/black-roman and silver/green-roman) are described only from what the photo shows.
 # Stock: 10 pieces each. Photos: PDF pages 1-11, normalised to 1200x1600 on white.
 import json, re
@@ -150,6 +150,16 @@ PRODUCTS = [
                ('Bracelet design', 'Crystal-style decorative links'), ('Style', 'Casual, formal, party &amp; fashion wear')],
      'features': ['Beautiful emerald green dial', 'Elegant silver &amp; rose gold two-tone finish', 'Quartz movement', 'Stylish crystal-style Roman numeral markers', 'Sparkling decorative bezel',
                   'Premium-look metal link bracelet', 'Elegant &amp; fashionable ladies design', 'Perfect for weddings, parties &amp; everyday wear']},
+    {'img': 12, 'handle': 'moonston-black-ladies-watch-dark-green-dial-crystal-flower-design', 'vendor': 'MOONSTON', 'type': 'Watches', 'price': 2499,
+     'sku': 'MNS-BLK-GRN', 'tags': LADIES + ['black', 'green-dial', 'crystal-style', 'flower'],
+     'title': 'MOONSTON Premium Black Ladies Quartz Watch \u2013 Dark Green Dial | Crystal Flower Design',
+     'intro': ["Add a graceful, jewellery-inspired touch to your wrist with the MOONSTON Premium Black Ladies Quartz Watch, featuring a rich dark green textured dial, an elegantly cut round case and a delicate black bracelet decorated with sparkling crystal-style flower links.",
+               "The dial is set with crystal-style hour markers and slim silver-tone hands, while the faceted case adds a refined, modern edge.",
+               "Powered by Quartz Movement with an analog display, this fashionable timepiece suits everyday wear, parties, gatherings and special occasions. It also makes a beautiful gift for someone special."],
+     'specs': [('Brand', 'MOONSTON'), ('Model / Style', 'Premium Black Crystal Flower Ladies Watch'), ('Category', "Women's wristwatch"), ('Movement', 'Quartz'), ('Display type', 'Analog'),
+               ('Dial colour', 'Dark green'), ('Case shape', 'Round (elegant cut)'), ('Case diameter', 'Approx. 28 mm'), ('Strap material', 'Stainless steel'), ('Strap colour', 'Black'),
+               ('Decorative stones', 'Crystal design'), ('Water resistance', 'Yes (everyday use)'), ('Durability', 'Long lasting'), ('Style', 'Fashion, casual, party &amp; gift wear')],
+     'features': ['Quartz movement', 'Water resistant for everyday use', 'Stainless steel strap', 'Premium crystal design', 'Elegant fashion style', 'Durable &amp; long lasting', 'Perfect for gifting']},
     {'img': 10, 'handle': 'silver-white-mirror-stone-jewellery-set-necklace-earrings-maang-tikka', 'vendor': 'Anjum Mart', 'type': 'Artificial Jewellery', 'price': 1999,
      'sku': 'JWL-SLV-WHT', 'tags': JEW + ['silver', 'mirror-stone', 'pearl'],
      'title': 'Premium Silver & White Mirror Stone Jewellery Set – Necklace, Earrings & Maang Tikka | Elegant Bridal Collection',

@@ -68,10 +68,11 @@ so the theme never claims one.
 
 ### Catalogue
 
-Eleven products are **Active**, published to the Online Store, priced from the owner's product posts and stocked at
-**10 pieces each** (inventory tracked, oversell blocked): six RUSTET men's watches at Rs 3,999, three MOONSTON ladies
-watches at Rs 2,999 and two bridal jewellery sets (necklace, earrings, maang tikka) at Rs 1,999. Descriptions are the
-owner's own text (the two RUSTET models without a post are described only from what their photos show). The photo
+Twelve products are **Active**, published to the Online Store, priced from the owner's product posts and stocked at
+**10 pieces each** (inventory tracked, oversell blocked): six RUSTET men's watches at Rs 3,999, four MOONSTON ladies
+watches (three at Rs 2,999, the black crystal-flower watch at Rs 2,499) and two bridal jewellery sets (necklace,
+earrings, maang tikka) at Rs 1,999. Descriptions are the
+owner's own text (the two RUSTET models without a post are described only from what their photos show; the black crystal-flower watch is described from the owner's poster). The photo
 of every product has a pure white background. Catalogue source: `docs/catalog/products-v2.py`. The earlier 14 RUSTET
 listings were not confirmed in stock and are kept as **Draft**.
 

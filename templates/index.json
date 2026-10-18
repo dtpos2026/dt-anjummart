@@ -151,7 +151,7 @@
         "subheading": "",
         "collection": "womens-watches",
         "layout": "grid",
-        "columns": "3",
+        "columns": "4",
         "products_to_show": 8,
         "show_view_all": true,
         "view_all_label": "View all women's watches",
