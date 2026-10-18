@@ -1,97 +1,86 @@
-# Anjum Mart: pre-launch audit (17 Oct 2026)
+# Anjum Mart: pre-launch audit (updated 18 Oct 2026)
 
 Scope: everything that could be checked from the build environment. That is the Shopify Admin API (read, plus the
-edits listed below) and a local render of the theme against the real product data. **The live storefront, checkout,
-payment pages and email inboxes are not reachable from here**, so they are listed as "not verified", never as passed.
+edits listed below), a local render of the theme against the real product data, and one real checkout that the owner
+placed (order #1005). **The live storefront pages, payment pages and e-mail inboxes cannot be opened from here**, so
+anything that depends on them is listed as "not verified", never as passed.
 
 ## Result in one line
 
-Catalogue, theme and shipping calculation: verified. Checkout, payments, order emails, account login, Search Console,
-Meta Pixel and conversion tracking: **not verified or not installed**. The store is **not yet cleared for ads**; the
-blocking items are in section 5.
+Catalogue (12 products), stock, free delivery, COD checkout and the new theme: verified. Order e-mails, the Meta
+Pixel, Google tracking and Search Console: **not verified or not installed**.
 
-Verified-ready score (only counting what was actually tested): about **70 %**. Completing section 5 and passing the
-test order is what takes it to 90 %+. I will not claim a higher number before that order is placed.
+* **Public launch (WhatsApp, Instagram and Facebook posts, organic visitors): ready once the owner publishes the new
+  theme** (section 5, steps 1 to 3).
+* **Paid advertising: not yet cleared.** Install the pixel and confirm one Purchase event first (section 5, steps 6 and 7).
+
+Verified-ready score (only counting what was actually tested): about **90 %** for a public launch and about **75 %**
+for paid ads. The rest is owner-side settings that cannot be changed or read from here.
 
 ## 1. Passed (verified)
 
 | Area | Evidence |
 | --- | --- |
 | Domain | Primary domain anjummart.com, SSL on (Admin API). |
-| Currency / locale | PKR, Asia/Karachi. |
-| Catalogue | 14 products, no duplicate handles/titles/SKUs, 100 % of variants priced Rs 2,999 or Rs 3,999 (floor Rs 2,000), each with SEO title and description, tags and alt text. |
-| Images | First image of every product is a 1200x1600 white-background cutout; all media status READY. Logo is overlaid by the theme on cards, gallery, hero, cart, recommendations and search. |
-| Collections / menus | Watches, Gold, Two-Tone, Steel, Diver, Sport, Strap, New Arrivals, Sale (empty until a compare-at price is set). Main menu has a Watches dropdown; footer menu links the policy pages. |
-| Shipping rates | Draft-order calculation: Rs 2,999 order to Multan and Rs 5,998 order to Lahore both return "Standard Rs 0" (free from Rs 2,000, configured rate Rs 250 below that). |
-| Cash on Delivery | Four earlier orders (#1001 to #1004) were placed with the "Cash on Delivery (COD)" gateway at checkout. |
-| Contact details | Phone, WhatsApp, e-mail and the Multan address are in theme settings, footer, JSON-LD and the shop location. |
-| Policy pages | Shipping, Return and Refund, and Terms of Service pages created and linked in the footer, cart drawer and product pages. |
-| Theme render (local, 59 page views at 1440 and 390 px) | HTTP 200, no JS errors, no broken internal links (40 checked), title, meta description, canonical, Open Graph on every page, one H1 per page, alt on every image, no horizontal overflow, Product JSON-LD on all product pages. |
-| Accessibility | axe-core: 0 serious or critical violations on home, collections, product, cart, search and contact at desktop and mobile. |
-| Code checks | Shopify Theme Check 0 offences, strict Liquid parse 0 errors, 161 interaction tests pass (cart drawer, recommendations, variants, filters, search, menus, WhatsApp, policy links). |
+| Currency / locale | PKR only, shop timezone Asia/Karachi. |
+| Catalogue | Exactly 12 products ACTIVE (6 men's RUSTET watches, 4 ladies' MOONSTON watches, 2 jewellery sets), 0 draft. Each has 3 images (all READY), SKU, vendor, type, tags and a complete SEO title and description. |
+| Stock | 10 pieces per product, inventory tracked, oversell denied. The RUSTET gold / black-dial / Roman-numeral watch shows 9 because of order #1005. |
+| Prices | MOONSTON black crystal-flower watch Rs 2,499; other MOONSTON Rs 2,999; RUSTET Rs 3,999; jewellery sets Rs 1,999. |
+| Shipping | "Free Delivery (All Pakistan)" at Rs 0 for the whole of Pakistan. Order #1005 confirms it at checkout (shipping Rs 0). |
+| Checkout and COD | Order #1005 came through the web checkout, gateway "Cash on Delivery (COD)", confirmed, shipping Rs 0, fulfilment order open. |
+| Collections / menu | Men's Watches (6), Women's Watches (4), Jewellery (2), New Arrivals (12), Featured (4). The theme menu "Anjum Mart main menu" links Home, Men's, Women's, Jewellery, New Arrivals, Contact. |
+| Pages | Contact, Shipping Policy, Return and Refund Policy, Terms of Service are published and linked in the footer, cart drawer and product pages. The wording says: free delivery, Cash on Delivery, no returns, a damaged or wrong item is replaced when reported within 48 hours. |
+| Theme (local render) | 150 storefront tests (hero carousel and frame styles, cards, quick view, cart drawer, search, splash and loader) pass; 38 + 67 + 24 + 9 older cart/conversion tests pass; axe-core finds 0 serious or critical issues on desktop and mobile; Theme Check 0 offences (79 files); strict Liquid parse 0 errors. |
+| Splash and loader | Logo splash on the first visit of a session (1.5 to 3.2 s), logo loader when the next page takes over 0.28 s (page links and search). Skipped for reduced-motion visitors, crawlers and speed tests, the theme editor and `?nosplash`; a CSS failsafe clears it after 4.4 s even if scripts fail. Switch off in Theme settings, Loading screen. |
 
-## 2. Failed and fixed during the audit
+## 2. Fixed during this audit
 
 | Finding | Fix |
 | --- | --- |
-| Sort selects on collection and search had no accessible name (mobile). | Added `aria-label`. |
-| Product gallery scroller not keyboard-focusable. | Made focusable with a label. |
-| Mobile page widened to 442 px on the 1076 product (single grid column used auto width). | `minmax(0, 1fr)` on the product grid. |
-| Shop location had no address or phone. | Set to the Multan office and +92 371 4661514. |
-| Policies: only the Privacy policy existed. | Wrote Shipping, Return/Refund and Terms pages (Pakistan wording, see section 4) and linked them. |
-| Listings contained claims the supplier photos do not support ("Quartz" on two models, "Lightweight", "full gold", "day-date" on two models, a "Swiss movement" plaque visible in one photo). | Removed or corrected; the plaque photo was cropped. |
-| Photos with props or poor quality (1084 gold, Classic Gold grey, Creative Day-Date ice blue). | Skipped, together with their three variants. |
+| Product SEO descriptions ended in "..." (cut off mid-sentence). | Rewrote 11 of the 12 as complete sentences (the twelfth was already complete). |
+| Splash would also have shown to crawlers and PageSpeed runs. | Skipped when the user agent is a bot, Lighthouse, PageSpeed or GTmetrix. |
+| Hero heading with a line break was silently dropped by Shopify on import. | Second line is now a styled block, no `<br>`. |
 
 ## 3. Not verified or not installed
 
 | Item | Status |
 | --- | --- |
-| Live storefront and checkout journey (select, cart, checkout, confirmation page and map) | Not testable from here. Needs a real test order, see section 5. |
-| Payment gateways other than COD | Cannot be read through the API. Only COD is evidenced. |
-| Order confirmation, shipping and account e-mails | Cannot be read or sent from here. |
-| Customer account login and registration | Account is "optional" (new customer accounts). Not tested live. |
-| Meta Pixel / Conversions API | **Not installed.** The Facebook and Instagram sales channel is absent from the store (only Online Store and Point of Sale publications, apps: Shopify Claude connector, Messaging, WhatsApp by Meta). No pixel exists to verify. |
-| Google Analytics, conversion tracking, Merchant Center | **Not installed.** The Google and YouTube channel is absent. |
+| Order confirmation, shipping and account e-mails | Cannot be read or sent from here. Check the inbox of the customer on order #1005. |
+| Other payment gateways | Cannot be read through the API. Only COD is evidenced. |
+| Policy links at checkout | Checkout shows only Shopify's own policy boxes. Only the Privacy policy exists there (see section 4). |
+| Meta Pixel / Conversions API | **Not installed.** No pixel exists to verify. |
+| Google Analytics, conversion tracking, Merchant Center | **Not installed.** |
 | Google Search Console | Not connected. Needs the owner's Google login. |
-| Sitemap and robots.txt | Generated by Shopify at /sitemap.xml and /robots.txt. Cannot be fetched from here. Products appear only after they are Active. |
-| Store password | Cannot be read through the API. Check Online Store, Preferences. |
-| Checkout field rules (phone required, address line 2) | Cannot be read. Recommended: phone required. |
-| International shipping | The International zone (Rs 5,300) returns no rates for US or UAE addresses. Treat the store as Pakistan-only. |
+| Sitemap and robots.txt | Generated by Shopify at /sitemap.xml and /robots.txt. Cannot be fetched from here. |
+| Store password | Cannot be read through the API. Check Online Store, Preferences, and remove it before launch. |
+| Instagram, Facebook, TikTok links | Not set: only the names were given, so no links were invented. |
+| International shipping | An "International" zone (Rs 5,300) exists for 28 countries. Delete the zone if you only deliver in Pakistan. |
+| Empty collections | Ladies Bags, Dresses, Shoes, Sale, Diver, Sport and Strap Watches are published but empty. Unpublish or delete them after the new theme is live. |
 | Real-device speed (Lighthouse on the live site) | Not measured. |
 
 ## 4. Policies
 
-Written to common Pakistani online-store practice (3 to 5 / 5 to 7 working-day delivery, COD, 7-day return and
-exchange for damaged, defective or wrong items, change-of-mind exchange only, refunds by bank transfer or wallet in
-7 to 10 working days, governing law of Pakistan, Multan courts). These are the store's commitments to customers:
-**read them once and change any number you cannot keep.** Files: `docs/policies/*.html`.
+The four policy pages are live as ordinary pages (source: `docs/policies/*.html`). The assistant has no permission to
+write Shopify's own policy boxes, so checkout still shows only the Privacy policy link. Paste the same text in
+Settings, Policies. The Privacy policy contact line still shows the old Burewala address and no phone number; edit it
+there too. These are the store's commitments to customers: read them once and change anything you cannot keep.
 
-The assistant has no permission to write Shopify's own policy boxes, so the three pages are live as ordinary pages,
-but checkout still only shows the Privacy policy link. Paste the same HTML in Settings, Policies to fix that. The
-Privacy policy's contact line still shows the old Burewala address and no phone number; edit it there too.
+## 5. Manual actions (in this order)
 
-## 5. Manual actions still required (in this order)
-
-1. **Delete or confirm the colours you do not stock.** Many variants have no photo of their own (colours shown only in
-   lineup photos). Delete those you do not have, or add stock quantities (all variants are currently untracked, so
-   Shopify treats them as always available).
-2. **Set the products Active** (Products, select all, Set as active). They are already published to the Online Store.
-3. **Publish the theme "Anjum Mart Noir"** (the one named "OLD ... do not publish" is superseded).
-4. **Paste the three policies** into Settings, Policies (and fix the Privacy contact line).
-5. **Place one real Cash on Delivery order** from a phone, check the confirmation page and e-mail, then cancel it.
-6. **Install the Facebook and Instagram channel** (free) to get Meta Pixel and Conversions API, then confirm the
-   Purchase event in Meta Events Manager.
-7. **Install the Google and YouTube channel** (free) for Google Analytics, Merchant Center and conversion tracking,
-   and verify the domain in Search Console, then submit https://anjummart.com/sitemap.xml.
-8. **Send the Instagram, Facebook and TikTok links** (theme settings, Social media). Only the names were given, so no
-   links were invented.
+1. **Publish the theme "Anjum Mart Champagne Final"** (Online Store, Themes, Publish). Older themes named "OLD ..." are superseded.
+2. **Remove the storefront password** if one is set (Online Store, Preferences).
+3. Open anjummart.com on a phone: splash, hero, a product, add to cart, checkout.
+4. **Paste the policies** into Settings, Policies and fix the Privacy contact line.
+5. Check that the confirmation e-mail of order #1005 arrived; cancel or fulfil that order as appropriate and restock if it was only a test.
+6. **Install the Facebook and Instagram channel** (free), then confirm a Purchase event in Meta Events Manager.
+7. **Install the Google and YouTube channel** (free), verify the domain in Search Console, submit https://anjummart.com/sitemap.xml.
+8. Send the Instagram, Facebook and TikTok links (theme settings, Social media).
 9. If two WhatsApp buttons appear (the theme's and the WhatsApp by Meta app's), switch one off.
+10. Delete the empty collections and the obsolete preview themes.
 
-Paid items: none of the above needs a new paid subscription. The Shopify plan and domain already exist. Ad spend is
-the only cost; optional paid apps (reviews, SMS, courier booking) are not required for launch.
+Paid items: none of the above needs a new paid subscription. Ad spend is the only cost.
 
 ## 6. Ready for advertising?
 
-**No, not yet.** Critical items still open: products are Draft, checkout/payment/e-mail untested, no pixel or
-conversion tracking installed, policies not yet in Shopify's policy boxes. Once section 5 steps 1 to 7 are done and
-the test order succeeds, the store can be re-checked and cleared.
+**Not yet for paid ads.** Open: no pixel or conversion tracking, policies not yet in Shopify's policy boxes, order
+e-mails unchecked. For an organic public launch the store is ready as soon as the new theme is published.

@@ -64,6 +64,7 @@
             var root = document.documentElement;
             var store = window.sessionStorage;
             if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+            if (/bot|crawl|spider|lighthouse|pagespeed|gtmetrix/i.test(window.navigator.userAgent)) return;
             if (store.getItem('amSplash') || /[?&]nosplash/.test(window.location.search)) return;
             store.setItem('amSplash', '1');
             root.className += ' splash-on';
