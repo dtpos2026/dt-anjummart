@@ -72,6 +72,8 @@
           <div class="cart-summary__info rte">{{ settings.cart_info }}</div>
         {%- endif -%}
 
+        {% render 'advance-pay', ctx: 'page' %}
+
         <form action="{{ routes.cart_url }}" method="post" id="CartPageCheckout">
           <button type="submit" name="checkout" class="button button--full">
             {% render 'icon', name: 'lock' %}
@@ -79,7 +81,7 @@
           </button>
         </form>
 
-        {%- if additional_checkout_buttons -%}
+        {%- if additional_checkout_buttons and cart.attributes['Payment preference'] != 'Advance Cash Payment' -%}
           <div class="cart-page__dynamic">{{ content_for_additional_checkout_buttons }}</div>
         {%- endif -%}
 

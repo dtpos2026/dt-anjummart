@@ -360,6 +360,86 @@
     ]
   },
   {
+    "name": "Advance Cash Payment",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Lets shoppers choose Cash on Delivery or Advance Cash Payment (bank or wallet transfer) with a fixed discount. A payment is never marked as received automatically: you verify it and mark the order as paid in Shopify. Before switching this on, create the discount code and the manual payment method described in docs/ADVANCE-PAYMENT.md."
+      },
+      {
+        "type": "checkbox",
+        "id": "adv_enable",
+        "label": "Offer Advance Cash Payment in the cart",
+        "info": "Needs the payment details below. Keep it off until the Shopify discount code and payment method exist.",
+        "default": false
+      },
+      {
+        "type": "range",
+        "id": "adv_discount",
+        "label": "Advance payment discount (Rs.)",
+        "min": 50,
+        "max": 2000,
+        "step": 1,
+        "default": 499,
+        "info": "Must equal the amount of the Shopify discount code."
+      },
+      {
+        "type": "text",
+        "id": "adv_code",
+        "label": "Shopify discount code",
+        "info": "Applied automatically when the shopper continues to checkout with Advance Cash Payment.",
+        "default": "ADVANCE499"
+      },
+      {
+        "type": "text",
+        "id": "adv_payment_name",
+        "label": "Shopify payment method name",
+        "info": "Must match the manual payment method name you create in Shopify, so shoppers pick the same one at checkout.",
+        "default": "Advance Cash Payment"
+      },
+      {
+        "type": "header",
+        "content": "Payment details shown to shoppers who choose Advance Cash Payment"
+      },
+      {
+        "type": "text",
+        "id": "adv_wallet_title",
+        "label": "JazzCash / Easypaisa account title"
+      },
+      {
+        "type": "text",
+        "id": "adv_wallet_number",
+        "label": "JazzCash / Easypaisa mobile number"
+      },
+      {
+        "type": "text",
+        "id": "adv_bank_name",
+        "label": "Bank name",
+        "default": "Meezan Bank"
+      },
+      {
+        "type": "text",
+        "id": "adv_bank_title",
+        "label": "Bank account title"
+      },
+      {
+        "type": "text",
+        "id": "adv_bank_branch",
+        "label": "Bank branch"
+      },
+      {
+        "type": "text",
+        "id": "adv_bank_account",
+        "label": "Bank account number"
+      },
+      {
+        "type": "text",
+        "id": "adv_bank_iban",
+        "label": "IBAN"
+      }
+    ]
+  },
+  {
     "name": "Animations",
     "settings": [
       {

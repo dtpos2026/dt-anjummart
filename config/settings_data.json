@@ -31,7 +31,18 @@
       "sp_gap": 20,
       "sp_days": 14,
       "social_facebook_link": "https://www.facebook.com/anjummartpakistan",
-      "social_instagram_link": "https://www.instagram.com/anjummart.co/"
+      "social_instagram_link": "https://www.instagram.com/anjummart.co/",
+      "adv_enable": false,
+      "adv_discount": 499,
+      "adv_code": "ADVANCE499",
+      "adv_payment_name": "Advance Cash Payment",
+      "adv_wallet_title": "FAHEEM ABBAS ANJUM",
+      "adv_wallet_number": "0300-7341433",
+      "adv_bank_name": "Meezan Bank",
+      "adv_bank_title": "FAHEEM ABBAS ANJUM",
+      "adv_bank_branch": "Rasheedabad Chowk, Multan",
+      "adv_bank_account": "05100107790897",
+      "adv_bank_iban": "PK77MEZN0005100107790897"
     }
   }
 }

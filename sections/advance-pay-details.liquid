@@ -1,0 +1,73 @@
+{%- comment -%}
+  Merchant payment details for Advance Cash Payment. Loaded on demand by assets/theme.js (AdvPay) with
+  fetch('/?section_id=advance-pay-details') only after a shopper chooses Advance Cash Payment, so the details are not
+  part of the cart markup for Cash on Delivery shoppers. Values come from Theme settings, Advance Cash Payment.
+{%- endcomment -%}
+{%- if settings.adv_enable and settings.adv_wallet_number != blank and settings.adv_bank_account != blank -%}
+  {%- liquid
+    assign wallet_digits = settings.adv_wallet_number | remove: '-' | remove: ' '
+    assign bank_account = settings.adv_bank_account | remove: ' '
+    assign bank_iban = settings.adv_bank_iban | remove: ' '
+  -%}
+  <div class="advpay-details">
+    <h3 class="advpay__steps-heading">{{ 'cart.advance_pay.details_heading' | t }}</h3>
+
+    <div class="advpay-account">
+      <h4 class="advpay-account__heading">{{ 'cart.advance_pay.wallet_heading' | t }}</h4>
+      <dl class="advpay-account__list">
+        <div class="advpay-account__row">
+          <dt>{{ 'cart.advance_pay.account_title' | t }}</dt>
+          <dd>{{ settings.adv_wallet_title | escape }}</dd>
+        </div>
+        <div class="advpay-account__row">
+          <dt>{{ 'cart.advance_pay.mobile_number' | t }}</dt>
+          <dd>
+            <span class="advpay-account__value" data-advpay-value="wallet">{{ settings.adv_wallet_number | escape }}</span>
+            {%- assign what = 'cart.advance_pay.mobile_number' | t | downcase -%}
+            <button type="button" class="advpay__copy" data-copy="{{ wallet_digits | escape }}" data-copied="{{ 'cart.advance_pay.copied' | t }}" aria-label="{{ 'cart.advance_pay.copy_label' | t: what: what }}">{{ 'cart.advance_pay.copy' | t }}</button>
+          </dd>
+        </div>
+      </dl>
+    </div>
+
+    <div class="advpay-account">
+      <h4 class="advpay-account__heading">{{ settings.adv_bank_name | default: 'Bank' | escape }}</h4>
+      <dl class="advpay-account__list">
+        <div class="advpay-account__row">
+          <dt>{{ 'cart.advance_pay.account_title' | t }}</dt>
+          <dd>{{ settings.adv_bank_title | escape }}</dd>
+        </div>
+        {%- if settings.adv_bank_branch != blank -%}
+          <div class="advpay-account__row">
+            <dt>{{ 'cart.advance_pay.branch' | t }}</dt>
+            <dd>{{ settings.adv_bank_branch | escape }}</dd>
+          </div>
+        {%- endif -%}
+        <div class="advpay-account__row">
+          <dt>{{ 'cart.advance_pay.account_number' | t }}</dt>
+          <dd>
+            <span class="advpay-account__value" data-advpay-value="account">{{ bank_account | escape }}</span>
+            {%- assign what = 'cart.advance_pay.account_number' | t | downcase -%}
+            <button type="button" class="advpay__copy" data-copy="{{ bank_account | escape }}" data-copied="{{ 'cart.advance_pay.copied' | t }}" aria-label="{{ 'cart.advance_pay.copy_label' | t: what: what }}">{{ 'cart.advance_pay.copy' | t }}</button>
+          </dd>
+        </div>
+        {%- if bank_iban != blank -%}
+          <div class="advpay-account__row">
+            <dt>{{ 'cart.advance_pay.iban' | t }}</dt>
+            <dd>
+              <span class="advpay-account__value" data-advpay-value="iban">{{ bank_iban | escape }}</span>
+              <button type="button" class="advpay__copy" data-copy="{{ bank_iban | escape }}" data-copied="{{ 'cart.advance_pay.copied' | t }}" aria-label="{{ 'cart.advance_pay.copy_label' | t: what: 'IBAN' }}">{{ 'cart.advance_pay.copy' | t }}</button>
+            </dd>
+          </div>
+        {%- endif -%}
+      </dl>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Advance payment details",
+  "settings": []
+}
+{% endschema %}

@@ -725,6 +725,11 @@
         focusKey = activeLine.getAttribute('data-line-key');
         focusRole = active.getAttribute('data-qty-step') ? 'step' + active.getAttribute('data-qty-step') : active.matches('input') ? 'input' : active.hasAttribute('data-line-remove') ? 'remove' : 'title';
       }
+      // A transaction ID being typed survives the re-render
+      var advTxn = {};
+      document.querySelectorAll('[data-advpay-txn]').forEach(function (input) {
+        if (input.value !== input.defaultValue) advTxn[input.id] = input.value;
+      });
       // Quantities typed but not yet committed survive the re-render
       var dirty = {};
       document.querySelectorAll('input[data-line-key]').forEach(function (input) {
@@ -767,6 +772,11 @@
         var input = document.querySelector('input[data-line-key="' + key.replace(/"/g, '\\"') + '"]');
         if (input) input.value = dirty[key];
       });
+      Object.keys(advTxn).forEach(function (id) {
+        var field = document.getElementById(id);
+        if (field) field.value = advTxn[id];
+      });
+      AdvPay.load();
       if (focusKey && focusContainer && document.contains(focusContainer)) {
         var line = focusContainer.querySelector('[data-cart-item][data-line-key="' + focusKey.replace(/"/g, '\\"') + '"]');
         var target2 = null;
@@ -848,6 +858,177 @@
     document.addEventListener('input', function (e) {
       if (e.target.matches && e.target.matches('[data-cart-note]')) Cart.updateNote(e.target.value);
     });
+  }
+
+  /* ------------------------------------------------------------------
+     Advance Cash Payment (snippets/advance-pay.liquid)
+     The theme only records the shopper's choice in cart attributes and, for Advance Cash Payment, sends the shopper
+     to checkout with the Shopify discount code. It never marks anything as paid: the store verifies the payment.
+     ------------------------------------------------------------------ */
+  var AdvPay = {
+    detailsHtml: null,
+    request: null,
+    busy: false,
+    wanted: null,
+    leaving: false,
+
+    post: function (attributes, withSections) {
+      var payload = { attributes: attributes };
+      if (withSections) {
+        payload.sections = Cart.sectionsToRender().join(',');
+        payload.sections_url = window.location.pathname;
+      }
+      return fetch(routes.cartUpdate + '.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(payload)
+      }).then(function (r) {
+        if (!r.ok) throw new Error('cart');
+        return r.json();
+      });
+    },
+
+    // The latest choice wins when the shopper flips quickly between the two options
+    choose: function (method, advanceName) {
+      var self = this;
+      this.wanted = method;
+      if (this.busy) return;
+      if (Cart.pending) {
+        setTimeout(function () {
+          self.choose(self.wanted, advanceName);
+        }, 250);
+        return;
+      }
+      this.busy = true;
+      Cart.setBusy(true);
+      var attributes = { 'Payment preference': method };
+      if (method !== advanceName) {
+        // Cash on Delivery: nothing advance-related stays on the order
+        attributes['Transaction ID'] = '';
+        attributes['Advance amount due'] = '';
+      }
+      this.post(attributes, true)
+        .then(function (cart) {
+          Cart.renderSections(cart.sections);
+          announce(method);
+        })
+        .catch(function () {
+          toast(strings.cartError, 'error');
+        })
+        .finally(function () {
+          self.busy = false;
+          Cart.setBusy(false);
+          if (self.wanted !== method) self.choose(self.wanted, advanceName);
+        });
+    },
+
+    saveTxn: debounce(function (value) {
+      AdvPay.post({ 'Transaction ID': value }, false).catch(function () {});
+    }, 400),
+
+    // Bank and wallet details are fetched only once Advance Cash Payment is chosen
+    load: function () {
+      var self = this;
+      var pending = document.querySelectorAll('[data-advpay-details]:not([data-loaded])');
+      if (!pending.length) return;
+      var fill = function (el, html) {
+        el.innerHTML = html;
+        el.setAttribute('data-loaded', '1');
+      };
+      if (this.detailsHtml) {
+        pending.forEach(function (el) {
+          fill(el, self.detailsHtml);
+        });
+        return;
+      }
+      if (!this.request) {
+        this.request = fetch(pending[0].getAttribute('data-src'), { headers: { Accept: 'text/html' } })
+          .then(function (r) {
+            if (!r.ok) throw new Error('details');
+            return r.text();
+          })
+          .then(function (text) {
+            var node = parseHTML(text).querySelector('.advpay-details');
+            if (!node) throw new Error('details');
+            self.detailsHtml = node.outerHTML;
+          });
+      }
+      this.request
+        .then(function () {
+          document.querySelectorAll('[data-advpay-details]:not([data-loaded])').forEach(function (el) {
+            fill(el, self.detailsHtml);
+          });
+        })
+        .catch(function () {
+          self.request = null;
+          document.querySelectorAll('[data-advpay-details]:not([data-loaded])').forEach(function (el) {
+            el.innerHTML = '';
+            var p = document.createElement('p');
+            p.className = 'advpay__error';
+            p.textContent = el.getAttribute('data-error') || '';
+            el.appendChild(p);
+          });
+        });
+    },
+
+    // Returns true when the checkout click was taken over (Advance Cash Payment chosen)
+    checkout: function (form) {
+      var root = form.closest('[data-cart-drawer-content], [data-cart-page]') || document;
+      var panel = root.querySelector('[data-advpay]');
+      if (!panel) return false;
+      var advanceName = panel.getAttribute('data-method-advance');
+      var chosen = panel.querySelector('[data-advpay-method]:checked');
+      if (!chosen || chosen.value !== advanceName) return false;
+      var input = panel.querySelector('[data-advpay-txn]');
+      var error = panel.querySelector('[data-advpay-error]');
+      var value = input ? input.value.replace(/\s+/g, ' ').trim() : '';
+      if (value.length < 6) {
+        if (error) error.hidden = false;
+        if (input) {
+          input.setAttribute('aria-invalid', 'true');
+          input.focus();
+        }
+        return true;
+      }
+      if (error) error.hidden = true;
+      if (input) input.removeAttribute('aria-invalid');
+      if (this.leaving) return true;
+      this.leaving = true;
+      var self = this;
+      var code = panel.getAttribute('data-code');
+      this.post({ 'Payment preference': advanceName, 'Transaction ID': value, 'Advance amount due': panel.getAttribute('data-final-money') }, false)
+        .then(function () {
+          window.location.href = routes.root + 'checkout' + (code ? '?discount=' + encodeURIComponent(code) : '');
+        })
+        .catch(function () {
+          self.leaving = false;
+          toast(strings.cartError, 'error');
+        });
+      return true;
+    }
+  };
+
+  function initAdvPay() {
+    document.addEventListener('change', function (e) {
+      var radio = e.target.closest && e.target.closest('[data-advpay-method]');
+      if (!radio || !radio.checked) return;
+      var panel = radio.closest('[data-advpay]');
+      AdvPay.choose(radio.value, panel ? panel.getAttribute('data-method-advance') : 'Advance Cash Payment');
+    });
+    document.addEventListener('input', function (e) {
+      var field = e.target.closest && e.target.closest('[data-advpay-txn]');
+      if (!field) return;
+      var error = field.closest('[data-advpay]').querySelector('[data-advpay-error]');
+      if (error) error.hidden = true;
+      field.removeAttribute('aria-invalid');
+      AdvPay.saveTxn(field.value.replace(/\s+/g, ' ').trim());
+    });
+    document.addEventListener('submit', function (e) {
+      var form = e.target;
+      if (!form.matches || !form.matches('#CartDrawerCheckout, #CartPageCheckout')) return;
+      if (AdvPay.checkout(form)) e.preventDefault();
+    });
+    AdvPay.load();
   }
 
   /* ------------------------------------------------------------------
@@ -1418,16 +1599,41 @@
      Copy-to-clipboard (gift card)
      ------------------------------------------------------------------ */
   function initCopy() {
+    var fallbackCopy = function (text) {
+      var area = document.createElement('textarea');
+      area.value = text;
+      area.setAttribute('readonly', '');
+      area.style.cssText = 'position:fixed;top:0;left:0;opacity:0;';
+      document.body.appendChild(area);
+      area.select();
+      var ok = false;
+      try {
+        ok = document.execCommand('copy');
+      } catch (err) {}
+      document.body.removeChild(area);
+      return ok;
+    };
     document.addEventListener('click', function (e) {
       var btn = e.target.closest('[data-copy]');
-      if (!btn || !navigator.clipboard) return;
-      navigator.clipboard.writeText(btn.getAttribute('data-copy')).then(function () {
-        var original = btn.textContent;
+      if (!btn) return;
+      var text = btn.getAttribute('data-copy');
+      var done = function () {
+        var original = btn.getAttribute('data-original') || btn.textContent;
+        btn.setAttribute('data-original', original);
         btn.textContent = btn.getAttribute('data-copied') || original;
-        setTimeout(function () {
+        announce(btn.getAttribute('data-copied') || original);
+        clearTimeout(btn._copyTimer);
+        btn._copyTimer = setTimeout(function () {
           btn.textContent = original;
         }, 2000);
-      });
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, function () {
+          if (fallbackCopy(text)) done();
+        });
+      } else if (fallbackCopy(text)) {
+        done();
+      }
     });
   }
 
@@ -2036,6 +2242,7 @@
       new PredictiveSearch(form);
     });
     initCart();
+    initAdvPay();
     initQuantity();
     document.querySelectorAll('[data-product]').forEach(function (root) {
       new ProductForm(root);

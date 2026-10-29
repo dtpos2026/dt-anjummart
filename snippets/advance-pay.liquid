@@ -1,0 +1,131 @@
+{%- comment -%}
+  Payment method choice in the cart (drawer and cart page): Cash on Delivery or Advance Cash Payment.
+
+  - Server-rendered from the cart attributes "Payment preference", "Transaction ID" and "Advance amount due",
+    so it survives cart re-renders and page refreshes. The attributes are saved on the order as additional details.
+  - The discount is never subtracted here; this panel only shows the maths. Shopify applies the real discount code
+    when the shopper continues to checkout (assets/theme.js AdvPay). A payment is never marked as received by the theme.
+  - Bank and wallet details are not in this markup: they are fetched from the advance-pay-details section only after
+    the shopper chooses Advance Cash Payment.
+
+  Accepts: ctx ('drawer' or 'page').
+{%- endcomment -%}
+{%- liquid
+  assign adv_on = false
+  if settings.adv_enable and settings.adv_wallet_number != blank and settings.adv_bank_account != blank and cart.item_count > 0
+    assign adv_on = true
+  endif
+-%}
+{%- if adv_on -%}
+  {%- liquid
+    assign adv_method_name = 'Advance Cash Payment'
+    assign adv_selected = false
+    if cart.attributes['Payment preference'] == adv_method_name
+      assign adv_selected = true
+    endif
+    assign adv_amount = settings.adv_discount | round
+    assign adv_cents = adv_amount | times: 100
+    assign adv_original = cart.total_price
+    assign adv_final = adv_original | minus: adv_cents
+    if adv_final < 0
+      assign adv_final = 0
+    endif
+    assign adv_saved = adv_original | minus: adv_final
+    assign adv_final_money = adv_final | money
+    assign adv_digits = settings.whatsapp_number | remove: '+' | remove: ' ' | remove: '-' | remove: '(' | remove: ')'
+  -%}
+  <div
+    class="advpay{% if adv_selected %} is-advance{% endif %}"
+    data-advpay
+    data-code="{{ settings.adv_code | escape }}"
+    data-method-advance="{{ adv_method_name }}"
+    data-final-money="{{ adv_final_money | escape }}"
+    data-ctx="{{ ctx }}"
+  >
+    <div class="advpay__promo">
+      <p class="advpay__promo-title">{{ 'cart.advance_pay.promo_title' | t: amount: adv_amount }}</p>
+      <p class="advpay__promo-text">{{ 'cart.advance_pay.promo_text' | t: amount: adv_amount }}</p>
+    </div>
+
+    <fieldset class="advpay__choice">
+      <legend class="advpay__legend">{{ 'cart.advance_pay.legend' | t }}</legend>
+      <label class="advpay__option{% unless adv_selected %} is-selected{% endunless %}">
+        <input type="radio" name="advpay-{{ ctx }}" value="Cash on Delivery" data-advpay-method{% unless adv_selected %} checked{% endunless %}>
+        <span class="advpay__option-body">
+          <span class="advpay__option-title">{{ 'cart.advance_pay.cod_title' | t }}</span>
+          <span class="advpay__option-text">{{ 'cart.advance_pay.cod_text' | t }}</span>
+        </span>
+      </label>
+      <label class="advpay__option advpay__option--advance{% if adv_selected %} is-selected{% endif %}">
+        <input type="radio" name="advpay-{{ ctx }}" value="{{ adv_method_name }}" data-advpay-method{% if adv_selected %} checked{% endif %}>
+        <span class="advpay__option-body">
+          <span class="advpay__option-title">
+            {{ 'cart.advance_pay.advance_title' | t }}
+            <span class="advpay__badge">{{ 'cart.advance_pay.advance_badge' | t: amount: adv_amount }}</span>
+          </span>
+          <span class="advpay__option-text">{{ 'cart.advance_pay.advance_text' | t }}</span>
+        </span>
+      </label>
+    </fieldset>
+
+    {%- if adv_selected -%}
+      <div class="advpay__panel">
+        <dl class="advpay__sum">
+          <div class="advpay__sum-row">
+            <dt>{{ 'cart.advance_pay.original_total' | t }}</dt>
+            <dd data-advpay-original>{{ adv_original | money }}</dd>
+          </div>
+          <div class="advpay__sum-row advpay__sum-row--discount">
+            <dt>{{ 'cart.advance_pay.discount' | t }}</dt>
+            <dd data-advpay-discount>−{{ adv_saved | money }}</dd>
+          </div>
+          <div class="advpay__sum-row advpay__sum-row--final">
+            <dt>{{ 'cart.advance_pay.payable' | t }}</dt>
+            <dd data-advpay-final>{{ adv_final_money }}</dd>
+          </div>
+        </dl>
+        <p class="advpay__note advpay__note--verify">{{ 'cart.advance_pay.verify_note' | t }}</p>
+
+        <div class="advpay__details" data-advpay-details data-src="{{ routes.root_url }}?section_id=advance-pay-details" data-error="{{ 'cart.advance_pay.details_error' | t | escape }}">
+          <p class="advpay__loading">{{ 'cart.advance_pay.details_loading' | t }}</p>
+        </div>
+
+        <h3 class="advpay__steps-heading">{{ 'cart.advance_pay.steps_heading' | t }}</h3>
+        <ol class="advpay__steps">
+          <li>{{ 'cart.advance_pay.step_1' | t }}</li>
+          <li>{{ 'cart.advance_pay.step_2' | t: amount: adv_final_money }}</li>
+          <li>{{ 'cart.advance_pay.step_3' | t }}</li>
+          <li>{{ 'cart.advance_pay.step_4' | t: method: settings.adv_payment_name }}</li>
+          <li>{{ 'cart.advance_pay.step_5' | t }}</li>
+        </ol>
+
+        <div class="advpay__field">
+          <label class="advpay__label" for="AdvPayTxn-{{ ctx }}">{{ 'cart.advance_pay.txn_label' | t }}</label>
+          <input
+            class="input"
+            type="text"
+            id="AdvPayTxn-{{ ctx }}"
+            maxlength="40"
+            autocomplete="off"
+            autocapitalize="characters"
+            spellcheck="false"
+            data-advpay-txn
+            value="{{ cart.attributes['Transaction ID'] | escape }}"
+            aria-describedby="AdvPayTxnError-{{ ctx }}"
+          >
+          <p class="advpay__error" id="AdvPayTxnError-{{ ctx }}" role="alert" data-advpay-error hidden>{{ 'cart.advance_pay.txn_error' | t }}</p>
+        </div>
+
+        <p class="advpay__note">{{ 'cart.advance_pay.proof' | t }}</p>
+        {%- if adv_digits != blank -%}
+          <a class="advpay__whatsapp" href="https://wa.me/{{ adv_digits }}" target="_blank" rel="noopener">
+            {% render 'icon', name: 'whatsapp' %}
+            {{ 'cart.advance_pay.proof_link' | t }}
+            <span class="visually-hidden">({{ 'general.new_window' | t }})</span>
+          </a>
+        {%- endif -%}
+        <p class="advpay__note">{{ 'cart.advance_pay.discount_note' | t }}</p>
+      </div>
+    {%- endif -%}
+  </div>
+{%- endif -%}

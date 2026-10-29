@@ -135,6 +135,7 @@
           {%- if settings.cart_info != blank -%}
             <div class="cart-summary__info rte">{{ settings.cart_info }}</div>
           {%- endif -%}
+          {% render 'advance-pay', ctx: 'drawer' %}
           <form action="{{ routes.cart_url }}" method="post" id="CartDrawerCheckout">
             <button type="submit" name="checkout" class="button button--full">
               {% render 'icon', name: 'lock' %}
