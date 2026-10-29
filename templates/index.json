@@ -103,12 +103,23 @@
             "cta": "Shop now",
             "art": "jewellery"
           }
+        },
+        "perfumes": {
+          "type": "tile",
+          "settings": {
+            "collection": "perfumes",
+            "title": "Perfumes",
+            "subtitle": "Lady Aura, Oud Aura, Tea Rose",
+            "cta": "Shop now",
+            "art": "perfumes"
+          }
         }
       },
       "block_order": [
         "mens",
         "womens",
-        "jewellery"
+        "jewellery",
+        "perfumes"
       ],
       "settings": {
         "eyebrow": "",

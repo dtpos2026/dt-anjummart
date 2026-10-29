@@ -2234,7 +2234,26 @@
   /* ------------------------------------------------------------------
      Init
      ------------------------------------------------------------------ */
+  // A picture that fails to load (a flaky mobile connection) shows a broken-image icon. Try it once more.
+  function initImageRetry() {
+    var retry = function (img) {
+      if (!img || img.tagName !== 'IMG' || img.getAttribute('data-retried')) return;
+      var src = img.currentSrc || img.getAttribute('src');
+      if (!src || src.indexOf('data:') === 0) return;
+      img.setAttribute('data-retried', '1');
+      setTimeout(function () {
+        img.removeAttribute('srcset');
+        img.src = src + (src.indexOf('?') > -1 ? '&' : '?') + 'retry=1';
+      }, 600);
+    };
+    document.addEventListener('error', function (e) { retry(e.target); }, true);
+    Array.prototype.forEach.call(document.images, function (img) {
+      if (img.complete && img.naturalWidth === 0 && (img.currentSrc || img.getAttribute('src'))) retry(img);
+    });
+  }
+
   function init() {
+    initImageRetry();
     ensureToast();
     initHeader();
     initAnnouncements();

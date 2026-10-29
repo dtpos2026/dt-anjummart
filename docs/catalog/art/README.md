@@ -21,3 +21,4 @@ The cut-out PNGs are not stored in the repository (about 10 MB).
   owner's **real photos** (`perfume-photos/*-portrait.jpg`, also attached to the three products in Shopify) as three framed
   prints. Run it after `make_scenes.py` has written `scenes.json`, then render with `art-render.mjs`.
 * The product photos in Shopify come from the same files (3 to 4 images per perfume: portrait, original, label, cards).
+* **Perfumes category tile (`tile-perfumes.jpg`, 800 x 800)**: the same three photos as framed prints on the dark gold backdrop, used by the fourth tile in "Shop by category" (art option "Perfume photos" in the Collection tiles section). Scene: `tile-perfumes` in `scenes.json` (cards at x 400, y 395, width 235, overlap 30).

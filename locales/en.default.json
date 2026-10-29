@@ -60,7 +60,7 @@
     }
   },
   "header": {
-    "search_placeholder": "Search watches and jewellery…",
+    "search_placeholder": "Search watches, jewellery and perfumes…",
     "cart_count": {
       "one": "{{ count }} item",
       "other": "{{ count }} items"
