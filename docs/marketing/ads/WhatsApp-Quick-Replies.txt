@@ -1,0 +1,40 @@
+ANJUM MART: WHATSAPP QUICK REPLIES
+Copy and paste. Change the words in [brackets]. In the WhatsApp Business app you can save each one as a "Quick reply"
+(Settings > Business tools > Quick replies) and type "/" in a chat to use it.
+
+1. GREETING
+Assalamualaikum! Anjum Mart mein khush aamdeed 😊 Kaunsi watch / jewellery pasand aayi? Apna naam aur city bata dein, hum order confirm kar dete hain.
+
+2. PRICE AND DELIVERY
+[Product name] ki qeemat [Rs. ____] hai. Poore Pakistan mein delivery bilkul free hai aur Cash on Delivery available hai (parcel milne par cash dein).
+
+3. WHAT WE NEED TO PLACE THE ORDER
+Order ke liye ye details bhej dein:
+1) Poora naam
+2) Phone number (jis par call/WhatsApp ho sake)
+3) Poora address (ghar/gali/muhalla)
+4) City
+5) Kaunsi watch / set (colour ya dial)
+
+4. ORDER CONFIRMATION
+Shukriya! Aap ka order note kar liya hai:
+[Product] · [Rs. ____] · Free delivery · Cash on Delivery
+Hum 1-2 working days mein dispatch karte hain. Courier ka tracking number mil jaye to aap ko bhej denge.
+
+5. DELIVERY TIME (estimate, not a guarantee)
+Delivery aam taur par bade shehron mein 3-5 working days aur doosre ilaqon mein 5-7 working days leti hai. Courier ki wajah se thora farq ho sakta hai.
+
+6. BEFORE THE ORDER: OUR POLICY IN ONE MESSAGE
+Order se pehle ek zaroori baat: hamari policy ke mutabiq pasand na aane / change of mind par return ya exchange nahi hota. Agar parcel damaged ya ghalat item aaye to delivery ke 48 ghante ke andar photos ya video ke saath bata dein, hum replacement bhejte hain. Parcel kholte waqt chhoti si video bana lein.
+
+7. PARCEL TRACKING
+Aap ka parcel dispatch ho gaya hai. Tracking number: [____] (courier: [____]). Courier ka call aaye to phone uthayein.
+
+8. ADVANCE CASH PAYMENT (use ONLY after the Shopify payment method is set up and tested)
+Advance Cash Payment par Rs. 499 ka discount hai. JazzCash/Easypaisa/Meezan se payment karke transaction ID aur screenshot yahan bhej dein. Payment verify hone ke baad hi order confirm hota hai.
+
+9. IF THE CUSTOMER GOES QUIET
+Assalamualaikum! Kya aap ab bhi [Product] mein interested hain? Order ke liye bas apna address bhej dein 😊
+
+10. THANK YOU AFTER DELIVERY
+Shukriya Anjum Mart se khareedari ka! Koi masla ho to isi number par message kar dein.
