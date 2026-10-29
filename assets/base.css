@@ -6252,3 +6252,58 @@ body.overflow-hidden .proof {
     font-size: 1.15rem;
   }
 }
+
+/* --------------------------------------------------------------------------
+   Cart drawer: always reachable on small screens
+   The footer (totals, Advance Cash Payment panel, bank details, transaction ID, checkout button) can be taller than the
+   screen. Then the whole drawer scrolls as one page with the header pinned, so the details, the transaction ID field
+   and the checkout button can always be reached. This applies on phones and short windows whenever the Advance panel
+   is in the cart, and on every screen size while Advance Cash Payment is open (its footer is taller than any screen).
+   -------------------------------------------------------------------------- */
+.cart-drawer__content:has(.advpay.is-advance) {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.cart-drawer__content:has(.advpay.is-advance) .drawer__header {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background: var(--color-bg);
+}
+
+.cart-drawer__content:has(.advpay.is-advance) .drawer__body {
+  flex: 0 0 auto;
+  overflow: visible;
+}
+
+.cart-drawer__content:has(.advpay.is-advance) .drawer__footer {
+  flex: 0 0 auto;
+  overflow: visible;
+}
+
+@media (max-width: 749px), (max-height: 760px) {
+  .cart-drawer__content:has(.advpay) {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .cart-drawer__content:has(.advpay) .drawer__header {
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    background: var(--color-bg);
+  }
+
+  .cart-drawer__content:has(.advpay) .drawer__body {
+    flex: 0 0 auto;
+    overflow: visible;
+  }
+
+  .cart-drawer__content:has(.advpay) .drawer__footer {
+    flex: 0 0 auto;
+    overflow: visible;
+  }
+}
