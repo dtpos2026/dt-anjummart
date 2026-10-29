@@ -17,7 +17,7 @@
       "color_sale": "#A51C30",
       "color_border": "#E7E0D0",
       "body_scale": 105,
-      "splash_enable": true,
+      "splash_enable": false,
       "splash_navigation": true,
       "splash_tagline": "Premium Watches · Elegant Jewellery",
       "cart_free_delivery_text": "Free delivery all over Pakistan on every order",
