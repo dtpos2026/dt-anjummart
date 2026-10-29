@@ -12,10 +12,12 @@ The homepage artwork (`assets/slide-*.jpg`, `tile-*.jpg`, `promo-*.jpg`) and the
 
 The cut-out PNGs are not stored in the repository (about 10 MB).
 
-## Perfume bottles in the main banner (29 Oct 2026)
+## Perfumes on the home page (29 Oct 2026)
 
-`make_perfume_scene.py` adds three **drawn** bottles (Lady Aura, Oud Aura, Tea Rose: frosted glass, black ribbed cap, gold
-label, in the style of the packaging the owner supplied) to the `slide-brand-desktop` and `slide-brand-mobile` scenes
-(`scenes.json`) and renders them with `art-render.mjs`. They are illustrations, not photographs: the owner's perfume photos
-arrived as chat images only. When the photos arrive as files, cut them out (step 1) and use them as `items` instead of the
-drawn bottles. The banner text says "coming soon" because the perfumes are still draft products with no stock.
+* **Main banner (`slide-brand-*.jpg`)**: `make_perfume_scene.py` adds three **drawn** bottles (Lady Aura, Oud Aura, Tea Rose:
+  frosted glass, black ribbed cap, gold label) next to the watches and jewellery. They are illustrations. The owner approved
+  this banner as it is, so it stays unchanged.
+* **Perfumes banner section (`promo-perfumes.jpg`, `promo-perfumes-mobile.jpg`)**: `make_perfume_photo_promo.py` shows the
+  owner's **real photos** (`perfume-photos/*-portrait.jpg`, also attached to the three products in Shopify) as three framed
+  prints. Run it after `make_scenes.py` has written `scenes.json`, then render with `art-render.mjs`.
+* The product photos in Shopify come from the same files (3 to 4 images per perfume: portrait, original, label, cards).

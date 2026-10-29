@@ -8,7 +8,7 @@
 
 <section class="section section--banner" aria-labelledby="DeliveryBanner-{{ section.id }}">
   <div class="page-width">
-    <div class="delivery-banner">
+    <div class="delivery-banner"{% if banner_image == blank and art != 'none' %} data-art="{{ art }}"{% endif %}>
       <div class="delivery-banner__media" aria-hidden="true">
         {%- if banner_image != blank -%}
           <picture>
@@ -116,7 +116,7 @@
         { "value": "none", "label": "None" },
         { "value": "free-delivery", "label": "Men's watches on black and gold" },
         { "value": "luxury", "label": "Jewellery sets on black and gold" },
-        { "value": "perfumes", "label": "Perfume bottles on black and gold (illustration)" }
+        { "value": "perfumes", "label": "Perfume photos on black and gold" }
       ],
       "default": "free-delivery"
     }

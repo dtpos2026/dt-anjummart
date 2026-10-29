@@ -1352,3 +1352,23 @@
   100% { filter: drop-shadow(0 0 0 rgba(212, 175, 55, 0)); }
 }
 
+
+/* Perfumes banner: on phones the photos sit under the text instead of behind it */
+@media (max-width: 749px) {
+  .delivery-banner[data-art='perfumes'] {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .delivery-banner[data-art='perfumes'] .delivery-banner__content {
+    width: 100%;
+    padding: 30px 24px 6px;
+  }
+
+  .delivery-banner[data-art='perfumes'] .delivery-banner__media {
+    position: relative;
+    inset: auto;
+    order: 2;
+    aspect-ratio: 900 / 620;
+  }
+}
