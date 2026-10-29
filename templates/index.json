@@ -7,10 +7,10 @@
           "type": "slide",
           "settings": {
             "art": "brand",
-            "image_alt": "A RUSTET men's watch, a MOONSTON ladies watch and a bridal jewellery set on a black and gold display",
+            "image_alt": "A RUSTET men's watch, a MOONSTON ladies watch, a bridal jewellery set and three Anjum perfume bottles (Lady Aura, Oud Aura, Tea Rose, illustration) on a black and gold display",
             "eyebrow": "Premium collection",
             "heading": "Timeless Style. <em>Everyday Luxury.</em>",
-            "text": "Premium watches and jewellery for every special moment.",
+            "text": "Premium watches and jewellery for every special moment. New: Anjum perfumes, coming soon.",
             "button_label": "Shop Collection",
             "button_link": "shopify://collections/all",
             "button_label_2": "",
@@ -268,6 +268,31 @@
         "button_label": "Subscribe",
         "success_text": "Thank you for subscribing."
       }
+    },
+    "perfumes-banner": {
+      "type": "delivery-banner",
+      "settings": {
+        "eyebrow": "New at Anjum Mart",
+        "heading": "Anjum <em>Perfumes</em>",
+        "text": "Lady Aura, Oud Aura and Tea Rose: 50 ml Eau de Parfum, Rs. 3,450 each. Coming soon.",
+        "button_label": "",
+        "art": "perfumes"
+      }
+    },
+    "perfumes": {
+      "type": "product-rail",
+      "settings": {
+        "eyebrow": "",
+        "heading": "Perfumes",
+        "subheading": "50 ml Eau de Parfum by Anjum",
+        "collection": "perfumes",
+        "layout": "grid",
+        "columns": "3",
+        "products_to_show": 6,
+        "show_view_all": true,
+        "view_all_label": "View all perfumes",
+        "surface": false
+      }
     }
   },
   "order": [
@@ -280,6 +305,8 @@
     "womens-watches",
     "luxury",
     "jewellery",
+    "perfumes-banner",
+    "perfumes",
     "newsletter"
   ]
 }
