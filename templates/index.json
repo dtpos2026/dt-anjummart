@@ -288,7 +288,7 @@
         "collection": "perfumes",
         "layout": "grid",
         "columns": "3",
-        "products_to_show": 6,
+        "products_to_show": 4,
         "show_view_all": true,
         "view_all_label": "View all perfumes",
         "surface": false
