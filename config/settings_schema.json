@@ -374,14 +374,11 @@
         "default": false
       },
       {
-        "type": "range",
+        "type": "number",
         "id": "adv_discount",
         "label": "Advance payment discount (Rs.)",
-        "min": 50,
-        "max": 2000,
-        "step": 1,
-        "default": 499,
-        "info": "Must equal the amount of the Shopify discount code."
+        "info": "Must equal the amount of the Shopify discount code.",
+        "default": 499
       },
       {
         "type": "text",
