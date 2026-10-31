@@ -31,7 +31,7 @@ Order se pehle ek zaroori baat: hamari policy ke mutabiq pasand na aane / change
 Aap ka parcel dispatch ho gaya hai. Tracking number: [____] (courier: [____]). Courier ka call aaye to phone uthayein.
 
 8. ADVANCE CASH PAYMENT (use ONLY after the Shopify payment method is set up and tested)
-Advance Cash Payment par Rs. 499 ka discount hai. JazzCash/Easypaisa/Meezan se payment karke transaction ID aur screenshot yahan bhej dein. Payment verify hone ke baad hi order confirm hota hai.
+Advance Cash Payment par Rs. 499 ka discount hai. Meezan Bank transfer se payment karke transaction ID aur screenshot yahan bhej dein. Payment verify hone ke baad hi order confirm hota hai.
 
 9. IF THE CUSTOMER GOES QUIET
 Assalamualaikum! Kya aap ab bhi [Product] mein interested hain? Order ke liye bas apna address bhej dein 😊

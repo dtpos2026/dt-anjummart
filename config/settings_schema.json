@@ -401,12 +401,12 @@
       {
         "type": "text",
         "id": "adv_wallet_title",
-        "label": "JazzCash / Easypaisa account title"
+        "label": "JazzCash / Easypaisa account title (optional)"
       },
       {
         "type": "text",
         "id": "adv_wallet_number",
-        "label": "JazzCash / Easypaisa mobile number"
+        "label": "JazzCash / Easypaisa mobile number (optional, leave empty to show only the bank)"
       },
       {
         "type": "text",

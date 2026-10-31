@@ -12,7 +12,7 @@
 {%- endcomment -%}
 {%- liquid
   assign adv_on = false
-  if settings.adv_enable and settings.adv_wallet_number != blank and settings.adv_bank_account != blank and cart.item_count > 0
+  if settings.adv_enable and settings.adv_bank_account != blank and cart.item_count > 0
     assign adv_on = true
   endif
 -%}

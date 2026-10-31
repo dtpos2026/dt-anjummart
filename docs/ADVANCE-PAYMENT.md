@@ -2,7 +2,7 @@
 
 Shoppers choose **Cash on Delivery** or **Advance Cash Payment** in the cart (cart page and cart drawer). Advance Cash
 Payment shows the bold "SAVE RS. 499" banner, the original total, the Rs. 499 discount and the amount to pay, the
-JazzCash / Easypaisa / Meezan details with Copy buttons, and the five steps. The shopper types the transaction ID,
+Meezan Bank details (and JazzCash / Easypaisa only if a wallet number is set in Theme settings) with Copy buttons, and the five steps. The shopper types the transaction ID,
 continues to checkout (the discount code is applied for them) and places the order. **The theme never marks anything as
 paid.** The order stays "Payment pending" until you verify the money and mark it paid.
 
@@ -54,7 +54,7 @@ Find them: **Orders**, search `discount_code:ADVANCE499`, or filter by payment m
 | **Paid** | After you confirm the money arrived: tag `advance-verified`, then **Mark as paid**. Fulfil only after this. |
 | **Cancelled** | Cancel the order (restock). Tag `advance-not-received` first if the payment never arrived. |
 
-Verification steps: (1) open the JazzCash / Easypaisa / Meezan app or statement, (2) find a credit for the **Advance amount
+Verification steps: (1) open the Meezan Bank app or statement, (2) find a credit for the **Advance amount
 due** that matches the Transaction ID (and the screenshot the customer sent on WhatsApp), (3) only then mark as paid.
 **A transaction ID or a screenshot typed or sent by a customer is never proof by itself.**
 
@@ -90,11 +90,7 @@ exact field names in your Flow editor; this was not tested from here.
 ```
 SAVE RS. 499 ON ADVANCE CASH PAYMENT
 Choose Advance Cash Payment in your cart first: the Rs. 499 discount (ADVANCE499) then appears in your order summary.
-Pay the discounted amount by JazzCash, Easypaisa or Meezan Bank transfer.
-
-JazzCash / Easypaisa
-Account title: FAHEEM ABBAS ANJUM
-Mobile number: 0300-7341433
+Pay the discounted amount by Meezan Bank transfer.
 
 Meezan Bank
 Account title: FAHEEM ABBAS ANJUM
@@ -110,8 +106,7 @@ Your order will be confirmed after we verify your payment. Send the transaction 
 ```
 Thank you for your order. It is waiting for payment verification and will not be dispatched until we confirm your payment.
 
-1. Transfer the amount shown on your order to one of these accounts:
-   JazzCash / Easypaisa: FAHEEM ABBAS ANJUM, 0300-7341433
+1. Transfer the amount shown on your order to this account:
    Meezan Bank: FAHEEM ABBAS ANJUM, Rasheedabad Chowk, Multan, account 05100107790897, IBAN PK77MEZN0005100107790897
 2. Send your order number, the transaction ID and a screenshot of the payment on WhatsApp +92 371 4661514.
 3. We verify the payment and confirm your order.
@@ -138,3 +133,8 @@ These wording choices (confirm only after verification; refund of a cancelled ad
 Local suite section 2e (about 50 checks): amounts, one-time discount while switching, refresh, quantity change, validation,
 checkout redirect, Cash on Delivery path unchanged, Copy buttons, drawer, phone layout, accessibility. Not tested from
 here (needs your store): the real Shopify checkout screens, the real payment method list, e-mails.
+
+
+## 9. Meezan Bank only (31 Oct 2026)
+
+The owner uses Meezan Bank only. The JazzCash / Easypaisa fields in Theme settings are now optional: leave them empty and the cart shows only the bank account (account number and IBAN with Copy buttons). If a wallet number is entered again, the wallet block and its Copy button return. The cart wording, the Shopify payment method text and the policy pages say "Meezan Bank transfer".
