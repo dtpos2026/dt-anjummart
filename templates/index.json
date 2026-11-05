@@ -1,5 +1,9 @@
 {
   "sections": {
+    "sale-hero": {
+      "type": "sale-hero",
+      "settings": {}
+    },
     "slideshow": {
       "type": "slideshow",
       "blocks": {
@@ -308,6 +312,7 @@
     }
   },
   "order": [
+    "sale-hero",
     "slideshow",
     "service",
     "tiles",

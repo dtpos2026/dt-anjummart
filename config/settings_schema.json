@@ -360,6 +360,89 @@
     ]
   },
   {
+    "name": "11.11 Sale",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Branding for the 11.11 Sale: a strip with a countdown at the top of every page, an animated banner on the home page and a small 11.11 tag on product cards. Switch it on only when the real discount exists in Shopify (Discounts) and the end date below matches it. Times are Pakistan time."
+      },
+      {
+        "type": "checkbox",
+        "id": "sale_enable",
+        "label": "Show the 11.11 Sale",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "sale_offer",
+        "label": "Offer (one line)",
+        "info": "Say exactly what the shopper gets, for example: 11% off everything. Leave empty to show only the 11.11 Sale name."
+      },
+      {
+        "type": "text",
+        "id": "sale_eyebrow",
+        "label": "Small heading above 11.11",
+        "default": "Anjum Mart presents"
+      },
+      {
+        "type": "text",
+        "id": "sale_note",
+        "label": "Small line under the banner",
+        "default": "Free delivery all over Pakistan · Cash on Delivery"
+      },
+      {
+        "type": "text",
+        "id": "sale_starts_at",
+        "label": "Starts at (optional)",
+        "info": "Format 2026-11-08T00:00:00+05:00 (Pakistan time). Empty: the sale shows as soon as it is switched on. Before this time the banner says Starts in."
+      },
+      {
+        "type": "text",
+        "id": "sale_ends_at",
+        "label": "Ends at",
+        "info": "Format 2026-11-11T23:59:59+05:00 (Pakistan time). After this time everything disappears by itself. Set the same end date on the Shopify discount.",
+        "default": "2026-11-11T23:59:59+05:00"
+      },
+      {
+        "type": "text",
+        "id": "sale_code",
+        "label": "Discount code (optional)",
+        "info": "If the offer needs a code, type it here: the banner shows it with a Copy button. Leave empty for an automatic discount."
+      },
+      {
+        "type": "text",
+        "id": "sale_button",
+        "label": "Button label",
+        "default": "Shop the sale"
+      },
+      {
+        "type": "url",
+        "id": "sale_link",
+        "label": "Button link",
+        "info": "Empty: all products."
+      },
+      {
+        "type": "checkbox",
+        "id": "sale_bar",
+        "label": "Strip with countdown at the top of every page",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "sale_cards",
+        "label": "11.11 tag on product cards",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "sale_confetti",
+        "label": "Animated confetti and shine in the banner",
+        "info": "Visitors who prefer reduced motion never see the animation.",
+        "default": true
+      }
+    ]
+  },
+  {
     "name": "Advance Cash Payment",
     "settings": [
       {

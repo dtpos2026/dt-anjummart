@@ -1,0 +1,107 @@
+{%- capture sale_state %}{% render 'sale-state' %}{% endcapture -%}
+{%- assign sale_state = sale_state | strip -%}
+
+{%- if sale_state != 'off' -%}
+  {{ 'sale.css' | asset_url | stylesheet_tag }}
+  {%- liquid
+    assign sale_url = settings.sale_link | default: routes.all_products_collection_url
+    if sale_state == 'upcoming'
+      assign lead = 'general.sale_1111.starts_in' | t
+    else
+      assign lead = 'general.sale_1111.ends_in' | t
+    endif
+    assign show_confetti = settings.sale_confetti
+    assign code = settings.sale_code | strip
+  -%}
+  <section
+    class="sale-hero{% if show_confetti %} sale-hero--anim{% endif %}"
+    data-sale-hero
+    aria-labelledby="SaleHeroTitle-{{ section.id }}"
+  >
+    {%- if show_confetti -%}
+      <div class="sale-hero__fx" aria-hidden="true">
+        <span class="sale-hero__rays"></span>
+        {%- for i in (1..30) -%}
+          {%- assign left = i | times: 37 | modulo: 100 -%}
+          {%- assign delay = i | times: 53 | modulo: 70 | divided_by: 10.0 -%}
+          {%- assign dur = i | modulo: 5 | plus: 6 -%}
+          {%- assign hue = i | modulo: 4 -%}
+          {%- assign size = i | modulo: 3 | times: 3 | plus: 8 -%}
+          <i class="sale-hero__bit sale-hero__bit--{{ hue }}" style="--x:{{ left }}%;--d:{{ delay }}s;--t:{{ dur }}s;--s:{{ size }}px"></i>
+        {%- endfor -%}
+        {%- for i in (1..7) -%}
+          {%- assign sx = i | times: 29 | plus: 6 | modulo: 92 -%}
+          {%- assign sy = i | times: 47 | plus: 10 | modulo: 78 -%}
+          <b class="sale-hero__star" style="--sx:{{ sx }}%;--sy:{{ sy }}%;--sd:{{ i | times: 0.45 }}s"></b>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    <div class="page-width sale-hero__inner">
+      {%- if settings.sale_eyebrow != blank -%}
+        <p class="sale-hero__eyebrow">{{ settings.sale_eyebrow | escape }}</p>
+      {%- endif -%}
+
+      <h2 class="sale-hero__title" id="SaleHeroTitle-{{ section.id }}">
+        <span class="visually-hidden">{{ 'general.sale_1111.label' | t }}</span>
+        <span class="sale-hero__num" aria-hidden="true">
+          <span class="sale-hero__digits">11</span><span class="sale-hero__dot"></span><span class="sale-hero__digits">11</span>
+        </span>
+        <span class="sale-hero__ribbon" aria-hidden="true">SALE</span>
+      </h2>
+
+      {%- if settings.sale_offer != blank -%}
+        <p class="sale-hero__offer">{{ settings.sale_offer | escape }}</p>
+      {%- endif -%}
+
+      <div class="sale-hero__timer" data-sale-timer>
+        <p class="sale-hero__lead" data-sale-lead>{{ lead }}</p>
+        <div class="sale-hero__clock" role="timer" aria-live="off" aria-label="{{ 'general.sale_1111.countdown_label' | t }}">
+          <div class="sale-hero__unit"><strong data-sale-unit="d">--</strong><span>{{ 'general.sale_1111.days' | t }}</span></div>
+          <div class="sale-hero__unit"><strong data-sale-unit="h">--</strong><span>{{ 'general.sale_1111.hours' | t }}</span></div>
+          <div class="sale-hero__unit"><strong data-sale-unit="m">--</strong><span>{{ 'general.sale_1111.minutes' | t }}</span></div>
+          <div class="sale-hero__unit"><strong data-sale-unit="s">--</strong><span>{{ 'general.sale_1111.seconds' | t }}</span></div>
+        </div>
+      </div>
+
+      <div class="sale-hero__actions">
+        <a class="button button--accent sale-hero__button" href="{{ sale_url }}">
+          {{- settings.sale_button | default: 'general.sale_1111.shop' | escape -}}
+          {% render 'icon', name: 'arrow-right' %}
+        </a>
+        {%- if code != blank -%}
+          <span class="sale-hero__code">
+            <span>{{ 'general.sale_1111.use_code' | t }} <strong>{{ code | escape }}</strong></span>
+            <button type="button" class="sale-hero__copy" data-copy="{{ code | escape }}" data-copied="{{ 'general.sale_1111.copied' | t }}" aria-label="{{ 'general.sale_1111.copy_label' | t }}">{{ 'general.sale_1111.copy' | t }}</button>
+          </span>
+        {%- endif -%}
+      </div>
+
+      {%- if settings.sale_note != blank -%}
+        <p class="sale-hero__note">{{ settings.sale_note | escape }}</p>
+      {%- endif -%}
+      {%- if sale_state == 'preview' -%}
+        <p class="sale-hero__preview">{{ 'general.sale_1111.preview_note' | t }}</p>
+      {%- endif -%}
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "11.11 Sale banner",
+  "tag": "div",
+  "class": "sale-hero-section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "The text, dates, code and animation are set in Theme settings > 11.11 Sale. The banner shows only while the sale is on."
+    }
+  ],
+  "presets": [
+    {
+      "name": "11.11 Sale banner"
+    }
+  ]
+}
+{% endschema %}

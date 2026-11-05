@@ -91,6 +91,12 @@
       {%- endif -%}
 
       <div class="product-card__badges">
+        {%- if settings.sale_enable and settings.sale_cards and product.available -%}
+          {%- capture card_sale_state %}{% render 'sale-state' %}{% endcapture -%}
+          {%- if card_sale_state contains 'live' or card_sale_state contains 'upcoming' or card_sale_state contains 'preview' -%}
+            <span class="badge badge--sale1111" data-sale-tag>{{ 'general.sale_1111.tag' | t }}</span>
+          {%- endif -%}
+        {%- endif -%}
         {%- if product.available == false -%}
           <span class="badge badge--soldout">{{ 'products.product.sold_out' | t }}</span>
         {%- elsif on_sale -%}

@@ -57,6 +57,26 @@
       "hours_ago": "{{ count }} hours ago",
       "yesterday": "Yesterday",
       "days_ago": "{{ count }} days ago"
+    },
+    "sale_1111": {
+      "label": "11.11 SALE",
+      "region_label": "11.11 Sale",
+      "starts_in": "Starts in",
+      "ends_in": "Ends in",
+      "days": "Days",
+      "hours": "Hours",
+      "minutes": "Min",
+      "seconds": "Sec",
+      "countdown_label": "Time left",
+      "shop": "Shop now",
+      "tag": "11.11",
+      "tag_label": "11.11 Sale",
+      "use_code": "Use code",
+      "copy": "Copy",
+      "copied": "Copied",
+      "copy_label": "Copy the discount code",
+      "preview_note": "Preview only: the 11.11 Sale is switched off in Theme settings.",
+      "ended": "The 11.11 Sale has ended."
     }
   },
   "header": {

@@ -1,0 +1,23 @@
+{%- comment -%}
+  Prints the state of the 11.11 Sale and nothing else: off, upcoming, live or preview.
+  Use it as: {% capture sale_state %}{% render 'sale-state' %}{% endcapture %}{% assign sale_state = sale_state | strip %}
+  Dates come from Theme settings > 11.11 Sale (ISO text with the Pakistan offset). The same dates drive the countdown in
+  assets/theme.js (initSale). Preview: shown only inside the theme editor while the sale is switched off.
+{%- endcomment -%}
+{%- liquid
+  assign state = 'off'
+  if settings.sale_enable
+    assign now_s = 'now' | date: '%s' | plus: 0
+    assign start_s = settings.sale_starts_at | strip | date: '%s' | plus: 0
+    assign end_s = settings.sale_ends_at | strip | date: '%s' | plus: 0
+    assign state = 'live'
+    if end_s > 0 and now_s >= end_s
+      assign state = 'off'
+    elsif start_s > 0 and now_s < start_s
+      assign state = 'upcoming'
+    endif
+  elsif request.design_mode
+    assign state = 'preview'
+  endif
+  echo state
+-%}

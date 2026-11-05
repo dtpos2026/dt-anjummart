@@ -1,0 +1,25 @@
+{%- comment -%}
+  Strip with a countdown at the top of every page while the 11.11 Sale is live or about to start.
+  Accepts: state (live, upcoming or preview). Countdown and the ended state are handled by assets/theme.js (initSale).
+{%- endcomment -%}
+{%- liquid
+  assign sale_url = settings.sale_link | default: routes.all_products_collection_url
+  if state == 'upcoming'
+    assign lead = 'general.sale_1111.starts_in' | t
+  else
+    assign lead = 'general.sale_1111.ends_in' | t
+  endif
+-%}
+<div class="sale-bar" data-sale-bar role="region" aria-label="{{ 'general.sale_1111.region_label' | t }}">
+  <a class="sale-bar__inner" href="{{ sale_url }}">
+    <span class="sale-bar__badge"><span class="sale-bar__badge-text">{{ 'general.sale_1111.label' | t }}</span></span>
+    {%- if settings.sale_offer != blank -%}
+      <span class="sale-bar__offer">{{ settings.sale_offer | escape }}</span>
+    {%- endif -%}
+    <span class="sale-bar__timer" data-sale-timer>
+      <span class="sale-bar__lead" data-sale-lead>{{ lead }}</span>
+      <span class="sale-bar__digits" data-sale-compact role="timer" aria-live="off">--d --h --m --s</span>
+    </span>
+    <span class="sale-bar__cta">{{ settings.sale_button | default: 'general.sale_1111.shop' | escape }}</span>
+  </a>
+</div>

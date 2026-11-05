@@ -1620,11 +1620,19 @@
       var done = function () {
         var original = btn.getAttribute('data-original') || btn.textContent;
         btn.setAttribute('data-original', original);
+        // The accessible name must contain the visible text, so it follows the text while it says "Copied"
+        var label = btn.getAttribute('data-original-label');
+        if (label === null) {
+          label = btn.getAttribute('aria-label') || '';
+          btn.setAttribute('data-original-label', label);
+        }
         btn.textContent = btn.getAttribute('data-copied') || original;
+        if (label) btn.setAttribute('aria-label', btn.getAttribute('data-copied') || original);
         announce(btn.getAttribute('data-copied') || original);
         clearTimeout(btn._copyTimer);
         btn._copyTimer = setTimeout(function () {
           btn.textContent = original;
+          if (label) btn.setAttribute('aria-label', label);
         }, 2000);
       };
       if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -1635,6 +1643,64 @@
         done();
       }
     });
+  }
+
+  /* ------------------------------------------------------------------
+     11.11 Sale: countdown in the strip and the home banner, and the switch-off when it ends.
+     State, start and end come from layout/theme.liquid (window.AnjumMart.sale).
+     ------------------------------------------------------------------ */
+  function initSale() {
+    var cfg = config.sale;
+    if (!cfg || cfg.state === 'off') return;
+    var root = document.documentElement;
+    var timer = null;
+    var pad = function (n) { return n < 10 ? '0' + n : String(n); };
+    var tick = function () {
+      var now = Date.now();
+      var state = cfg.state === 'preview' ? 'preview' : 'live';
+      if (cfg.state !== 'preview') {
+        if (cfg.end && now >= cfg.end) state = 'ended';
+        else if (cfg.start && now < cfg.start) state = 'upcoming';
+      }
+      root.setAttribute('data-sale', state);
+      var target = state === 'upcoming' ? cfg.start : cfg.end;
+      document.querySelectorAll('[data-sale-lead]').forEach(function (el) {
+        el.textContent = state === 'upcoming' ? cfg.startsIn : cfg.endsIn;
+      });
+      if (state === 'ended') {
+        clearInterval(timer);
+        return;
+      }
+      var timers = document.querySelectorAll('[data-sale-timer]');
+      if (!target) {
+        timers.forEach(function (el) { el.hidden = true; });
+        clearInterval(timer);
+        return;
+      }
+      timers.forEach(function (el) { el.hidden = false; });
+      var left = Math.max(0, Math.floor((target - now) / 1000));
+      var d = Math.floor(left / 86400);
+      var h = Math.floor((left % 86400) / 3600);
+      var m = Math.floor((left % 3600) / 60);
+      var s = left % 60;
+      document.querySelectorAll('[data-sale-compact]').forEach(function (el) {
+        el.textContent = d + 'd ' + pad(h) + 'h ' + pad(m) + 'm ' + pad(s) + 's';
+      });
+      var parts = { d: pad(d), h: pad(h), m: pad(m), s: pad(s) };
+      document.querySelectorAll('[data-sale-unit]').forEach(function (el) {
+        var key = el.getAttribute('data-sale-unit');
+        if (el.textContent !== parts[key]) {
+          el.textContent = parts[key];
+          if (key === 's') {
+            el.classList.remove('is-tick');
+            void el.offsetWidth;
+            el.classList.add('is-tick');
+          }
+        }
+      });
+    };
+    tick();
+    timer = setInterval(tick, 1000);
   }
 
   /* ------------------------------------------------------------------
@@ -2279,6 +2345,7 @@
     initStickyCart();
     initSplash();
     initSocialProof();
+    initSale();
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);

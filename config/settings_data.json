@@ -33,6 +33,8 @@
       "social_facebook_link": "https://www.facebook.com/anjummartpakistan",
       "social_instagram_link": "https://www.instagram.com/anjummart.co/",
       "google_site_verification": "Ulk5NZW0Okr57pTamnIsjip_MV1Xh63u-mo3-I5MD6w",
+      "sale_enable": false,
+      "sale_ends_at": "2026-11-11T23:59:59+05:00",
       "adv_enable": false,
       "adv_discount": 499,
       "adv_code": "ADVANCE499",

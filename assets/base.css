@@ -6307,3 +6307,8 @@ body.overflow-hidden .proof {
     overflow: visible;
   }
 }
+
+/* 11.11 Sale tag on product cards: hidden unless assets/sale.css shows it */
+.badge--sale1111 {
+  display: none;
+}
