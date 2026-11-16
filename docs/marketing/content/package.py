@@ -32,12 +32,14 @@ def pics(root, kind, code, dst_root):
         cp(f'{WORK}/posts/final/{folder}/{code}-{fmt}.jpg', f'{dst_root}/{folder}/{code}-{fmt}.jpg')
 
 
-def build(name, fill, readme):
+def build(name, fill, readme, urdu=''):
     d = os.path.join(OUT, name + tag)
     shutil.rmtree(d, ignore_errors=True)
     os.makedirs(d)
     fill(d)
     open(os.path.join(d, 'README.txt'), 'w').write(readme)
+    if urdu:
+        open(os.path.join(d, 'START-HERE-Roman-Urdu.txt'), 'w').write(urdu)
     z = os.path.join(OUT, name + tag + '.zip')
     if os.path.exists(z):
         os.remove(z)
@@ -93,5 +95,22 @@ POST_README = PRE + '''ANJUM MART: POSTING PACKAGE (Instagram, Facebook, TikTok)
 5. Engagement posts need you to answer every comment by hand. The times in the calendar are starting guesses (Pakistan time): check Insights after two weeks.
 '''
 
-build('Anjum-Mart-ADS-Package', ads, ADS_README)
-build('Anjum-Mart-POSTING-Package', posting, POST_README)
+ADS_UR = PRE + '''ADS PACKAGE: pehle ye parhein (Roman Urdu)
+
+1. Meta-Ads-Playbook.pdf kholein. Section 1b mein likha hai kaunsi reel/post se ads shuru karni hain aur kyun (R-ALL, R-M1, R-W2, R-J2, R-PERFUMES).
+2. Ads-Copy-Sheet.csv mein har ad ki line hai: kaunsi file upload karni hai, primary text, headline, description. Copy-paste karein.
+3. Phase 1: WhatsApp message ads. Rs. 350 ya Rs. 700 per ad set se shuru karein. 3-4 din tak ads ko edit na karein.
+4. Phase 2 (Shop Now ads) tab karein jab Meta Pixel ka Purchase event verify ho jaye.
+5. Sirf wohi likhein jo sach hai: free delivery all Pakistan aur Cash on Delivery. Koi discount, rating ya review apni taraf se na likhein.
+'''
+POST_UR = PRE + '''POSTING PACKAGE: pehle ye parhein (Roman Urdu)
+
+1. Content-Calendar-and-Captions.pdf kholein. Pehle "Launch kit" (profile setup) karein, phir Day 1 se roz ki post lagayein.
+2. Har din ek feed post, 21 din ek reel bhi, aur 5 din engagement post (this or that, tag someone, comment a word). Roz 2 stories.
+3. Har page par picture/reel, upload ki file ka naam, Instagram/Facebook/TikTok ke captions, hashtags, first comment, alt text aur SEO keywords hain.
+4. Captions folder mein wohi captions plain text mein hain, copy-paste ke liye.
+5. Engagement posts par aane wale comments ka khud jawab dein (1 ghante ke andar) aur details WhatsApp par bhejein.
+6. Time sirf shuru ka andaza hai (Pakistan time). 2 hafte baad Insights dekh kar apne followers ke online time par shift karein.
+'''
+build('Anjum-Mart-ADS-Package', ads, ADS_README, ADS_UR)
+build('Anjum-Mart-POSTING-Package', posting, POST_README, POST_UR)
