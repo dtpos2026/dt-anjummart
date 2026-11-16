@@ -1,0 +1,205 @@
+{{ 'home.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign film = section.settings.video
+  assign mp4 = section.settings.mp4_url | strip
+  assign has_film = false
+  if film != blank or mp4 != blank
+    assign has_film = true
+  endif
+  assign poster = section.settings.poster
+-%}
+
+{%- if has_film or request.design_mode -%}
+  <section class="section brand-film-section" aria-labelledby="BrandFilm-{{ section.id }}">
+    <div class="page-width">
+      <div class="brand-film">
+        <div class="brand-film__stage">
+          {%- if has_film -%}
+            <video
+              class="brand-film__video"
+              playsinline
+              muted
+              loop
+              preload="metadata"
+              data-brand-film
+              aria-label="{{ section.settings.video_label | default: 'Anjum Mart brand film' | escape }}"
+              {% if poster != blank %}poster="{{ poster | image_url: width: 720 }}"{% endif %}
+            >
+              {%- if film != blank -%}
+                {%- for source in film.sources -%}
+                  {%- if source.format == 'mp4' -%}
+                    <source src="{{ source.url }}" type="{{ source.mime_type }}">
+                  {%- endif -%}
+                {%- endfor -%}
+              {%- else -%}
+                <source src="{{ mp4 }}" type="video/mp4">
+              {%- endif -%}
+            </video>
+            <div class="brand-film__controls">
+              <button type="button" class="brand-film__btn" data-film-play aria-pressed="false" aria-label="Pause the film">
+                <span data-film-play-icon>&#10074;&#10074;</span>
+              </button>
+              <button type="button" class="brand-film__btn" data-film-sound aria-pressed="false" aria-label="Turn the sound on">
+                <span data-film-sound-icon>&#128263;</span>
+              </button>
+            </div>
+          {%- elsif poster != blank -%}
+            {{ poster | image_url: width: 720 | image_tag: loading: 'lazy', widths: '360, 540, 720', sizes: '(min-width: 750px) 360px, 80vw', alt: '' }}
+          {%- else -%}
+            <div class="brand-film__empty">Upload the Anjum Mart reel (MP4, 9:16) in the section settings.</div>
+          {%- endif -%}
+        </div>
+        <div class="brand-film__content">
+          {%- if section.settings.eyebrow != blank -%}
+            <p class="eyebrow">{{ section.settings.eyebrow | escape }}</p>
+          {%- endif -%}
+          <h2 id="BrandFilm-{{ section.id }}">{{ section.settings.heading | default: 'Timeless Style. Everyday Luxury.' }}</h2>
+          {%- if section.settings.text != blank -%}
+            <p class="brand-film__text">{{ section.settings.text | escape }}</p>
+          {%- endif -%}
+          {%- if section.settings.points != blank -%}
+            <ul class="brand-film__points" role="list">
+              {%- assign points = section.settings.points | split: '|' -%}
+              {%- for point in points -%}
+                {%- assign p = point | strip -%}
+                {%- if p != blank -%}<li>{{ p | escape }}</li>{%- endif -%}
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+          {%- if section.settings.button_label != blank -%}
+            <a class="button" href="{{ section.settings.button_link | default: routes.all_products_collection_url }}">
+              {{- section.settings.button_label | escape -}}
+              {% render 'icon', name: 'arrow-right' %}
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {%- if has_film -%}
+    <script>
+      (function () {
+        var root = document.currentScript.previousElementSibling;
+        if (!root) return;
+        var v = root.querySelector('[data-brand-film]');
+        if (!v) return;
+        var play = root.querySelector('[data-film-play]');
+        var snd = root.querySelector('[data-film-sound]');
+        var still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var userPaused = still;
+        function sync() {
+          if (play) {
+            var paused = v.paused;
+            play.setAttribute('aria-pressed', paused ? 'true' : 'false');
+            play.setAttribute('aria-label', paused ? 'Play the film' : 'Pause the film');
+            play.firstElementChild.innerHTML = paused ? '&#9654;' : '&#10074;&#10074;';
+          }
+        }
+        if (play) play.addEventListener('click', function () {
+          if (v.paused) { userPaused = false; v.play().catch(function () {}); } else { userPaused = true; v.pause(); }
+          sync();
+        });
+        if (snd) snd.addEventListener('click', function () {
+          v.muted = !v.muted;
+          snd.setAttribute('aria-pressed', v.muted ? 'false' : 'true');
+          snd.setAttribute('aria-label', v.muted ? 'Turn the sound on' : 'Turn the sound off');
+          snd.firstElementChild.innerHTML = v.muted ? '&#128263;' : '&#128266;';
+        });
+        v.addEventListener('play', sync);
+        v.addEventListener('pause', sync);
+        if ('IntersectionObserver' in window) {
+          new IntersectionObserver(function (entries) {
+            entries.forEach(function (en) {
+              if (en.isIntersecting && !userPaused) { v.play().catch(function () {}); }
+              else if (!en.isIntersecting) { v.pause(); }
+            });
+          }, { threshold: 0.35 }).observe(v);
+        } else if (!userPaused) {
+          v.play().catch(function () {});
+        }
+        sync();
+      })();
+    </script>
+  {%- endif -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Brand film",
+  "tag": "div",
+  "class": "brand-film-wrap",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Plays the Anjum Mart reel on the home page: muted, looping, starts when it scrolls into view and stops when it leaves. Visitors who prefer reduced motion see the picture until they press play."
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Reel (Shopify video)",
+      "info": "Upload an MP4, 9:16 (1080 x 1920), under 20 MB and about 20 seconds."
+    },
+    {
+      "type": "text",
+      "id": "mp4_url",
+      "label": "Or a link to an MP4 file",
+      "info": "Used only if no video is selected above. For example a file from Content, Files."
+    },
+    {
+      "type": "image_picker",
+      "id": "poster",
+      "label": "Cover picture",
+      "info": "Shown before the video loads. 1080 x 1920 px."
+    },
+    {
+      "type": "text",
+      "id": "video_label",
+      "label": "Screen reader description",
+      "default": "Anjum Mart brand film: watches, jewellery and perfumes"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "Anjum Mart"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Timeless Style. <em>Everyday Luxury.</em>"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text",
+      "default": "Watches, bridal jewellery and perfumes, delivered to your door."
+    },
+    {
+      "type": "text",
+      "id": "points",
+      "label": "Points (separate with |)",
+      "info": "Only state delivery and payment terms that match Settings, Shipping and delivery.",
+      "default": "Free delivery all over Pakistan | Cash on Delivery | Order on the site or on WhatsApp"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Shop all products"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Brand film"
+    }
+  ]
+}
+{% endschema %}

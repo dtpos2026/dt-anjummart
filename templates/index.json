@@ -1,9 +1,5 @@
 {
   "sections": {
-    "sale-hero": {
-      "type": "sale-hero",
-      "settings": {}
-    },
     "slideshow": {
       "type": "slideshow",
       "blocks": {
@@ -309,13 +305,21 @@
         "view_all_label": "View all perfumes",
         "surface": false
       }
+    },
+    "brand-film": {
+      "type": "brand-film",
+      "settings": {}
+    },
+    "social-gallery": {
+      "type": "social-gallery",
+      "settings": {}
     }
   },
   "order": [
-    "sale-hero",
     "slideshow",
     "service",
     "tiles",
+    "brand-film",
     "featured",
     "mens-watches",
     "delivery",
@@ -324,6 +328,7 @@
     "jewellery",
     "perfumes-banner",
     "perfumes",
+    "social-gallery",
     "newsletter"
   ]
 }

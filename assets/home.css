@@ -1372,3 +1372,172 @@
     aspect-ratio: 900 / 620;
   }
 }
+
+/* --------------------------------------------------------------------------
+   Brand film and Instagram gallery (home page)
+   -------------------------------------------------------------------------- */
+.brand-film {
+  display: grid;
+  gap: 32px;
+  align-items: center;
+  justify-items: center;
+}
+
+.brand-film__stage {
+  position: relative;
+  width: min(300px, 78vw);
+  aspect-ratio: 9 / 16;
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--color-ink, #111);
+  border: 2px solid var(--color-gold, #d4af37);
+  box-shadow: 0 30px 60px rgba(17, 17, 17, 0.28);
+}
+
+.brand-film__video,
+.brand-film__stage > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.brand-film__controls {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  display: flex;
+  gap: 8px;
+}
+
+.brand-film__btn {
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(17, 17, 17, 0.72);
+  color: #fff;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+
+.brand-film__btn:hover,
+.brand-film__btn:focus-visible {
+  background: var(--color-gold, #d4af37);
+  color: #111;
+}
+
+.brand-film__empty {
+  padding: 24px;
+  color: #fff;
+  font-size: 14px;
+  text-align: center;
+}
+
+.brand-film__content {
+  text-align: center;
+  max-width: 520px;
+}
+
+.brand-film__content h2 {
+  margin: 0 0 12px;
+}
+
+.brand-film__content h2 em {
+  color: var(--color-gold, #d4af37);
+}
+
+.brand-film__text {
+  margin: 0 0 14px;
+}
+
+.brand-film__points {
+  list-style: none;
+  margin: 0 0 22px;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+  font-size: 0.95em;
+}
+
+.brand-film__points li::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-right: 10px;
+  border-radius: 50%;
+  background: var(--color-gold, #d4af37);
+  vertical-align: middle;
+}
+
+@media (min-width: 750px) {
+  .brand-film {
+    grid-template-columns: minmax(280px, 340px) 1fr;
+    gap: 64px;
+    justify-items: start;
+  }
+
+  .brand-film__stage {
+    width: 100%;
+  }
+
+  .brand-film__content {
+    text-align: left;
+  }
+}
+
+.social-gallery__grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.social-gallery__item {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: var(--color-surface, #fff);
+}
+
+.social-gallery__item img,
+.social-gallery__link {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .social-gallery__item img {
+    transition: transform 0.6s ease;
+  }
+
+  .social-gallery__link:hover img,
+  .social-gallery__link:focus-visible img {
+    transform: scale(1.06);
+  }
+}
+
+.social-gallery__cta {
+  margin: 28px 0 0;
+  text-align: center;
+}
+
+.social-gallery__empty {
+  text-align: center;
+  color: #666;
+}
+
+@media (min-width: 990px) {
+  .social-gallery__grid {
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+  }
+}
