@@ -132,7 +132,7 @@ def build():
                 txt[plat] += f"\n[Alt text]\n{c['alt']}\n\n"
     names = {'ig': 'Instagram', 'fb': 'Facebook', 'tt': 'TikTok'}
     for plat, body in txt.items():
-        open(os.path.join(OUT, 'captions', f'Captions-{names[plat]}.txt'), 'w').write(f'ANJUM MART: {names[plat].upper()} CAPTIONS, 30 DAYS\n(copy and paste; the hashtags are already included)\n\n' + body)
+        open(os.path.join(OUT, 'captions', f'Captions-{names[plat]}.txt'), 'w').write(f'ANJUM MART: {names[plat].upper()} CAPTIONS, 6 WEEKS\n(copy and paste; the hashtags are already included)\n\n' + body)
     with open(os.path.join(OUT, 'captions.csv'), 'w', newline='') as f:
         w = csv.writer(f)
         w.writerow(['day', 'date', 'weekday', 'theme', 'format', 'asset', 'instagram_time', 'facebook_time', 'tiktok_time',
