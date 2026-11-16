@@ -98,10 +98,11 @@ def brand_reel():
     })
 
 
-ALL_ORDER = ['M1', 'W1', 'P1', 'J1', 'M2', 'W2', 'P2', 'M4', 'W3', 'M3', 'J2', 'M6', 'M5', 'P3', 'W4']
+ALL_ORDER = ['M1', 'W1', 'P1', 'J1', 'M2', 'W2', 'P2', 'M7', 'W3', 'M3', 'J2', 'M10', 'M5', 'P3', 'W4', 'M8', 'W5', 'M9', 'M4', 'M6']
 
 
 def montage_reel(rid, order):
+    # one slide per product; 2 beats each
     """Fast colour-story montage: cream intro, one 2-beat slide per product, cream tagline, end card."""
     bpm = 120
     beat = 60.0 / bpm
@@ -137,8 +138,9 @@ def montage_reel(rid, order):
 def main():
     for p in PRODUCTS:
         product_reel(p[0])
-    collection_reel('R-MEN', "The Men's Collection", 'RUSTET · QUARTZ WATCHES', 'Gold · Silver · Black', ['M1', 'M2', 'M3', 'M6'], 1)
-    collection_reel('R-WOMEN', 'The Ladies Collection', 'MOONSTON · CRYSTAL-STYLE', 'Black · Pink · Emerald', ['W1', 'W2', 'W3', 'W4'], 1)
+    collection_reel('R-MEN', "The Men's Collection", 'RUSTET · QUARTZ WATCHES', 'Gold · Silver · Black · Blue', ['M1', 'M2', 'M3', 'M6', 'M7', 'M9'], 1)
+    collection_reel('R-MEN2', 'More RUSTET Watches', 'RUSTET · QUARTZ WATCHES', 'Green · Blue · White', ['M4', 'M5', 'M8', 'M10'], 1)
+    collection_reel('R-WOMEN', 'The Ladies Collection', 'MOONSTON · RUSTET · CRYSTAL-STYLE', 'Black · Pink · Emerald · Gold', ['W1', 'W2', 'W3', 'W4', 'W5'], 1)
     collection_reel('R-JEWELLERY', 'Bridal Jewellery', 'NECKLACE · EARRINGS · MAANG TIKKA', 'Complete Sets', ['J1', 'J2'], 2)
     collection_reel('R-PERFUMES', 'Anjum Perfumes', 'EAU DE PARFUM · 50 ML', 'Lady Aura · Oud Aura · Tea Rose', ['P1', 'P2', 'P3'], 1.5)
     brand_reel()

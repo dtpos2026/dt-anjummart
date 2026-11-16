@@ -157,7 +157,9 @@ def guide_slide(idx, total, label, title, lines, pids):
     b += f'<div class="t hook fit" data-min="44" style="top:980px;color:{fg}">{esc(title)}</div>'
     for i, ln in enumerate(lines):
         b += f'<div class="t name fit" data-min="18" style="top:{1078 + i * 46}px;color:{th["acc"]};letter-spacing:4px;font-size:25px">{esc(ln)}</div>'
-    b += pill(th, f'{BY[pids[0]][7]}{" each" if n > 1 else ""}  ·  anjummart.com', 1210)
+    prices = sorted(int(''.join(ch for ch in BY[q][7] if ch.isdigit())) for q in pids)
+    ptxt = f'Rs. {prices[0]:,}' if prices[0] == prices[-1] else f'From Rs. {prices[0]:,}'
+    b += pill(th, f'{ptxt}{" each" if n > 1 and prices[0] == prices[-1] else ""}  ·  anjummart.com', 1210)
     return b + SCRIPT + '</body></html>'
 
 

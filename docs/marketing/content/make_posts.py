@@ -224,8 +224,8 @@ def main():
 
     # carousels
     carousels = {
-        'C-MEN': ("MEN'S WATCHES · RUSTET", "The Men's Collection", 'Gold · Silver · Black', ['M1', 'M2', 'M3', 'M4', 'M5', 'M6'], [('M1', -170, 10, 640, -8, 1), ('M2', 170, 10, 640, 8, 1), ('M3', 0, -10, 700, 0, 2)]),
-        'C-WOMEN': ('LADIES WATCHES · MOONSTON', 'The Ladies Collection', 'Black · Pink · Emerald', ['W1', 'W2', 'W3', 'W4'], [('W2', -190, 10, 640, -8, 1), ('W4', 190, 10, 640, 8, 1), ('W1', 0, -10, 700, 0, 2)]),
+        'C-MEN': ("MEN'S WATCHES · RUSTET", "The Men's Collection", 'Gold · Silver · Black · Blue · Green', ['M1', 'M2', 'M3', 'M4', 'M5', 'M6', 'M7', 'M8', 'M9', 'M10'], [('M1', -170, 10, 640, -8, 1), ('M2', 170, 10, 640, 8, 1), ('M3', 0, -10, 700, 0, 2)]),
+        'C-WOMEN': ('LADIES WATCHES · MOONSTON · RUSTET', 'The Ladies Collection', 'Black · Pink · Emerald · Gold', ['W1', 'W2', 'W3', 'W4', 'W5'], [('W2', -190, 10, 640, -8, 1), ('W4', 190, 10, 640, 8, 1), ('W1', 0, -10, 700, 0, 2)]),
         'C-JEWELLERY': ('BRIDAL JEWELLERY SETS', 'Bridal Jewellery', 'Necklace · Earrings · Maang Tikka', ['J1', 'J2'], [('J1', -150, 40, 540, 0, 1), ('J2', 170, 0, 660, 0, 2)]),
         'C-PERFUMES': ('EAU DE PARFUM · 50 ML', 'Anjum Perfumes', 'Lady Aura · Oud Aura · Tea Rose', ['P1', 'P2', 'P3'], [('P1', -215, 20, 520, -4, 1), ('P3', 215, 20, 520, 4, 1), ('P2', 0, -10, 620, 0, 2)]),
     }
@@ -263,16 +263,16 @@ def main():
     # guide carousels on cream
     guides = {
         'G-MEN': dict(kicker="MEN'S WATCHES · RUSTET", title='Which dial suits you?', sub='Black, blue, green or white', cover=['M1', 'M2', 'M4', 'M6'],
-                      slides=[('BLACK', 'Black dial', ['Gold · Roman Numerals · Day & Date Display', 'All-Black · Day & Date Display'], ['M1', 'M3']),
-                              ('BLUE', 'Royal blue dial', ['Gold & Silver · Day & Date Display'], ['M2']),
-                              ('GREEN', 'Green dial', ['Silver · Roman Numerals · Day & Date', 'Silver · Emerald Sunburst · Day & Date'], ['M4', 'M5']),
-                              ('WHITE', 'White dial', ['Gold & Silver Quartz Watch'], ['M6'])],
-                      close=('Pick your dial', ['Six styles · Rs. 3,999 each', 'Free delivery all over Pakistan', 'Cash on Delivery'])),
-        'G-LADIES': dict(kicker='LADIES WATCHES · MOONSTON', title='Pink, lavender or emerald?', sub='Crystal-style watches from Rs. 2,499', cover=['W2', 'W3', 'W4', 'W1'],
-                         slides=[('PINK', 'Rose gold, pink dial', ['Crystal-Style Luxury Design'], ['W2']),
-                                 ('LILAC', 'Rose gold, lavender dial', ['Crystal-Style Luxury Design'], ['W3']),
+                      slides=[('BLACK', 'Black dial', ['Gold · Roman Numerals', 'All-Black · Day & Date', 'Gold Bezel · Vertical Texture'], ['M1', 'M3', 'M9']),
+                              ('BLUE', 'Blue dial', ['Royal Blue · Gold & Silver', 'Royal Blue · Classic Series', 'Ice Blue · Oyster Series'], ['M2', 'M8', 'M7']),
+                              ('GREEN', 'Green dial', ['Silver · Roman Numerals', 'Silver · Emerald Sunburst'], ['M4', 'M5']),
+                              ('WHITE', 'White dial', ['Two-Tone · Gold & Silver', 'Textured · XII at the Top'], ['M6', 'M10'])],
+                      close=('Pick your dial', ['Ten styles · from Rs. 3,990', 'Free delivery all over Pakistan', 'Cash on Delivery'])),
+        'G-LADIES': dict(kicker='LADIES WATCHES · MOONSTON · RUSTET', title='Pink, emerald, black or gold?', sub='Crystal-style watches from Rs. 2,499', cover=['W2', 'W4', 'W1', 'W5'],
+                         slides=[('PINK', 'Pink dials', ['Rose Gold · Pink Dial', 'Pink-Lavender · Studded Bracelet'], ['W2', 'W3']),
                                  ('JADE', 'Two-tone, emerald dial', ['Crystal-Style Bezel'], ['W4']),
-                                 ('BLOOM', 'Black, dark green dial', ['Crystal Flower Design'], ['W1'])],
+                                 ('BLOOM', 'Black, dark green dial', ['Crystal Flower Design'], ['W1']),
+                                 ('SHINE', 'Golden shine dial', ['Two-Tone Jubilee Chain · Stone Markers'], ['W5'])],
                          close=('Find yours', ['Ladies watches from Rs. 2,499', 'Free delivery all over Pakistan', 'Cash on Delivery'])),
         'G-SCENT': dict(kicker='EAU DE PARFUM · 50 ML', title='Find your Anjum fragrance', sub='Floral, oud or tea rose', cover=['P1', 'P2', 'P3'],
                         slides=[('LADY', 'Lady Aura', ['Premium Floral Fragrance', 'For Women · 50 ml'], ['P1']),
@@ -292,8 +292,10 @@ def main():
         folder = 'Info' if fmt == 'feed' else 'Info'
         add(f'I-MEET-{tag}', folder, size, ps.meet(fmt))
         add(f'E-THIS1-{tag}', 'Engagement', size, ps.this_or_that(fmt, 'M1', 'M2'))
-        add(f'E-THIS2-{tag}', 'Engagement', size, ps.this_or_that(fmt, 'W2', 'W3'))
+        add(f'E-THIS2-{tag}', 'Engagement', size, ps.this_or_that(fmt, 'W2', 'W5'))
         add(f'E-THIS3-{tag}', 'Engagement', size, ps.this_or_that(fmt, 'P1', 'P3'))
+        add(f'E-THIS4-{tag}', 'Engagement', size, ps.this_or_that(fmt, 'M3', 'M7'))
+        add(f'E-THIS5-{tag}', 'Engagement', size, ps.this_or_that(fmt, 'J1', 'J2'))
         add(f'E-TAG-{tag}', 'Engagement', size, ps.tag_post(fmt, 'M3', 'Tag someone who', 'needs a new watch'))
         add(f'E-WORD-{tag}', 'Engagement', size, ps.word_post(fmt, 'Want the details?', [('WATCH', "Men's and ladies watches"), ('JEWELLERY', 'Bridal sets with maang tikka'), ('PERFUME', 'Lady Aura, Oud Aura, Tea Rose')], 'We reply with prices, colours and how to order.'))
 

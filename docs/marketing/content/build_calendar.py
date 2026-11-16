@@ -147,10 +147,15 @@ def build():
         ov += f"<tr><td>{en['day']}</td><td>{en['weekday']} {d.day} {d.strftime('%b')}</td><td>{e(en['theme'])}</td><td>{en['kind']}</td><td><code>{en['asset']}</code></td><td>{tm(en, 'ig')} / {tm(en, 'fb')} / {tm(en, 'tt')}</td></tr>"
     ov += '</table>'
 
+    n_posts = len(ents)
+    n_days = max(e_['day'] for e_ in ents)
+    n_reels = len([e_ for e_ in ents if e_['slot'] == 'reel'])
+    n_eng = len([e_ for e_ in ents if e_['slot'] == 'engage'])
+    n_feed = n_posts - n_reels - n_eng
     intro = f'''
 <h2>How to use this calendar</h2>
 <ol>
- <li><b>30 days, 56 posts.</b> Every day has one feed post (a colour-story picture, a carousel or an info picture). On 21 days a reel goes out too (8:30 PM), and on 5 quiet days an engagement post (this or that, tag someone, comment a word) goes out in the evening. Add two stories a day.</li>
+ <li><b>{n_days} days, {n_posts} posts.</b> Every day has one feed post: {n_feed} colour-story pictures, carousels and info pictures, plus {n_eng} engagement pictures (this or that, tag someone, comment a word) on quiet days. On {n_reels} days a reel goes out too (8:30 PM). Add two stories a day.</li>
  <li>Each page shows the picture or video poster, the file to upload, the captions for Instagram, Facebook and TikTok, the first comment, the alt text and the search keywords. Everything is copy and paste.</li>
  <li>File codes match the zips: <code>R-</code> reels (MP4), <code>K-</code> colour-story pictures (feed 4:5 and story 9:16), <code>C-</code> and <code>G-</code> carousels (slides in order), <code>I-</code> info pictures, <code>E-</code> engagement pictures.</li>
  <li><b>Times are starting guesses</b> (Pakistan time). After two weeks open Insights and move the posts to the hours your own followers are online.</li>
@@ -163,7 +168,7 @@ def build():
 <tr><th>Step</th><th>What to do</th></tr>
 <tr><td>1. Profiles</td><td>Instagram: name "Anjum Mart | Watches &amp; Jewellery", the logo as the profile picture (<code>docs/brand</code> folder), bio and link from the checklist below, WhatsApp button, category. Facebook Page: same logo and cover (<code>docs/social</code>), WhatsApp as the action button. TikTok: create the account with the same name, logo and bio.</td></tr>
 <tr><td>2. Link in bio</td><td>anjummart.com. WhatsApp +92 371 4661514 as the contact button on all three.</td></tr>
-<tr><td>3. Fill the grid</td><td>Post Day 1 to Day 5 as written (they carry two posts a day), so the profile already shows 9 posts when the first visitors from ads arrive.</td></tr>
+<tr><td>3. Fill the grid</td><td>Post Day 1 to Day 5 as written (most carry a picture and a reel), so the profile already shows a full grid when the first visitors from ads arrive.</td></tr>
 <tr><td>4. Highlights</td><td>Create Delivery, COD, Men, Ladies and Jewellery highlights with the covers in <code>docs/social</code>, and put the story pictures (<code>-story-1080x1920</code>) inside.</td></tr>
 <tr><td>5. Pin</td><td>Pin the launch reel (<code>R-ALL</code>) on Instagram and Facebook, and the "How to order" picture (<code>I-ORDER</code>) as a second pin.</td></tr>
 <tr><td>6. Pixel and links</td><td>Meta Pixel on the store must show Purchase events before Phase 2 ads (see the Ads Playbook). Use <code>?utm_source=instagram</code>, <code>facebook</code> or <code>tiktok</code> on the link in each bio to see which platform sells.</td></tr>
@@ -194,10 +199,10 @@ def build():
 <tr><td>TikTok</td><td>Name / bio</td><td>Anjum Mart · Watches · Jewellery · Perfumes. Free delivery Pakistan. anjummart.com</td></tr>
 <tr><td>All</td><td>Link</td><td>anjummart.com (optionally with ?utm_source=instagram / facebook / tiktok)</td></tr>
 </table>
-<h2 style="break-before:page">30-day overview (56 posts)</h2>{ov}
+<h2 style="break-before:page">{n_days}-day overview ({n_posts} posts)</h2>{ov}
 '''
     body = cover('Content Calendar and Captions', 'Instagram · Facebook · TikTok · 30 days',
-                 'Anjum Mart · 17 Nov to 16 Dec 2026 · 56 posts: 21 reels, 30 feed posts, 5 engagement posts<br>Watches · Jewellery · Perfumes · Free delivery all over Pakistan · Cash on Delivery')
+                 f'Anjum Mart · 17 Nov to 27 Dec 2026 · {len(ents)} posts: {len([e_ for e_ in ents if e_["slot"] == "reel"])} reels, feed pictures and carousels, engagement posts<br>Watches · Jewellery · Perfumes · Free delivery all over Pakistan · Cash on Delivery')
     body += intro + days_html
     hp = os.path.join(OUT, 'calendar.html')
     open(hp, 'w').write(page(body, 'Anjum Mart Content Calendar'))

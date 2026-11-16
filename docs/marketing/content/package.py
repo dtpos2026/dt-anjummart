@@ -11,7 +11,7 @@ WORK, OUT = [os.path.abspath(a) for a in sys.argv[1:3]]
 PREVIEW = '--preview' in sys.argv[3:]
 tag = '-PREVIEW' if PREVIEW else ''
 
-ADS_REELS = ['R-ALL', 'R-M1', 'R-W2', 'R-J2', 'R-PERFUMES', 'R-M2', 'R-W1', 'R-M3', 'R-J1', 'R-P1', 'R-P2']
+ADS_REELS = ['R-ALL', 'R-M1', 'R-W2', 'R-J2', 'R-PERFUMES', 'R-M2', 'R-W5', 'R-M7', 'R-W1', 'R-M3', 'R-J1', 'R-P1', 'R-P2', 'R-MEN', 'R-WOMEN']
 ADS_PICS = ['K-M1', 'K-W2', 'K-J1', 'K-P1']
 ADS_CAROUSELS = ['G-MEN', 'G-LADIES', 'G-SCENT', 'C-JEWELLERY']
 
@@ -85,10 +85,10 @@ ADS_README = PRE + '''ANJUM MART: ADS PACKAGE (Facebook and Instagram ads)
 '''
 POST_README = PRE + '''ANJUM MART: POSTING PACKAGE (Instagram, Facebook, TikTok)
 
-1. Open Content-Calendar-and-Captions.pdf. It has the launch kit (profile setup before Day 1), the 30-day plan (56 posts) and one page per post with the picture,
+1. Open Content-Calendar-and-Captions.pdf. It has the launch kit (profile setup before Day 1), the 6-week plan (all posts) and one page per post with the picture,
    the file to upload, captions for Instagram, Facebook and TikTok, the first comment, alt text and search keywords.
 2. Captions/ has the same captions as plain text (Instagram, Facebook, TikTok) and one CSV with everything, for copy and paste.
-3. Reels/ (21 MP4, 9:16, own original music) with covers. Posts/Color-Series (a picture for every product, feed and story), Posts/Carousels (collections and guides),
+3. Reels/ (all reels, MP4 9:16, own original music) with covers. Posts/Color-Series (a picture for every product, feed and story), Posts/Carousels (collections and guides),
    Posts/Info (how to order, delivery, wedding season, FAQ, gifts, brand, Meet Anjum Mart), Posts/Engagement (this or that, tag someone, comment a word),
    Posts/Feed-4x5 and Posts/Story-9x16 (plain product pictures).
 4. Post the reels on Instagram, Facebook and TikTok. Use TikTok photo mode for the carousels.
@@ -106,7 +106,7 @@ ADS_UR = PRE + '''ADS PACKAGE: pehle ye parhein (Roman Urdu)
 POST_UR = PRE + '''POSTING PACKAGE: pehle ye parhein (Roman Urdu)
 
 1. Content-Calendar-and-Captions.pdf kholein. Pehle "Launch kit" (profile setup) karein, phir Day 1 se roz ki post lagayein.
-2. Har din ek feed post, 21 din ek reel bhi, aur 5 din engagement post (this or that, tag someone, comment a word). Roz 2 stories.
+2. Har din ek feed post (picture/carousel/engagement), 27 din ek reel bhi. Roz 2 stories.
 3. Har page par picture/reel, upload ki file ka naam, Instagram/Facebook/TikTok ke captions, hashtags, first comment, alt text aur SEO keywords hain.
 4. Captions folder mein wohi captions plain text mein hain, copy-paste ke liye.
 5. Engagement posts par aane wale comments ka khud jawab dein (1 ghante ke andar) aur details WhatsApp par bhejein.

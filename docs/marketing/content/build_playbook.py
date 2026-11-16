@@ -104,7 +104,7 @@ def build():
 <p>There is no sales data yet (the shop is new on Instagram, Facebook and TikTok), so these are the best bets, not proven winners. Start with them, then let the numbers decide.</p>
 <table>
 <tr><th>#</th><th>Creative</th><th>Why it goes first</th><th>Where</th></tr>
-<tr><td>1</td><td><code>R-ALL</code> (reel, all products)</td><td>Shows the whole shop in 23 seconds, ends on WhatsApp. The one video every visitor should see once.</td><td>Women and Men ad sets (first ad)</td></tr>
+<tr><td>1</td><td><code>R-ALL</code> (reel, all products)</td><td>Shows the whole shop in under 30 seconds and ends on WhatsApp. The one video every visitor should see once.</td><td>Women and Men ad sets (first ad)</td></tr>
 <tr><td>2</td><td><code>R-M1</code> gold and black watch</td><td>The strongest-looking men's piece, and Rs. 3,999 is an easy first order.</td><td>Men</td></tr>
 <tr><td>3</td><td><code>R-W2</code> rose gold and pink watch</td><td>Clear colour, crystal-style sparkle, Rs. 2,999: the easiest ladies gift.</td><td>Women</td></tr>
 <tr><td>4</td><td><code>R-J2</code> green and gold set</td><td>November and December is wedding and Mehndi season; a full set (necklace, earrings, maang tikka) is Rs. 1,999.</td><td>Jewellery</td></tr>
