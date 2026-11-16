@@ -257,3 +257,102 @@ def word_post(fmt, title, words, sub):
     b += f'<div class="t g-text fit" style="top:{y + 20}px;font-size:32px">{esc(sub)}</div>'
     b += f'<div class="cta" style="top:{y + 96}px">{WA_ICON}WHATSAPP +92 371 4661514</div>'
     return b + SCRIPT + '</body></html>'
+
+
+# ---- ad statics (hook question, piece on a gold-ring disc, benefit chips, price, button) ----------------------------------
+ADHOOK = {
+    'M1': 'Looking for a gold watch with a black dial?', 'M2': 'A royal blue dial with a gold and silver bracelet?',
+    'M3': 'All black, from dial to bracelet?', 'M4': 'A green dial with Roman numerals?',
+    'M5': 'An emerald sunburst dial on silver steel?', 'M6': 'A white dial with a gold bezel?',
+    'M7': 'An ice blue dial on full silver steel?', 'M8': 'A royal blue classic on silver steel?',
+    'M9': 'A black textured dial with a gold bezel?', 'M10': 'A white textured dial with XII on top?',
+    'W1': 'A watch that looks like jewellery?', 'W2': 'A pink dial with a rose-gold glow?',
+    'W3': 'A pink-lavender dial with crystal-style shine?', 'W4': 'An emerald dial with a crystal-style bezel?',
+    'W5': 'A golden shine dial for every day?', 'J1': 'A bridal set in silver and mirror stone?',
+    'J2': 'A green and gold bridal set for the wedding season?', 'P1': 'Looking for a floral fragrance?',
+    'P2': 'An oud fragrance for everyone?', 'P3': 'A soft, red tea rose in 50 ml?',
+}
+AD_CSS = ('.a-kick{font:500 24px/1 Jost;letter-spacing:7px;color:#7a5414;text-transform:uppercase}'
+          '.a-hook{font:600 70px/1.08 Cormorant,serif;color:#241706}'
+          '.a-chip{display:inline-block;padding:11px 22px;margin:0 6px;border:1.5px solid #b98d1c;border-radius:999px;font:500 22px/1 Jost;letter-spacing:1.5px;color:#3d3217;background:rgba(255,255,255,.55);white-space:nowrap}'
+          '.a-price{font:600 104px/1 Cormorant,serif;color:#241706}'
+          '.a-foot{position:absolute;left:0;right:0;background:#171108;color:#f1d98a;text-align:center;font:500 22px/1 Jost;letter-spacing:3px}'
+          '.disc{position:absolute;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,#ffffff 0%,#fbf4de 55%,#efe2bd 100%);border:2.5px solid #d4af37;box-shadow:0 0 0 12px rgba(212,175,55,.16)}')
+
+
+def _chips(pid):
+    row = BY[pid]
+    toks = [t.strip() for t in row[6].split(' · ') if t.strip()]
+    for extra in ('Cash on Delivery', 'Free Delivery'):
+        if len(toks) < 3:
+            toks.append(extra)
+    return toks[:3]
+
+
+AD_POS = {
+    'feed': dict(mark=44, kick=156, hook=198, cy=640, disc=560, ph=470, name=938, chips=988, price=1046, cta=1168, foot=True),
+    'story': dict(mark=270, kick=392, hook=432, cy=900, disc=660, ph=560, name=1246, chips=1296, price=1356, cta=1480, foot=False),
+}
+
+
+def ad_static(fmt, pid):
+    row = BY[pid]
+    w, h = FEED if fmt == 'feed' else STORY
+    P = AD_POS[fmt]
+    b = head(w, h, grad(CREAM), GUIDE_CSS + AD_CSS) + glow(dict(dark=True), w, P['cy'])
+    b += '<div class="abs" style="inset:22px;border:1.5px solid rgba(212,175,55,.6);pointer-events:none"></div>'
+    b += f'<img class="mark" style="top:{P["mark"]}px;height:92px" src="file://{MARK}">'
+    b += f'<div class="t a-kick" style="top:{P["kick"]}px">{esc(row[4])}</div>'
+    b += f'<div class="t a-hook fit" data-min="40" style="top:{P["hook"]}px;white-space:normal;line-height:1.08">{esc(ADHOOK[pid])}</div>'
+    if row[1] != 'photo':
+        b += f'<div class="disc" style="left:{w / 2}px;top:{P["cy"]}px;width:{P["disc"]}px;height:{P["disc"]}px"></div>'
+    b += piece(row, w / 2, P['cy'], P['ph'], 0, 2)
+    b += f'<div class="t name fit" data-min="18" style="top:{P["name"]}px;color:#7a5414;font-size:26px;letter-spacing:5px">{esc(row[5])}</div>'
+    chips = ''.join(f'<span class="a-chip">{esc(c)}</span>' for c in _chips(pid))
+    b += f'<div class="t" style="top:{P["chips"]}px;white-space:nowrap;font-size:0">{chips}</div>'
+    b += f'<div class="t a-price" style="top:{P["price"]}px;font-size:88px">{esc(row[7])}</div>'
+    b += f'<div class="cta" style="top:{P["cta"]}px">{WA_ICON}SHOP NOW · ORDER ON WHATSAPP</div>'
+    if P['foot']:
+        b += '<div class="a-foot" style="bottom:0;height:62px;line-height:62px">ANJUMMART.COM  ·  WHATSAPP +92 371 4661514  ·  FREE DELIVERY ALL PAKISTAN</div>'
+    else:
+        b += f'<div class="t small" style="top:{P["cta"] + 120}px;color:#3d3217">anjummart.com  ·  Free Delivery All Pakistan  ·  Cash on Delivery</div>'
+    return b + SCRIPT + '</body></html>'
+
+
+def poll_story(question, pids):
+    """Story with the question and the pieces; the band y 1290 to 1520 stays empty for the Poll sticker."""
+    w, h = STORY
+    b = head(w, h, grad(CREAM), GUIDE_CSS) + glow(dict(dark=True), w, 760)
+    b += f'<img class="mark" style="top:262px;height:110px" src="file://{MARK}">'
+    b += f'<div class="t g-title fit" data-min="50" style="top:400px;font-size:100px;white-space:normal;line-height:1.05">{esc(question)}</div>'
+    n = len(pids)
+    for i, pid in enumerate(pids):
+        x = w / 2 + (i - (n - 1) / 2) * 420
+        b += piece(BY[pid], x, 840, 700 if n > 1 else 760, (i - (n - 1) / 2) * 4, 2)
+    b += '<div class="t g-kick" style="top:1560px;font-size:24px;color:#7a5414">VOTE BELOW</div>'
+    b += '<div class="t small" style="top:1608px;color:#3d3217">anjummart.com  ·  Free Delivery All Pakistan</div>'
+    return b + SCRIPT + '</body></html>'
+
+
+def info_card(pid):
+    """Second gallery image of a product (1600 x 1600): the piece, three facts, what is inside, order line."""
+    from copytext import PRODUCTS as CP
+    row, c = BY[pid], CP[pid]
+    w = h = 1600
+    b = head(w, h, grad(CREAM), GUIDE_CSS + AD_CSS) + glow(dict(dark=True), 560, 760, 1500)
+    b += '<div class="abs" style="inset:30px;border:2px solid rgba(212,175,55,.65);pointer-events:none"></div>'
+    b += f'<div class="disc" style="left:560px;top:790px;width:900px;height:900px"></div>'
+    b += piece(row, 560, 790, 780, 0, 2)
+    b += f'<img class="mark" style="top:90px;left:1030px;transform:none;height:110px" src="file://{MARK}">'
+    b += f'<div class="abs a-kick" style="left:1010px;top:250px;font-size:26px;width:520px;white-space:normal;line-height:1.35">{esc(row[4])}</div>'
+    b += f'<div class="abs a-hook" style="left:1010px;top:330px;width:520px;font-size:66px;line-height:1.08">{esc(row[5])}</div>'
+    y = 560
+    for f_ in c['facts']:
+        b += (f'<div class="abs" style="left:1010px;top:{y}px;width:520px;font:400 30px/1.3 Jost;color:#3d3217;padding-left:36px">'
+              f'<span style="position:absolute;left:0;top:2px;color:#b98d1c;font-weight:600">&#10003;</span>{esc(f_)}</div>')
+        y += 118
+    inside = {'jewellery': 'WHAT IS INSIDE: Necklace · Earrings · Maang Tikka', 'photo': 'EAU DE PARFUM · 50 ML', 'watch': 'QUARTZ MOVEMENT · METAL LINK BRACELET'}[row[1]]
+    b += f'<div class="abs a-kick" style="left:1010px;top:{y + 20}px;width:520px;font-size:22px;white-space:normal;line-height:1.4">{esc(inside)}</div>'
+    b += f'<div class="abs a-price" style="left:1010px;top:{y + 110}px;font-size:84px">{esc(row[7])}</div>'
+    b += '<div class="a-foot" style="bottom:0;height:96px;line-height:96px;font-size:26px">ANJUMMART.COM  ·  WHATSAPP +92 371 4661514  ·  FREE DELIVERY ALL PAKISTAN  ·  CASH ON DELIVERY</div>'
+    return b + SCRIPT + '</body></html>'

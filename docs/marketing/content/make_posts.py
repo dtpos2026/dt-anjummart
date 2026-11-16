@@ -299,6 +299,17 @@ def main():
         add(f'E-TAG-{tag}', 'Engagement', size, ps.tag_post(fmt, 'M3', 'Tag someone who', 'needs a new watch'))
         add(f'E-WORD-{tag}', 'Engagement', size, ps.word_post(fmt, 'Want the details?', [('WATCH', "Men's and ladies watches"), ('JEWELLERY', 'Bridal sets with maang tikka'), ('PERFUME', 'Lady Aura, Oud Aura, Tea Rose')], 'We reply with prices, colours and how to order.'))
 
+    # ad statics (evergreen: hook question, benefit chips, price, Shop Now), poll stories and store info cards
+    for p in PRODUCTS:
+        pid = p[0]
+        add(f'AD-{pid}-feed-1080x1350', 'Ad-Statics', FEED, ps.ad_static('feed', pid))
+        add(f'AD-{pid}-story-1080x1920', 'Ad-Statics', STORY, ps.ad_static('story', pid))
+        add(f'INFO-{pid}-1600', 'Store-Info-Cards', (1600, 1600), ps.info_card(pid))
+    polls = [('Black dial or blue dial?', ['M1', 'M2']), ('Pink or golden shine?', ['W2', 'W5']), ('Silver or green and gold?', ['J1', 'J2']),
+             ('Floral or oud?', ['P1', 'P2']), ('Gold or silver?', ['M1', 'M4']), ('Green dial: yes or no?', ['M4', 'M5'])]
+    for n, (q, pids) in enumerate(polls, 1):
+        add(f'P-POLL{n}-story-1080x1920', 'Poll-Stories', STORY, ps.poll_story(q, pids))
+
     json.dump(jobs, open(os.path.join(OUT, 'jobs.json'), 'w'), indent=1)
     print(len(jobs), 'pictures')
 

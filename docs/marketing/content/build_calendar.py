@@ -54,17 +54,16 @@ def file_hint(asset):
 
 
 def story_for(entry):
-    """Morning story: a story picture of the day, evening story: an interactive sticker idea."""
+    """Morning story: the story picture of the day. Evening story: a poll story (Poll sticker in the empty band)."""
     a = entry['asset']
     if a[0] in 'KIE':
         pic = a + '-story-1080x1920.jpg'
     elif a[0] == 'R':
-        pic = 'the reel poster (or the matching colour-series story)'
+        pic = 'the reel poster (or the matching colour-story picture)'
     else:
         pic = 'the first carousel slide'
-    stickers = ['Poll: gold or silver?', 'Question box: which dial colour do you like?', 'Quiz: guess the price (answer in the next story)',
-                'Emoji slider: how much do you love it?', 'Poll: for him or for her?', 'Countdown: next collection reveal', 'This or that: classic or bold?']
-    return pic, stickers[(entry['day'] - 1) % len(stickers)]
+    poll = f"P-POLL{(entry['day'] - 1) % 6 + 1}-story-1080x1920.jpg (add the Poll sticker in the empty band)"
+    return pic, poll
 
 
 FORMAT = {

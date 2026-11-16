@@ -12,7 +12,7 @@ PREVIEW = '--preview' in sys.argv[3:]
 tag = '-PREVIEW' if PREVIEW else ''
 
 ADS_REELS = ['R-ALL', 'R-M1', 'R-W2', 'R-J2', 'R-PERFUMES', 'R-M2', 'R-W5', 'R-M7', 'R-W1', 'R-M3', 'R-J1', 'R-P1', 'R-P2', 'R-MEN', 'R-WOMEN']
-ADS_PICS = ['K-M1', 'K-W2', 'K-J1', 'K-P1']
+ADS_PICS = ['AD-M1', 'AD-W2', 'AD-J1', 'AD-P1']
 ADS_CAROUSELS = ['G-MEN', 'G-LADIES', 'G-SCENT', 'C-JEWELLERY']
 
 
@@ -27,7 +27,7 @@ def cp(src, dst):
 
 
 def pics(root, kind, code, dst_root):
-    folder = {'K': 'Color-Series', 'E': 'Engagement', 'I': 'Info'}[kind]
+    folder = {'K': 'Color-Series', 'E': 'Engagement', 'I': 'Info', 'A': 'Ad-Statics'}[kind]
     for fmt in ('feed-1080x1350', 'story-1080x1920'):
         cp(f'{WORK}/posts/final/{folder}/{code}-{fmt}.jpg', f'{dst_root}/{folder}/{code}-{fmt}.jpg')
 
@@ -51,8 +51,9 @@ def ads(d):
     for r in ADS_REELS:
         cp(f'{WORK}/reels/{r}.mp4', f'{d}/Reels/{r}.mp4')
         cp(f'{WORK}/posters/{r}.jpg', f'{d}/Reels/covers/{r}-cover.jpg')
+    cp(f'{WORK}/posts/final/Ad-Statics', f'{d}/Ad-Statics-all-products')
     for k in ADS_PICS:
-        pics(d, 'K', k, f'{d}/Pictures')
+        pass
     for c in ADS_CAROUSELS:
         cp(f'{WORK}/posts/final/Carousels/{c}', f'{d}/Carousels/{c}')
     cp(f'{WORK}/playbook/Meta-Ads-Playbook.pdf', f'{d}/Meta-Ads-Playbook.pdf')
@@ -65,7 +66,7 @@ def posting(d):
             cp(f'{WORK}/reels/{f}', f'{d}/Reels/{f}')
             cp(f'{WORK}/posters/{f[:-4]}.jpg', f'{d}/Reels/covers/{f[:-4]}-cover.jpg')
     base = f'{WORK}/posts/final'
-    for sub in ('Color-Series', 'Carousels', 'Info', 'Engagement', 'Feed-4x5', 'Story-9x16'):
+    for sub in ('Color-Series', 'Carousels', 'Info', 'Engagement', 'Poll-Stories', 'Feed-4x5', 'Story-9x16'):
         cp(f'{base}/{sub}', f'{d}/Posts/{sub}')
     cp(f'{WORK}/calendar/Content-Calendar-and-Captions.pdf', f'{d}/Content-Calendar-and-Captions.pdf')
     cp(f'{WORK}/calendar/captions', f'{d}/Captions')
@@ -79,7 +80,7 @@ ADS_README = PRE + '''ANJUM MART: ADS PACKAGE (Facebook and Instagram ads)
 1. Open Meta-Ads-Playbook.pdf. Section 1b says which creatives to run first and why; section 5 maps each creative to an ad set; section 6 is the
    Ads Manager click-by-click setup.
 2. Ads-Copy-Sheet.csv has every ad row: ad set, file to upload, primary text, headline, description, call to action and the ad name.
-3. Reels/ holds the 9:16 MP4 reels (covers in Reels/covers). Pictures/ holds feed (4:5) and story (9:16) pictures. Carousels/ holds the slides in order.
+3. Reels/ holds the 9:16 MP4 reels (covers in Reels/covers). Ad-Statics-all-products/ holds a static ad (hook question, benefits, price, Shop Now) for every product, feed 4:5 and story 9:16. Carousels/ holds the slides in order.
 4. Start with the Starter or Standard budget in the playbook. Do not edit the ads for the first 3 to 4 days.
 5. Nothing here promises a discount, a rating or a delivery time. Delivery is free all over Pakistan and Cash on Delivery is available; keep it that way in anything you add.
 '''
@@ -88,7 +89,7 @@ POST_README = PRE + '''ANJUM MART: POSTING PACKAGE (Instagram, Facebook, TikTok)
 1. Open Content-Calendar-and-Captions.pdf. It has the launch kit (profile setup before Day 1), the 6-week plan (all posts) and one page per post with the picture,
    the file to upload, captions for Instagram, Facebook and TikTok, the first comment, alt text and search keywords.
 2. Captions/ has the same captions as plain text (Instagram, Facebook, TikTok) and one CSV with everything, for copy and paste.
-3. Reels/ (all reels, MP4 9:16, own original music) with covers. Posts/Color-Series (a picture for every product, feed and story), Posts/Carousels (collections and guides),
+3. Reels/ (all reels, MP4 9:16, own original music) with covers. Posts/Poll-Stories (6 poll stories), Posts/Color-Series (a picture for every product, feed and story), Posts/Carousels (collections and guides),
    Posts/Info (how to order, delivery, wedding season, FAQ, gifts, brand, Meet Anjum Mart), Posts/Engagement (this or that, tag someone, comment a word),
    Posts/Feed-4x5 and Posts/Story-9x16 (plain product pictures).
 4. Post the reels on Instagram, Facebook and TikTok. Use TikTok photo mode for the carousels.
@@ -112,5 +113,45 @@ POST_UR = PRE + '''POSTING PACKAGE: pehle ye parhein (Roman Urdu)
 5. Engagement posts par aane wale comments ka khud jawab dein (1 ghante ke andar) aur details WhatsApp par bhejein.
 6. Time sirf shuru ka andaza hai (Pakistan time). 2 hafte baad Insights dekh kar apne followers ke online time par shift karein.
 '''
+def store(d):
+    cp(f'{WORK}/store-images', f'{d}/1-White-studio-first-image')
+    cp(f'{WORK}/posts/final/Store-Info-Cards', f'{d}/2-Info-cards-second-image')
+    cp(f'{WORK}/cuts', f'{d}/3-Transparent-cutouts-PNG')
+
+
+def launch(d):
+    cp(f'{WORK}/launch/Launch-Kit', f'{d}/Launch-Kit')
+
+
+STORE_README = PRE + '''ANJUM MART: STORE IMAGES
+
+1-White-studio-first-image: 1600 x 1600 white pictures (the piece centred, soft shadow, small logo) for the first gallery image of each watch and jewellery product.
+2-Info-cards-second-image: 1600 x 1600 cards with the piece, three facts, what is inside, the price and the order line, for the second image.
+3-Transparent-cutouts-PNG: the pieces cut out of their backgrounds (use them in the Colour stories section of the store, Customise, Home page).
+
+File names start with the product code (M1 ... M10 men's watches, W1 ... W5 ladies watches, J1 and J2 jewellery sets, P1 to P3 perfumes). Match them with the product list in the playbook.
+Colour backgrounds are for social posts only; the store keeps the clean white look. Keep the old photos after the new first two images.
+'''
+LAUNCH_README = PRE + '''ANJUM MART: LAUNCH KIT (accounts are empty today)
+
+1-First-6-posts: the six posts for the first evening, in order, with captions. Post them 20 to 30 minutes apart, oldest first, Share to Facebook on.
+2-Profile-pictures: profile pictures (light and dark) and the Facebook cover. 3-Highlight-covers: Instagram highlight covers.
+Grid-preview-first-6-posts.jpg: how the profile will look after the six posts (two full rows). After the launch evening continue the calendar from Day 6.
+'''
+STORE_UR = PRE + '''STORE IMAGES: pehle ye parhein (Roman Urdu)
+
+1-White-studio-first-image: store ki pehli image, white background par (1600 x 1600). 2-Info-cards-second-image: doosri image, facts aur price ke saath.
+3-Transparent-cutouts-PNG: background hata hua pieces, store ke Colour stories section mein lagane ke liye.
+File ke naam product code se shuru hote hain (M1..M10 men, W1..W5 ladies, J1 J2 jewellery, P1..P3 perfumes). Store par white look rakhein, colour background sirf social posts ke liye hain.
+'''
+LAUNCH_UR = PRE + '''LAUNCH KIT: pehle ye parhein (Roman Urdu)
+
+1. 1-First-6-posts mein pehli 6 posts hain (captions ke saath). Pehli shaam 20-30 minute ke farq se lagayein, number 1 se 6.
+2. 2-Profile-pictures aur 3-Highlight-covers se profile set karein. Grid-preview-first-6-posts.jpg mein dikhaya hai ke profile kaisi lagegi.
+3. Phir calendar Day 6 se chalayein.
+'''
+
 build('Anjum-Mart-ADS-Package', ads, ADS_README, ADS_UR)
 build('Anjum-Mart-POSTING-Package', posting, POST_README, POST_UR)
+build('Anjum-Mart-STORE-IMAGES', store, STORE_README, STORE_UR)
+build('Anjum-Mart-LAUNCH-KIT', launch, LAUNCH_README, LAUNCH_UR)

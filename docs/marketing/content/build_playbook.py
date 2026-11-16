@@ -21,6 +21,8 @@ def img(asset, w=22):
         f = os.path.join(POSTS, 'Carousels', asset, asset + '-slide-01.jpg')
     elif asset.startswith('K-'):
         f = os.path.join(POSTS, 'Color-Series', asset + '-feed-1080x1350.jpg')
+    elif asset.startswith('AD-'):
+        f = os.path.join(POSTS, 'Ad-Statics', asset + '-feed-1080x1350.jpg')
     elif asset.startswith('I-'):
         f = os.path.join(POSTS, 'Info', asset + '-feed-1080x1350.jpg')
     else:
@@ -55,7 +57,7 @@ def write_ads_csv(sets, ad):
         for aset, rows in sets.items():
             for n, (asset, pt, hl) in enumerate(rows, 1):
                 kind = {'R': 'Reels/%s.mp4 (9:16)', 'C': 'Carousels/%s/ (slides in order)', 'G': 'Carousels/%s/ (slides in order)',
-                        'K': 'Color-Series/%s-feed-1080x1350.jpg and -story-1080x1920.jpg', 'I': 'Info/%s-feed-1080x1350.jpg'}[asset[0]] % asset
+                        'K': 'Color-Series/%s-feed-1080x1350.jpg and -story-1080x1920.jpg', 'A': 'Ad-Statics/%s-feed-1080x1350.jpg and -story-1080x1920.jpg', 'I': 'Info/%s-feed-1080x1350.jpg'}[asset[0]] % asset
                 short = {'Women | IG': 'W_IG', 'Men | IG+FB': 'M_IGFB', 'Jewellery | IG+FB': 'J_IGFB', 'Perfumes | IG+FB': 'P_IGFB'}[aset]
                 cat = {'Women | IG': 'women', 'Men | IG+FB': 'men', 'Jewellery | IG+FB': 'jewellery', 'Perfumes | IG+FB': 'perfume'}[aset]
                 w.writerow([aset, n, asset, kind, pt, hl, ad[cat]['desc'], cta, f'AM_WA_{short}_{asset}_v1'])
@@ -68,16 +70,16 @@ def build():
                   ('R-W2', ad['women']['primary'][0], ad['women']['headlines'][0]),
                   ('R-W1', ad['women']['primary'][1], ad['women']['headlines'][1]),
                   ('G-LADIES', ad['women']['primary'][2], ad['women']['headlines'][2]),
-                  ('K-W2', ad['women']['primary'][0], ad['women']['headlines'][0])]
+                  ('AD-W2', ad['women']['primary'][0], ad['women']['headlines'][0])]
     men_rows = [('R-ALL', br['primary'][0], br['headlines'][0]),
                 ('R-M1', ad['men']['primary'][0], ad['men']['headlines'][0]),
                 ('R-M2', ad['men']['primary'][1], ad['men']['headlines'][1]),
                 ('G-MEN', ad['men']['primary'][2], ad['men']['headlines'][2]),
-                ('K-M1', ad['men']['primary'][0], ad['men']['headlines'][0])]
+                ('AD-M1', ad['men']['primary'][0], ad['men']['headlines'][0])]
     jew_rows = [('R-J2', ad['jewellery']['primary'][1], ad['jewellery']['headlines'][0]),
                 ('R-JEWELLERY', ad['jewellery']['primary'][0], ad['jewellery']['headlines'][1]),
                 ('C-JEWELLERY', ad['jewellery']['primary'][2], ad['jewellery']['headlines'][2]),
-                ('K-J1', ad['jewellery']['primary'][0], ad['jewellery']['headlines'][0])]
+                ('AD-J1', ad['jewellery']['primary'][0], ad['jewellery']['headlines'][0])]
     per_rows = [('R-PERFUMES', ad['perfume']['primary'][0], ad['perfume']['headlines'][0]),
                 ('R-P1', ad['perfume']['primary'][1], ad['perfume']['headlines'][1]),
                 ('R-P2', ad['perfume']['primary'][2], ad['perfume']['headlines'][2]),
@@ -109,7 +111,7 @@ def build():
 <tr><td>3</td><td><code>R-W2</code> rose gold and pink watch</td><td>Clear colour, crystal-style sparkle, Rs. 2,999: the easiest ladies gift.</td><td>Women</td></tr>
 <tr><td>4</td><td><code>R-J2</code> green and gold set</td><td>November and December is wedding and Mehndi season; a full set (necklace, earrings, maang tikka) is Rs. 1,999.</td><td>Jewellery</td></tr>
 <tr><td>5</td><td><code>R-PERFUMES</code></td><td>Three 50 ml fragrances at one price; perfumes are an easy gift.</td><td>Perfumes</td></tr>
-<tr><td>6</td><td>Pictures: <code>K-M1</code>, <code>K-W2</code>, <code>K-J1</code> and carousels <code>G-MEN</code>, <code>G-LADIES</code>, <code>G-SCENT</code>, <code>C-JEWELLERY</code></td><td>Posts that already did well organically are the cheapest ads (use "Boost" or create the ad from the existing post, so the likes and comments stay on it). Carousels let people compare colours before messaging.</td><td>Every ad set (one picture ad each)</td></tr>
+<tr><td>6</td><td>Static ads with a hook question (<code>AD-M1</code>, <code>AD-W2</code>, <code>AD-J1</code>, one for every product in <code>Ad-Statics-all-products</code>) and carousels <code>G-MEN</code>, <code>G-LADIES</code>, <code>G-SCENT</code>, <code>C-JEWELLERY</code></td><td>Posts that already did well organically are the cheapest ads (use "Boost" or create the ad from the existing post, so the likes and comments stay on it). Carousels let people compare colours before messaging.</td><td>Every ad set (one picture ad each)</td></tr>
 </table>
 <div class="box"><b>Rule of thumb:</b> after 3 to 4 days, switch off the ad with the highest cost per message and replace it with the next reel from the list (<code>R-M2</code>, <code>R-W1</code>, <code>R-M3</code>, <code>R-J1</code>, <code>R-P1</code>, <code>R-P2</code>). Never put more than 5 ads in one ad set.</div>
 

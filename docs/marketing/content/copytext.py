@@ -420,56 +420,76 @@ for _pid in list(PRODUCTS):
         tt=_t['hook'])
 
 
+ASK = {
+    'men': 'Which dial do you like? Tell us below 👇',
+    'women': 'Which colour is yours? Tell us below 👇',
+    'jewellery': 'Which set would you wear? Tell us below 👇',
+    'perfume': 'Floral or oud: which do you love? Tell us below 👇',
+    'shop': 'Save this post for later 🔖 and tag someone who needs it.',
+}
+
+
+def _entry(key):
+    return PRODUCTS.get(key) or COLLECTIONS.get(key) or INFO.get(key)
+
+
 def hashtags(pid_or_key, platform):
-    """Hashtag sets: Instagram 11, Facebook 4, TikTok 6."""
-    p = PRODUCTS.get(pid_or_key) or COLLECTIONS.get(pid_or_key) or INFO.get(pid_or_key)
+    """Instagram: exactly 5 hashtags (the current limit). Facebook: 3. TikTok: 5."""
+    p = _entry(pid_or_key)
     cat = p.get('cat', 'shop')
-    base = TAGS.get(cat, '')
-    own = p.get('tags', '')
-    if platform == 'ig':
-        parts = (TAGS['brand'] + ' ' + own + ' ' + base + ' ' + TAGS['shop'] + ' ' + CITIES).split()
+    base = TAGS.get(cat, '').split()
+    own = p.get('tags', '').split()
+
+    def uniq(items, n):
         seen, out = set(), []
-        for h in parts:
+        for h in items:
             if h.lower() not in seen:
                 seen.add(h.lower())
                 out.append(h)
-        return ' '.join(out[:12])
+        return ' '.join(out[:n])
+    if platform == 'ig':
+        return uniq(['#AnjumMart'] + own[:2] + base[:2] + ['#FreeDeliveryPakistan', '#OnlineShoppingPakistan', '#ShopOnline', '#Pakistan'], 5)
     if platform == 'fb':
-        return ' '.join(('#AnjumMart ' + own + ' #FreeDeliveryPakistan').split()[:4])
-    return ' '.join(('#AnjumMart ' + own + ' #Pakistan #OnlineShopping #FYP').split()[:6])
+        return uniq(['#AnjumMart'] + own[:1] + ['#FreeDeliveryPakistan', '#OnlineShoppingPakistan'], 3)
+    return uniq(['#AnjumMart'] + own[:2] + ['#Pakistan', '#FYP', '#OnlineShopping', '#ShopOnline'], 5)
+
+
+def _seo_line(p, key):
+    kws = [k.strip() for k in p.get('kw', '').split(',') if k.strip()]
+    first = kws[0] if kws else p.get('title', '')
+    if 'pakistan' not in first.lower():
+        first += ' in Pakistan'
+    return first[0].upper() + first[1:]
 
 
 def caption(pid, platform):
-    p = PRODUCTS.get(pid) or COLLECTIONS.get(pid) or INFO.get(pid)
+    """Instagram caption formula: search line, hook, facts, price and delivery, one Roman Urdu line, order line, one question, 5 hashtags."""
+    p = _entry(pid)
     price = p.get('price', '')
+    ask = ASK.get(p.get('cat', 'shop'), ASK['shop'])
     if pid in INFO:
         body = '\n'.join(p['lines'])
         tail = f"Order: {SITE} or WhatsApp {WA}"
         if platform == 'ig':
-            return f"{p['hook']} ✨\n\n{body}\n\n{p['ur']}\n\n{tail}\n.\n.\n{hashtags(pid, 'ig')}"
+            return f"{_seo_line(p, pid)} ✨\n{p['hook']}\n\n{body}\n\n{p['ur']}\n📍 {tail}\n💬 {ask}\n\n{hashtags(pid, 'ig')}"
         if platform == 'fb':
             return f"{p['hook']}\n\n{body}\n\nOrder on {SITE} or message us on WhatsApp {WA}.\n\n{hashtags(pid, 'fb')}"
         return f"{p['hook']} {p['lines'][0]} {hashtags(pid, 'tt')}"
     facts = '\n'.join('• ' + f for f in p['facts'])
     name = p.get('name') or p['title']
     if platform == 'ig':
-        return (f"{p['hook']} ✨\n\n{name}\n{facts}\n\n{p.get('occasion', '')}\n{price} · {FREE}\n\n"
-                f"{p['ur']}\n\nOrder: tap the WhatsApp button or visit {SITE}\n.\n.\n{hashtags(pid, 'ig')}")
+        return (f"{_seo_line(p, pid)} ✨\n{p['hook']}\n\n{name}\n{facts}\n{price} · {FREE}\n\n"
+                f"{p['ur']}\n📍 Order: tap the WhatsApp button or visit {SITE}\n💬 {ask}\n\n{hashtags(pid, 'ig')}")
     if platform == 'fb':
-        return (f"{p['hook']}\n\n{name}\n{facts}\n\n{p.get('occasion', '')}\n{price} · {FREE}\n\n"
+        return (f"{p['hook']}\n\n{name}\n{facts}\n{price} · {FREE}\n\n"
                 f"Order on {SITE} or message us on WhatsApp {WA}.\n\n{hashtags(pid, 'fb')}")
     hook = p.get('tt') or p['hook']
     return f"{hook} · {price} · Free delivery all Pakistan 🇵🇰 {hashtags(pid, 'tt')}"
 
 
 def first_comment(pid):
-    p = PRODUCTS.get(pid) or COLLECTIONS.get(pid) or INFO.get(pid)
-    extra = {'men': '#WatchLover #WristWatch #WatchOfTheDay #MenStyle #Menswear',
-             'women': '#WatchLover #LadiesStyle #WristWatch #GiftForHer #FashionPakistan',
-             'jewellery': '#JewelleryLover #WeddingJewellery #BridalSet #DesiBride #MehndiLook',
-             'perfume': '#PerfumeLover #FragranceOfTheDay #ScentOfTheDay #GiftIdeas #Perfume',
-             'shop': '#ShopOnline #PakistanShopping #GiftIdeas #FashionPakistan #Style'}[p.get('cat', 'shop')]
-    return extra + ' ' + SITE
+    """No extra hashtags (the 5-hashtag limit counts the whole post): the order line goes in the first comment."""
+    return f"Order on WhatsApp {WA} or at {SITE} 🛍️  Questions about size, colour or delivery? Ask here and we will reply."
 
 
 # ---- ad copy library (Meta) -------------------------------------------------------------------------------------
