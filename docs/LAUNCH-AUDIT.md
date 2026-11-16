@@ -5,6 +5,8 @@ edits listed below), a local render of the theme against the real product data, 
 placed (order #1005). **The live storefront pages, payment pages and e-mail inboxes cannot be opened from here**, so
 anything that depends on them is listed as "not verified", never as passed.
 
+> **16 Nov 2026 update:** the 11.11 Sale is over and removed from the home page; a Brand film and an Instagram gallery section were added (theme package "Final 10"). Details and owner steps: `docs/STORE-PREMIUM-UPGRADE.md`. The Shopify connection in that session pointed at another shop, so the live Anjum Mart admin was not re-checked.
+
 ## Result in one line
 
 Catalogue (15 products), stock, free delivery, COD checkout (one real order, #1007, placed and fulfilled), the live theme
