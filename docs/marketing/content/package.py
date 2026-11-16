@@ -114,7 +114,7 @@ POST_UR = PRE + '''POSTING PACKAGE: pehle ye parhein (Roman Urdu)
 6. Time sirf shuru ka andaza hai (Pakistan time). 2 hafte baad Insights dekh kar apne followers ke online time par shift karein.
 '''
 def store(d):
-    cp(f'{WORK}/store-images', f'{d}/1-White-studio-first-image')
+    cp(f'{WORK}/store-white-studio', f'{d}/1-White-studio-first-image')
     cp(f'{WORK}/posts/final/Store-Info-Cards', f'{d}/2-Info-cards-second-image')
     cp(f'{WORK}/cuts', f'{d}/3-Transparent-cutouts-PNG')
 

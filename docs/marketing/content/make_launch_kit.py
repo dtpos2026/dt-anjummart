@@ -15,7 +15,7 @@ sys.path.insert(0, HERE)
 from copytext import caption, first_comment, WA  # noqa: E402
 
 POSTS, POSTERS, REELS, OUT = [os.path.abspath(a) for a in sys.argv[1:5]]
-ROOT = os.path.abspath(os.path.join(HERE, '..', '..'))
+ROOT = os.path.abspath(os.path.join(HERE, '..', '..', '..'))
 FONTS = os.path.abspath(os.path.join(HERE, '..', 'fonts'))
 KIT = os.path.join(OUT, 'Launch-Kit')
 shutil.rmtree(KIT, ignore_errors=True)

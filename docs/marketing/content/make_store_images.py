@@ -3,7 +3,7 @@
 Usage: python3 make_store_images.py <cutouts_dir> <out_dir>
 1600 x 1600, white, the piece centred with a soft contact shadow and the Anjum Mart logo as a small watermark (bottom right), JPEG q88.
 Colour backgrounds are for social posts only; the store keeps the clean white marketplace look.
-File name: <product handle>-01-white-studio.jpg  (the second image of each product is the info card, INFO-<code>-1600.jpg).
+File name: <code>-<product handle>-01-white-studio.jpg  (the second image of each product is the info card, INFO-<code>-1600.jpg).
 """
 import os
 import sys
@@ -47,7 +47,7 @@ def studio(code, handle):
     a = logo.getchannel('A').point(lambda v: int(v * 0.55))
     logo.putalpha(a)
     cv.alpha_composite(logo, (S - lw - int(S * 0.035), S - logo.height - int(S * 0.035)))
-    cv.convert('RGB').save(os.path.join(OUT, f'{handle}-01-white-studio.jpg'), quality=88, optimize=True)
+    cv.convert('RGB').save(os.path.join(OUT, f'{code}-{handle}-01-white-studio.jpg'), quality=88, optimize=True)
 
 
 for code, handle in HANDLES.items():

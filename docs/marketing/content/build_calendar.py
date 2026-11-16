@@ -176,15 +176,15 @@ def build():
 
 <h2>Instagram, Facebook and TikTok: what to do on each</h2>
 <h3>Instagram</h3>
-<ul><li>Reels get the widest reach: post the video, choose the cover frame (the poster shown here), add the caption, <b>paste the alt text</b>, tag the location (Multan or your city) and post the first comment with the extra hashtags.</li>
-<li>Use 8 to 12 hashtags in the caption (already included), mixing the brand tag, the product tags and the shopping tags. Do not copy the same set on every post: the calendar rotates them.</li>
+<ul><li>Reels get the widest reach: post the video, choose the cover frame (the poster shown here), add the caption, <b>paste the alt text</b>, tag the location (Multan or your city) and post the first comment (order line) right after publishing.</li>
+<li>Use exactly <b>5 hashtags</b> (Instagram's current limit; they are already in each caption): the brand tag, two product tags and two category or shopping tags. Do not add more, not even in the comments. The calendar rotates the product tags.</li>
 <li>Share every post to your Story with a sticker (poll, question) and reply to every comment within an hour.</li>
 <li>Instagram search reads the profile <b>Name</b> field, the caption and the alt text, so keep "Anjum Mart | Watches &amp; Jewellery" as the name and write the product words in the caption.</li></ul>
 <h3>Facebook</h3>
-<ul><li>Post the same reel as a Facebook Reel and the carousels as an album. Use the shorter Facebook caption (it ends with the site and WhatsApp number). 2 to 4 hashtags are enough.</li>
+<ul><li>Post the same reel as a Facebook Reel and the carousels as an album. Use the shorter Facebook caption (it ends with the site and WhatsApp number). 3 hashtags are enough (already included).</li>
 <li>Pin the best post and keep the WhatsApp button as the Page action button.</li></ul>
 <h3>TikTok</h3>
-<ul><li>Upload the same MP4 (it carries our own original music, so there is no copyright claim). Keep the caption short; the first words are the hook shown here under "TikTok on-screen hook". Add 4 to 6 hashtags.</li>
+<ul><li>Upload the same MP4 (it carries our own original music, so there is no copyright claim). Keep the caption short; the first words are the hook shown here under "TikTok on-screen hook". Use the 5 hashtags already in the caption.</li>
 <li>For carousels use TikTok <b>photo mode</b>: upload the slides in order and add a sound from the TikTok library.</li>
 <li>Reply to comments with a video reply on questions about price and delivery.</li></ul>
 

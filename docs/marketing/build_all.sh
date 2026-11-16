@@ -29,7 +29,7 @@ echo "== 4. pictures"
 rm -rf "$W/posts"
 python3 "$HERE/content/make_posts.py" "$CUTS" "$PERF" "$W/posts"
 node "$HERE/ads/render.mjs" "$W/posts"
-python3 "$HERE/content/make_store_images.py" "$CUTS" "$W/store-images"
+python3 "$HERE/content/make_store_images.py" "$CUTS" "$W/store-white-studio"
 
 echo "== 4b. launch kit"
 rm -rf "$W/launch"; mkdir -p "$W/launch"

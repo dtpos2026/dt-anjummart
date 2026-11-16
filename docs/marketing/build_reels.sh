@@ -26,7 +26,7 @@ elif ty == 'collection':
 elif ty == 'brand':
     t = p['slots'][1]['start'] + 0.8
 else:
-    t = p['slots'][1]['start'] + 0.55
+    t = p['slots'][7]['start'] + 0.6
 print(t)
 PY
 )"
