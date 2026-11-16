@@ -313,12 +313,93 @@
     "social-gallery": {
       "type": "social-gallery",
       "settings": {}
+    },
+    "colour-stories": {
+      "type": "colour-stories",
+      "blocks": {
+        "m1": {
+          "type": "story",
+          "settings": {
+            "product": "rustet-gold-mens-watch-black-dial-roman-numerals",
+            "word": "GOLD",
+            "hook": "Black dial. Gold presence.",
+            "color_top": "#7a5514",
+            "color_bottom": "#241706",
+            "light": false
+          }
+        },
+        "w2": {
+          "type": "story",
+          "settings": {
+            "product": "moonston-rose-gold-ladies-watch-pink-dial-crystal-style-luxury",
+            "word": "ROSE",
+            "hook": "Rose gold. Crystal-style bezel.",
+            "color_top": "#f0a0b8",
+            "color_bottom": "#b02e58",
+            "light": false
+          }
+        },
+        "p1": {
+          "type": "story",
+          "settings": {
+            "product": "lady-aura-by-anjum-eau-de-parfum-50ml-for-women",
+            "word": "LADY",
+            "hook": "Meet Lady Aura.",
+            "color_top": "#b3223a",
+            "color_bottom": "#4d0c17",
+            "light": false
+          }
+        },
+        "m2": {
+          "type": "story",
+          "settings": {
+            "product": "rustet-gold-silver-mens-watch-royal-blue-dial",
+            "word": "ROYAL",
+            "hook": "Royal blue, two-tone.",
+            "color_top": "#2350b0",
+            "color_bottom": "#0b1c4d",
+            "light": false
+          }
+        },
+        "j2": {
+          "type": "story",
+          "settings": {
+            "product": "green-gold-traditional-bridal-jewellery-set-necklace-earrings-maang-tikka",
+            "word": "MEHNDI",
+            "hook": "Emerald green meets gold.",
+            "color_top": "#23864f",
+            "color_bottom": "#0a3b24",
+            "light": false
+          }
+        },
+        "j1": {
+          "type": "story",
+          "settings": {
+            "product": "silver-white-mirror-stone-jewellery-set-necklace-earrings-maang-tikka",
+            "word": "SILVER",
+            "hook": "Mirror stones, pearl-white drops.",
+            "color_top": "#e4e8ef",
+            "color_bottom": "#8f9bb0",
+            "light": true
+          }
+        }
+      },
+      "block_order": [
+        "m1",
+        "w2",
+        "p1",
+        "m2",
+        "j2",
+        "j1"
+      ],
+      "settings": {}
     }
   },
   "order": [
     "slideshow",
     "service",
     "tiles",
+    "colour-stories",
     "brand-film",
     "featured",
     "mens-watches",

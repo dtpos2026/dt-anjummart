@@ -19,7 +19,7 @@ and local parse checks. Nothing here was published: the owner uploads and publis
 | --- | --- | --- |
 | Look | Cormorant headings, Jost body, champagne and cream, one gold accent (#D4AF37), thin gold frames, tall product cards | Already premium. Keep it; do not add more colours or badges. |
 | First screen | Slideshow with the three categories, then trust points, then category tiles | Good. The new brand film adds motion right after the tiles. |
-| Photography | Studio shots, but the colours and backdrops differ from product to product | The biggest gap. The new reels and colour-story posts use one consistent look (cut-out piece, one colour world, one hook line, price pill). Use the same pictures on the store (see section 4). |
+| Photography | Studio shots, but the colours and backdrops differ from product to product | The biggest gap. The reels and colour-story posts use one consistent look (cut-out piece, one colour world, one hook line, price pill). The new **Colour stories** home section brings the same look to the store. |
 | Motion and video | None on the home page | Added: Brand film section (muted loop, pause and sound buttons, reduced motion respected). |
 | Social presence | Footer icons only | Added: Instagram gallery section (up to six pictures that link to the profile). |
 | Trust | Free delivery, COD, WhatsApp, policies, Advance Cash Payment, no fake reviews or purchase popups | Strong and honest. **Do not add review stars or "sold" counters until they are real.** |
@@ -28,7 +28,8 @@ and local parse checks. Nothing here was published: the owner uploads and publis
 
 ## 3. What changed in the theme (this package: "Anjum Mart Final 10")
 
-* `templates/index.json`: sale banner removed; **Brand film** added after the category tiles; **Instagram gallery** added before the newsletter.
+* `templates/index.json`: sale banner removed; **Colour stories** and **Brand film** added after the category tiles; **Instagram gallery** added before the newsletter.
+* `sections/colour-stories.liquid` (new): the colour-story look of the reels and posts on the home page. Six tiles are pre-filled (gold watch, rose-gold ladies watch, Lady Aura, royal blue watch, green and gold set, silver and white set): one colour per piece, a big watermark word, one line, the product name and the **real price from the product**. Each tile opens the product. Upload a transparent cut-out (from the kit) per tile for the full look; without one the product photo shows in a gold frame. Tiles whose product handle does not exist are skipped.
 * `sections/brand-film.liquid` (new): shows nothing until a video is set. Settings: video (upload an MP4) or an MP4 link, cover picture, heading, text, three points, button.
 * `sections/social-gallery.liquid` (new): up to six pictures (alt text per picture) that open the Instagram profile from Theme settings (`@anjummart.co` today). Shows nothing until a picture is added.
 * `assets/home.css`: styles for both sections (phone first, one column; two columns from 750 px).
@@ -38,11 +39,12 @@ Checks run: theme JSON validator OK; both new sections parse as Liquid and were 
 ## 4. What you do (about 10 minutes)
 
 1. Online Store, Themes, Add theme, **Upload zip file**: `Anjum-Mart-Theme-Final-10.zip`. Open Customise on the new theme.
-2. Home page, **Brand film**: upload `R-BRAND.mp4` (or `R-ALL.mp4`) from the Reels folder, upload its cover from `Reels/covers`, Save.
-3. Home page, **Instagram gallery**: add six pictures from `Posts/Color-Series/` (the feed pictures, for example K-M1, K-W2, K-J2, K-P1, K-M4, K-P3). Write a short description for each. Save.
-4. Check Theme settings: "Show the 11.11 Sale" is off, splash is off.
-5. Look at the preview on a phone, then **Publish**. (The assistant cannot publish.)
-6. Upload the colour-story pictures as the first image of each product if you like the look (Products, the product, Media). Keep the existing photos after it.
+2. Home page, **Colour stories**: for each tile upload the cut-out PNG of that piece (the final kit holds them) and check the line under it says what the piece really is. Check that W2 and W3 say "pink" and "lavender" only if the photos show it (both listings say pink-lavender).
+3. Home page, **Brand film**: upload `R-BRAND.mp4` (or `R-ALL.mp4`) from the Reels folder, upload its cover from `Reels/covers`, Save.
+4. Home page, **Instagram gallery**: add six pictures from `Posts/Color-Series/` (the feed pictures, for example K-M1, K-W2, K-J2, K-P1, K-M4, K-P3). Write a short description for each. Save.
+5. Check Theme settings: "Show the 11.11 Sale" is off, splash is off.
+6. Look at the preview on a phone, then **Publish**. (The assistant cannot publish.)
+7. Upload the colour-story pictures as the first image of each product if you like the look (Products, the product, Media). Keep the existing photos after it.
 
 ## 5. Next upgrades worth doing (not done here)
 

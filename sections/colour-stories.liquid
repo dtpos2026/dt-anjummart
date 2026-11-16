@@ -1,0 +1,181 @@
+{{ 'home.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign shown = 0
+  for block in section.blocks
+    if block.settings.product != blank
+      assign shown = shown | plus: 1
+    endif
+  endfor
+-%}
+
+{%- if shown > 0 or request.design_mode -%}
+  <section class="section colour-stories" aria-labelledby="ColourStories-{{ section.id }}">
+    <div class="page-width">
+      <div class="section-header section-header--center">
+        <div class="section-header__text">
+          {%- if section.settings.eyebrow != blank -%}
+            <p class="eyebrow">{{ section.settings.eyebrow | escape }}</p>
+          {%- endif -%}
+          <h2 id="ColourStories-{{ section.id }}">{{ section.settings.heading | default: 'Pick your colour' | escape }}</h2>
+          {%- if section.settings.subheading != blank -%}
+            <p class="section-header__subheading">{{ section.settings.subheading | escape }}</p>
+          {%- endif -%}
+        </div>
+      </div>
+
+      {%- if shown > 0 -%}
+        <ul class="colour-stories__grid" role="list">
+          {%- for block in section.blocks -%}
+            {%- assign product = block.settings.product -%}
+            {%- if product != blank -%}
+              <li
+                class="cs-tile{% if block.settings.light %} cs-tile--light{% endif %}"
+                style="--cs-top: {{ block.settings.color_top | default: '#7a5514' }}; --cs-bottom: {{ block.settings.color_bottom | default: '#241706' }};"
+                {{ block.shopify_attributes }}
+              >
+                <a class="cs-tile__link" href="{{ product.url }}">
+                  {%- if block.settings.word != blank -%}
+                    <span class="cs-tile__word" aria-hidden="true">{{ block.settings.word | escape }}</span>
+                  {%- endif -%}
+                  <span class="cs-tile__media{% if block.settings.cutout == blank %} cs-tile__media--card{% endif %}">
+                    {%- if block.settings.cutout != blank -%}
+                      {{ block.settings.cutout | image_url: width: 700 | image_tag: loading: 'lazy', widths: '350, 525, 700', sizes: '(min-width: 990px) 340px, (min-width: 750px) 30vw, 70vw', alt: '' }}
+                    {%- elsif product.featured_media != blank -%}
+                      {{ product.featured_media | image_url: width: 700 | image_tag: loading: 'lazy', widths: '350, 525, 700', sizes: '(min-width: 990px) 280px, (min-width: 750px) 25vw, 55vw', alt: '' }}
+                    {%- endif -%}
+                  </span>
+                  <span class="cs-tile__caption">
+                    {%- if block.settings.hook != blank -%}
+                      <span class="cs-tile__hook">{{ block.settings.hook | escape }}</span>
+                    {%- endif -%}
+                    <span class="cs-tile__name">{{ product.title | split: ' – ' | first | escape }}</span>
+                    <span class="cs-tile__price">
+                      {%- if product.price_varies %}From {% endif -%}
+                      {{ product.price | money_without_trailing_zeros }}
+                    </span>
+                  </span>
+                </a>
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      {%- else -%}
+        <p class="colour-stories__empty">Add pieces (blocks): choose a product, two colours and a short line.</p>
+      {%- endif -%}
+
+      {%- if section.settings.button_label != blank -%}
+        <p class="colour-stories__cta">
+          <a class="button button--secondary" href="{{ section.settings.button_link | default: routes.all_products_collection_url }}">
+            {{- section.settings.button_label | escape -}}
+            {% render 'icon', name: 'arrow-right' %}
+          </a>
+        </p>
+      {%- endif -%}
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Colour stories",
+  "tag": "div",
+  "class": "colour-stories-wrap",
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Product tiles in the same colour-story look as the Anjum Mart reels and posts: one colour per piece, a big watermark word, one line, the name and the real price from the product. Upload the cut-out picture of the piece (transparent PNG); without one, the product photo is shown in a gold frame."
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "Colour stories"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Pick your colour"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Watches, jewellery and perfumes, each in its own colour."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Shop all products"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "story",
+      "name": "Piece",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "image_picker",
+          "id": "cutout",
+          "label": "Cut-out picture",
+          "info": "Transparent PNG of the piece (from the Anjum Mart kit). Empty: the product photo in a gold frame."
+        },
+        {
+          "type": "text",
+          "id": "word",
+          "label": "Watermark word",
+          "info": "One short word, for example GOLD.",
+          "default": "GOLD"
+        },
+        {
+          "type": "text",
+          "id": "hook",
+          "label": "Line",
+          "info": "Describe the piece truthfully, for example: Black dial. Gold presence."
+        },
+        {
+          "type": "color",
+          "id": "color_top",
+          "label": "Colour at the top",
+          "default": "#7a5514"
+        },
+        {
+          "type": "color",
+          "id": "color_bottom",
+          "label": "Colour at the bottom",
+          "default": "#241706"
+        },
+        {
+          "type": "checkbox",
+          "id": "light",
+          "label": "Light colours (use dark text)",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Colour stories",
+      "blocks": [
+        { "type": "story" },
+        { "type": "story" },
+        { "type": "story" }
+      ]
+    }
+  ]
+}
+{% endschema %}
