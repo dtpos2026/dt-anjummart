@@ -57,6 +57,7 @@
     {%- endunless -%}
 
     {{ 'base.css' | asset_url | stylesheet_tag }}
+    {{ 'brand.css' | asset_url | stylesheet_tag }}
     {%- if sale_state != 'off' -%}
       {{ 'sale.css' | asset_url | stylesheet_tag }}
     {%- endif -%}

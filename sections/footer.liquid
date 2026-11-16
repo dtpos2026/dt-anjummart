@@ -16,6 +16,9 @@
   <div class="page-width site-footer__top">
     <div class="site-footer__brand">
       <a href="{{ routes.root_url }}">{% render 'logo', height: 96, lazy: true, on_dark: true %}</a>
+      {%- if section.settings.tagline != blank -%}
+        <p class="site-footer__tagline">{{ section.settings.tagline }}</p>
+      {%- endif -%}
       {%- if section.settings.about != blank -%}
         <div class="site-footer__about rte">{{ section.settings.about }}</div>
       {%- endif -%}
@@ -131,6 +134,13 @@
   "tag": "div",
   "class": "footer-section",
   "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "tagline",
+      "label": "Tagline",
+      "info": "Italic text is highlighted in gold and set on its own line.",
+      "default": "Timeless Style. <em>Everyday Luxury.</em>"
+    },
     {
       "type": "richtext",
       "id": "about",

@@ -5,15 +5,18 @@
     "footer": {
       "type": "footer",
       "settings": {
-        "about": "<p>Anjum Mart: premium style at affordable prices. Watches and bridal jewellery sets with free delivery all over Pakistan and Cash on Delivery.</p>",
+        "about": "<p>Anjum Mart: premium style at affordable prices. Watches, bridal jewellery sets and perfumes with free delivery all over Pakistan and Cash on Delivery.</p>",
         "shop_heading": "Shop",
         "shop_menu": "",
         "help_heading": "Help & policies",
         "help_menu": "footer",
         "show_policies": true,
-        "show_payment_icons": true
+        "show_payment_icons": true,
+        "tagline": "Timeless Style. <em>Everyday Luxury.</em>"
       }
     }
   },
-  "order": ["footer"]
+  "order": [
+    "footer"
+  ]
 }

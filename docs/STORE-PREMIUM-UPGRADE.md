@@ -29,12 +29,16 @@ and local parse checks. Nothing here was published: the owner uploads and publis
 ## 3. What changed in the theme (this package: "Anjum Mart Final 10")
 
 * `templates/index.json`: sale banner removed; **Colour stories** and **Brand film** added after the category tiles; **Instagram gallery** added before the newsletter.
+* **Brand layer** (`assets/brand.css`, loaded after `base.css`, CSS only) so the store matches the posts and reels:
+  header on cream with a gold hairline and letter-spaced small-caps menu, the cart bubble in gold with dark text, section titles in Cormorant sentence case with a gold line,
+  gold call-to-action buttons (pill, dark text; outlined buttons stay outlined), product names in Cormorant, a cream price pill and a gold edge on hover for product cards,
+  and the footer as the reel end-card (black with a warm gold glow, gold headings). The footer gets a **Tagline** setting ("Timeless Style. *Everyday Luxury.*") and its text now mentions perfumes.
 * `sections/colour-stories.liquid` (new): the colour-story look of the reels and posts on the home page. Six tiles are pre-filled (gold watch, rose-gold ladies watch, Lady Aura, royal blue watch, green and gold set, silver and white set): one colour per piece, a big watermark word, one line, the product name and the **real price from the product**. Each tile opens the product. Upload a transparent cut-out (from the kit) per tile for the full look; without one the product photo shows in a gold frame. Tiles whose product handle does not exist are skipped.
 * `sections/brand-film.liquid` (new): shows nothing until a video is set. Settings: video (upload an MP4) or an MP4 link, cover picture, heading, text, three points, button.
 * `sections/social-gallery.liquid` (new): up to six pictures (alt text per picture) that open the Instagram profile from Theme settings (`@anjummart.co` today). Shows nothing until a picture is added.
 * `assets/home.css`: styles for both sections (phone first, one column; two columns from 750 px).
 
-Checks run: theme JSON validator OK; both new sections parse as Liquid and were rendered with test data (video present, video missing, gallery with and without pictures); section schemas are valid JSON. Not run: Shopify Theme Check and a visual check on the live store (the CLI and the store are not reachable from this session). Open the preview in the theme editor before publishing.
+Checks run: the real header, announcement bar and footer were rendered with test shop data and screenshotted on desktop and phone before and after the brand layer; theme JSON validator OK; both new sections parse as Liquid and were rendered with test data (video present, video missing, gallery with and without pictures); section schemas are valid JSON. Not run: Shopify Theme Check and a visual check on the live store (the CLI and the store are not reachable from this session). Open the preview in the theme editor before publishing.
 
 ## 4. What you do (about 10 minutes)
 
